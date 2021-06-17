@@ -60,6 +60,22 @@ class PermissionSeeder extends Seeder
                 'perm_mod' => 'ANN',
                 'desc' => 'Delete announcements'
             ],
+            [
+                'perm_mod' => 'SLID',
+                'desc' => 'View sliders'
+            ],
+            [
+                'perm_mod' => 'SLID',
+                'desc' => 'Add sliders'
+            ],
+            [
+                'perm_mod' => 'SLID',
+                'desc' => 'Edit sliders'
+            ],
+            [
+                'perm_mod' => 'SLID',
+                'desc' => 'Delete sliders'
+            ],
         ];
 		$this->db->table('permissions')->insertBatch($data);
 	}
