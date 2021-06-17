@@ -18,6 +18,7 @@ class UserSeeder extends Seeder
                 'birthdate' => '1999-11-03',
                 'contact_number' => '09195252973',
                 'gender' => 'Male',
+                'profile_pic' => 'admin.jpg',
                 'role' => 1,
                 'status' => 'a',
                 'created_at' => date('Y-m-d H:i:s')
@@ -31,6 +32,7 @@ class UserSeeder extends Seeder
                 'birthdate' => '1999-11-03',
                 'contact_number' => '09195252973',
                 'gender' => 'Female',
+                'profile_pic' => 'member.png',
                 'role' => 2,
                 'status' => 'a',
                 'created_at' => date('Y-m-d H:i:s')
