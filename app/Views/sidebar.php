@@ -1,3 +1,22 @@
+<!-- Users -->
+<?php foreach($rolePermission as $rolePerms):?>
+    <?php $access = false;?>
+    <?php if($rolePerms['perm_mod'] == 'USR'):?>
+        <li class="nav-item">
+            <a href="<?= base_url('admin/users')?>" class="nav-link <?= $active=="users" ? 'active': ''?>">
+                <i class="nav-icon fas fa-user"></i>
+                <p>
+                    Users
+                </p>
+            </a>
+        </li>
+        <?php $access = true;?>
+    <?php endif;?>
+    <?php if($access){
+        break;
+    }?>
+<?php endforeach;?>
+
 <!-- Roles -->
 <?php foreach($rolePermission as $rolePerms):?>
     <?php $access = false;?>

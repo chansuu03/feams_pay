@@ -35,4 +35,25 @@ class UserModel extends Model {
     $this->where('id', $user_id);
     return $this->get()->getFirstRow('array');
   }
+
+  public function viewing() {
+    $this->select('users.id,username, profile_pic, last_name, first_name, middle_name, gender, birthdate, contact_number, email, roles.role_name, status');
+    $this->where('users.deleted_at', NULL);
+    $this->join('roles', 'roles.id = users.role');
+    return $this->get()->getResultArray();
+  }
+
+  public function viewProfile($username) {
+    $this->select('username, profile_pic, last_name, first_name, middle_name, gender, birthdate, contact_number, email, status, roles.role_name');
+    $this->where('username', $username);
+    $this->join('roles', 'roles.id = users.role');
+    return $this->get()->getFirstRow('array');
+  }
+  
+  public function getFileUploads($id) {
+    $this->select('users.id, files.name, files.size, files.uploaded_at');
+    $this->where(['files.uploader' => $id, 'files.deleted_at ' => NULL]);
+    $this->join('files', 'users.id = files.uploader', 'left');
+    return $this->get()->getResultArray();
+  }
 }

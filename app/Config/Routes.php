@@ -36,6 +36,7 @@ $routes->get('/', 'Home::index', ["filter" => "auth"]);
 $routes->get('logout', 'User::logout');
 $routes->match(['get', 'post'], 'login', 'User::login', ["filter" => "noauth"]);
 $routes->match(['get', 'post'], 'register', 'User::register', ["filter" => "noauth"]);
+$routes->get('user/(:alphanum)', '\Modules\Users\Controllers\Users::profile/$1', ["filter" => "auth"]);
 
 
 /*
