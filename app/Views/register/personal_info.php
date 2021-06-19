@@ -65,7 +65,7 @@
     <!-- Contact Number -->
     <div class="col">  
       <label class="required">Contact Number</label>
-      <input type="text" class="form-control" placeholder="" name="contact_number" required value="<?=isset($value['contact_number']) ? esc($value['contact_number']): ''?>">
+      <input type="number" class="form-control" placeholder="" name="contact_number" required value="<?=isset($value['contact_number']) ? esc($value['contact_number']): ''?>">
     </div>
 </div>
 
