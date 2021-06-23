@@ -140,4 +140,114 @@ class Validation
 			]
 		],
 	];
+
+	public $elections = [
+		'title' => [
+			'label' => 'Election Title', 
+			'rules' => 'required|min_length[5]|max_length[255]|alpha_numeric_space',
+			'errors' => [
+				'required' => 'Election title is required',
+				'min_length' => 'Election title too short',
+				'max_length' => 'Election title too long',
+				'alpha_numeric_space' => 'Election title only accepts letters, numbers and spaces',
+			]
+		],
+		'start_date' => [
+			'label' => 'Start Date', 
+			'rules' => 'required|valid_date[Y-m-d]',
+			'errors' => [
+				'required' => 'Election start is required',
+				'valid_date' => 'Election start date is not a valid date',
+			]
+		],
+		'end_date' => [
+			'label' => 'End Date', 
+			'rules' => 'required|valid_date[Y-m-d]',
+			'errors' => [
+				'required' => 'Election end is required',
+				'valid_date' => 'Election end date is not a valid date',
+			]
+		],
+	];
+
+	public $positions = [
+		'name' => [
+			'label' => 'Position Name', 
+			'rules' => 'required|min_length[3]|max_length[100]|alpha_numeric_space',
+			'errors' => [
+				'required' => 'Position name field is required',
+				'min_length' => 'Position name field too short',
+				'max_length' => 'Position name field exceed limit',
+				'alpha_numeric_space' => 'Position name field includes symbols',
+			],
+		],
+	];
+
+	public $candidates = [
+		'user_id' => [
+			'label' => 'Candidate Name',
+			'rules' => 'required|numeric',
+			'errors' => [
+				'required' => 'Please choose a candidate',
+				'numeric' => 'Wrong choice, please try again',
+			]
+		],
+		'position_id' => [
+			'label' => 'Position',
+			'rules' => 'required|numeric',
+			'errors' => [
+				'required' => 'Please choose a position',
+				'numeric' => 'Wrong choice, please try again',
+			]
+		],
+		'photo' => [
+			'label' => 'Photo', 
+			'rules' => 'is_image[photo]',
+			'errors' => [
+				'is_image' => 'Uploaded file is not an photo',
+			]
+		],
+		'platform' => [
+			'label' => 'Platform', 
+			'rules' => 'max_length[999]',
+			'errors' => [
+				'max_length' => 'Platform field reached max character length',
+			]
+		],
+	];
+
+	public $fileCategory = [
+		'name' => [
+			'label' => 'Category Name',
+			'rules' => 'required|min_length[3]|max_length[100]|alpha_numeric_space',
+			'errors' => [
+				'required' => 'File category name field is required',
+				'min_length' => 'File category name field too short',
+				'max_length' => 'File category name field exceed limit',
+				'alpha_numeric_space' => 'File category name field includes symbols',
+			]
+		],
+	];
+
+	public $files = [
+		'name' => [
+			'label' => 'File Name', 
+			'rules' => 'required|min_length[5]|max_length[30]|alpha_numeric_space'
+		],
+		'file' => [
+			'label' => 'File', 
+			'rules' => 'uploaded[file]|max_size[file,20000]'
+		],
+	];
+	
+	public $comment = [
+		'comment' => [
+			'rules' => 'required|min_length[3]|max_length[255]',
+			'errors' => [
+				'required' => 'Comment is required',
+				'min_length' => 'Comment field too short',
+				'max_length' => 'Comment exceed limit',
+			],
+		],
+	];
 }

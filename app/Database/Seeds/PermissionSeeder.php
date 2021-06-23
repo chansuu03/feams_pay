@@ -76,7 +76,76 @@ class PermissionSeeder extends Seeder
                 'perm_mod' => 'SLID',
                 'desc' => 'Delete sliders'
             ],
+            [
+                'perm_mod' => 'ELEC',
+                'desc' => 'View elections'
+            ],
+            [
+                'perm_mod' => 'ELEC',
+                'desc' => 'Add elections'
+            ],
+            [
+                'perm_mod' => 'ELEC',
+                'desc' => 'Edit elections'
+            ],
+            [
+                'perm_mod' => 'ELEC',
+                'desc' => 'Delete elections'
+            ],
+            [
+                'perm_mod' => 'POS',
+                'desc' => 'View positions'
+            ],
+            [
+                'perm_mod' => 'POS',
+                'desc' => 'Add position'
+            ],
+            [
+                'perm_mod' => 'POS',
+                'desc' => 'Edit position'
+            ],
+            [
+                'perm_mod' => 'POS',
+                'desc' => 'Delete position'
+            ],
+            [
+                'perm_mod' => 'CAN',
+                'desc' => 'View candidate'
+            ],
+            [
+                'perm_mod' => 'CAN',
+                'desc' => 'Add candidate'
+            ],
+            [
+                'perm_mod' => 'CAN',
+                'desc' => 'Edit candidate'
+            ],
+            [
+                'perm_mod' => 'CAN',
+                'desc' => 'Delete candidate'
+            ],
+            [
+                'perm_mod' => 'FILES',
+                'desc' => 'View files'
+            ],
+            [
+                'perm_mod' => 'FILES',
+                'desc' => 'Manage files'
+            ],
+            [
+                'perm_mod' => 'FICAT',
+                'desc' => 'View file categories'
+            ],
+            [
+                'perm_mod' => 'FICAT',
+                'desc' => 'Manage file categories'
+            ],
+            [
+                'perm_mod' => 'DISC',
+                'desc' => 'Manage discussions'
+            ],
         ];
+		$this->db->table('permissions')->truncate();
 		$this->db->table('permissions')->insertBatch($data);
 	}
 }

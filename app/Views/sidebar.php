@@ -80,7 +80,7 @@
     <?php if($rolePerms['perm_mod'] == 'SLID'):?>
         <li class="nav-item">
             <a href="<?= base_url('admin/sliders')?>" class="nav-link <?= $active=="sliders" ? 'active': ''?>">
-                <i class="nav-icon fas fa-bullhorn"></i>
+                <i class="nav-icon fas fa-sliders-h"></i>
                 <p>
                     Sliders
                 </p>
@@ -93,3 +93,49 @@
     }?>
 <?php endforeach;?>
 
+<!-- Elections -->
+<?php foreach($rolePermission as $rolePerms):?>
+    <?php $access = false;?>
+    <?php if($rolePerms['perm_mod'] == 'ELEC'):?>
+        <li class="nav-item">
+            <a href="<?= base_url('admin/elections')?>" class="nav-link <?= $active=="elections" ? 'active': ''?>">
+                <i class="nav-icon fas fa-vote-yea"></i>
+                <p>
+                    Elections
+                </p>
+            </a>
+        </li>
+        <?php $access = true;?>
+    <?php endif;?>
+    <?php if($access){
+        break;
+    }?>
+<?php endforeach;?>
+
+<!-- Positions -->
+<?php foreach($rolePermission as $rolePerms):?>
+    <?php $access = false;?>
+    <?php if($rolePerms['perm_mod'] == 'POS'):?>
+        <li class="nav-item">
+            <a href="<?= base_url('admin/positions')?>" class="nav-link <?= $active=="positions" ? 'active': ''?>">
+                <i class="nav-icon fas fa-user-plus"></i>
+                <p>
+                    Positions
+                </p>
+            </a>
+        </li>
+        <?php $access = true;?>
+    <?php endif;?>
+    <?php if($access){
+        break;
+    }?>
+<?php endforeach;?>
+
+<li class="nav-item">
+    <a href="<?= base_url('voting')?>" class="nav-link <?= $active=="voting" ? 'active': ''?>">
+        <i class="nav-icon fas fa-user-plus"></i>
+        <p>
+            Voting
+        </p>
+    </a>
+</li>
