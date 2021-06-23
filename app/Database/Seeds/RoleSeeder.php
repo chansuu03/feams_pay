@@ -18,6 +18,7 @@ class RoleSeeder extends Seeder
                 'created_at' => date('Y-m-d H:i:s')
             ],
         ];
+		$this->db->table('roles')->truncate();
 		$this->db->table('roles')->insertBatch($data);
 	}
 }
