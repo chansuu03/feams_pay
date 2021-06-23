@@ -20,7 +20,7 @@ class CommentModel extends Model {
         return - array contains comment and user data
     */
     public function viewComment($id) {
-        $this->select('comments.id, comments.thread_id, comments.comment, comments.comment_date, comments.deleted_at, users.first_name, users.last_name, users.username');
+        $this->select('comments.id, comments.thread_id, comments.comment, comments.comment_date, comments.deleted_at, users.first_name, users.last_name, users.username, user_id');
         $this->where(['comments.thread_id' => $id, 'comments.deleted_at'=> NULL]);
         $this->join('users', 'comments.user_id = users.id');
         return $this->get()->getResultArray();

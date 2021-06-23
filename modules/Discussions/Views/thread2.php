@@ -53,9 +53,18 @@
                                 <div class="timeline-body">
                                     <?= $comment['comment']?>
                                 </div>
-                                <div class="timeline-footer">
-                                    <a class="btn btn-danger btn-sm">Delete</a>
-                                </div>
+                                <?php $access = false;?>
+                                <?php foreach($perm_id['perm_id'] as $perms):?>
+                                    <?php if($perms == '35' || $comment['user_id'] == session()->get('user_id')):?>
+                                        <?php if(!$access):?>
+                                            <div class="timeline-footer">
+                                                <p hidden id="link" value=""><?= esc($threadData['link'])?></p>
+                                                <button type="button" class="btn btn-danger btn-sm del" value="<?= esc($comment['id'])?>">Delete</button>
+                                            </div>
+                                            <?php $access = true;?>
+                                        <?php endif;?>
+                                    <?php endif;?>
+                                <?php endforeach;?>
                              </div>
                         </div>
                         <!-- END timeline item -->
@@ -99,4 +108,64 @@
     });
 </script>
 
+<!-- SweetAlert JS -->
+<script src="<?= base_url();?>/js/sweetalert.min.js"></script>
+<script src="<?= base_url();?>/js/sweetalert2.all.min.js"></script>
+<!-- SweetAlert2 -->
+<script type="text/javascript">
+//   function clicked(link, id) {
+//     Swal.fire({
+//         icon: 'question',
+//         title: 'Delete?',
+//         text: 'Are you sure to delete comment?',
+//         showCancelButton: true,
+//         confirmButtonColor: '#3085d6',
+//         cancelButtonColor: '#d33',
+//         confirmButtonText: 'Yes, delete it!'
+//     }).then((result) =>
+//     {
+//       /* Read more about isConfirmed, isDenied below */
+//       if (result.isConfirmed)
+//       {
+//         window.location = '/delete/' + id;
+//       }
+//       else if (result.isDenied)
+//       {
+//         Swal.fire('Changes are not saved', '', 'info')
+//       }
+//     });
+//   }
+
+  $(document).ready(function ()
+  {
+    $('.del').click(function (e)
+    {
+      e.preventDefault();
+      var link = $('#link').text();
+      var id = $(this).val();
+      console.log(link);
+
+      Swal.fire({
+        icon: 'question',
+        title: 'Delete?',
+        text: 'Are you sure to delete comment?',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      })/*swal2*/.then((result) =>
+      {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed)
+        {
+            window.location = '/discuss/'+ link +'/comment/delete/' + id;
+        }
+        else if (result.isDenied)
+        {
+          Swal.fire('Changes are not saved', '', 'info')
+        }
+      })//then
+    });
+  });
+</script>
 <?= $this->endSection() ?>

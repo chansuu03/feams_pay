@@ -144,6 +144,10 @@ class PermissionSeeder extends Seeder
                 'perm_mod' => 'DISC',
                 'desc' => 'Manage discussions'
             ],
+            [
+                'perm_mod' => 'COMM',
+                'desc' => 'Manage comments'
+            ],
         ];
 		$this->db->table('permissions')->truncate();
 		$this->db->table('permissions')->insertBatch($data);
