@@ -80,10 +80,12 @@ class User extends BaseController {
                 $userData['password'] = password_hash($this->request->getVar('password'), PASSWORD_DEFAULT);
                 $userData['contact_number'] = $this->request->getVar('contact_number');
                 $userData['birthdate'] = $dates;
+                $userData['email_code'] = random_string('alnum', 5);
                 $userData['profile_pic'] = $file->getRandomName();
                 if($this->userModel->insert($userData)){
                     $file->move(ROOTPATH .'/public/uploads/profile_pic/', $userData['profile_pic']);
                     if($file->hasMoved()) {
+                        $this->sendMail($userData);
                         return redirect()->to(base_url());
                     } else {
                         $this->session->setFlashdata('failMsg', 'There is an error creating account');
@@ -98,4 +100,36 @@ class User extends BaseController {
         }
         return view('register/register', $data);
 	}
+
+    private function sendMail($userData) {
+        $this->email->setTo($userData['email']);
+        $this->email->setFrom('facultyea@gmail.com', 'Faculty and Employees Association');
+        $this->email->setSubject('Account Confirmation');
+        $message = view('regiEmail', $userData);
+        $this->email->setMessage($message);
+        if ($this->email->send()) 
+            echo 'Email successfully sent';
+		else {
+            $data = $email->printDebugger(['headers']);
+            print_r($data);
+        }
+    }
+
+    public function activate($code) {
+        $user = $this->userModel->where('email_code', $code)->first();
+        
+        $data = [
+            'id' => $user['id'],
+            'email_code' => null,
+            'status' => 'a',
+        ];
+        if($this->userModel->save($data)) {
+            $this->session->setFlashdata('successMsg', 'Account successfully activated');
+            return redirect()->to(base_url());
+        } else {
+            $this->session->setFlashdata('failMsg', 'Account not activated, please try again');
+            return redirect()->to(base_url());
+        }
+        die();
+    }
 }
