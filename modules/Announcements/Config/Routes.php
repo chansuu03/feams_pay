@@ -6,3 +6,5 @@ $routes->group('admin/announcements', ['namespace' => 'Modules\Announcements\Con
   $routes->match(['get', 'post'], 'edit/(:alphanum)', 'Announcements::edit/$1');
   $routes->get('delete/(:alphanum)', 'Announcements::delete/$1');
 });
+
+$routes->get('announcements/(:alphanum)', '\Modules\Announcements\Controllers\Announcements::info/$1', ["filter" => "auth"]);

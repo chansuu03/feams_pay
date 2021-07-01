@@ -62,7 +62,7 @@
                         <?php endif;?>
                       <?php endforeach;?>
                     </td>
-                    <?php if(isset($actions)):?>
+                    <?php if(isset($actions) && $role['id'] != '1'):?>
                       <td>
                           <a class="btn btn-primary btn-sm" href="<?= base_url('admin/permissions/edit/')?>/<?= esc($role['id'])?>" role="button">Edit</a>
                       </td>

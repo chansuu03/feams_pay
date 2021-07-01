@@ -65,7 +65,7 @@
                     <span><?= esc($thread['first_name'])?> <?= esc($thread['last_name'])?></span>
                     <?php $access = false;?>
                     <?php foreach($perm_id['perm_id'] as $perms):?>
-                      <?php if($perms == '34' || $thread['creator'] == session()->get('user_id')):?>
+                      <?php if($perms == '35' || $thread['creator'] == session()->get('user_id')):?>
                         <?php if(!$access):?>
                           <button type="button" value="<?= esc($thread['id'])?>" class="btn btn-danger btn-sm del">Delete</button>
                           <?php $access = true;?>

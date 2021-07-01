@@ -4,160 +4,197 @@ namespace App\Database\Seeds;
 
 use CodeIgniter\Database\Seeder;
 
-class PermissionSeeder extends Seeder
+class RolePermissionSeeder extends Seeder
 {
 	public function run() {
 		$data = [
             [
+				'role_id' => '1',
                 'perm_mod' => 'USR',
-                'desc' => 'View Users'
+				'perm_id' => '1'
             ],
             [
+				'role_id' => '1',
                 'perm_mod' => 'USR',
-                'desc' => 'Delete Users'
+				'perm_id' => '2'
             ],
             [
+				'role_id' => '1',
                 'perm_mod' => 'USR',
-                'desc' => 'Change User Status'
+				'perm_id' => '3'
             ],
             [
+				'role_id' => '1',
                 'perm_mod' => 'USR',
-                'desc' => 'Change User Role'
+				'perm_id' => '4'
             ],
             [
+				'role_id' => '1',
                 'perm_mod' => 'ROLE',
-                'desc' => 'Add role'
+				'perm_id' => '5'
             ],
             [
+				'role_id' => '1',
                 'perm_mod' => 'ROLE',
-                'desc' => 'Edit role'
+				'perm_id' => '6'
             ],
             [
+				'role_id' => '1',
                 'perm_mod' => 'ROLE',
-                'desc' => 'Delete role'
+				'perm_id' => '7'
             ],
             [
+				'role_id' => '1',
                 'perm_mod' => 'ROLE',
-                'desc' => 'View roles'
+				'perm_id' => '8'
             ],
             [
                 'perm_mod' => 'PERM',
-                'desc' => 'View permissions'
+				'role_id' => '1',
+				'perm_id' => '9'
             ],
             [
                 'perm_mod' => 'PERM',
-                'desc' => 'Edit permissions'
+				'role_id' => '1',
+				'perm_id' => '10'
             ],
             [
                 'perm_mod' => 'ANN',
-                'desc' => 'View announcements'
+				'role_id' => '1',
+				'perm_id' => '11'
             ],
             [
                 'perm_mod' => 'ANN',
-                'desc' => 'Add announcements'
+				'role_id' => '1',
+				'perm_id' => '12'
             ],
             [
                 'perm_mod' => 'ANN',
-                'desc' => 'Edit announcements'
+				'role_id' => '1',
+				'perm_id' => '13'
             ],
             [
                 'perm_mod' => 'ANN',
-                'desc' => 'Delete announcements'
+				'role_id' => '1',
+				'perm_id' => '14'
             ],
             [
                 'perm_mod' => 'SLID',
-                'desc' => 'View sliders'
+				'role_id' => '1',
+				'perm_id' => '15'
             ],
             [
                 'perm_mod' => 'SLID',
-                'desc' => 'Add sliders'
+				'role_id' => '1',
+				'perm_id' => '16'
             ],
             [
                 'perm_mod' => 'SLID',
-                'desc' => 'Edit sliders'
+				'role_id' => '1',
+				'perm_id' => '17'
             ],
             [
                 'perm_mod' => 'SLID',
-                'desc' => 'Delete sliders'
+				'role_id' => '1',
+				'perm_id' => '18'
             ],
             [
                 'perm_mod' => 'ELEC',
-                'desc' => 'View elections'
+				'role_id' => '1',
+				'perm_id' => '19'
             ],
             [
                 'perm_mod' => 'ELEC',
-                'desc' => 'Add elections'
+				'role_id' => '1',
+				'perm_id' => '20'
             ],
             [
                 'perm_mod' => 'ELEC',
-                'desc' => 'Edit elections'
+				'role_id' => '1',
+				'perm_id' => '21'
             ],
             [
                 'perm_mod' => 'ELEC',
-                'desc' => 'Delete elections'
+				'role_id' => '1',
+				'perm_id' => '22'
             ],
             [
                 'perm_mod' => 'POS',
-                'desc' => 'View positions'
+				'role_id' => '1',
+				'perm_id' => '23'
             ],
             [
                 'perm_mod' => 'POS',
-                'desc' => 'Add position'
+				'role_id' => '1',
+				'perm_id' => '24'
             ],
             [
                 'perm_mod' => 'POS',
-                'desc' => 'Edit position'
+				'role_id' => '1',
+				'perm_id' => '25'
             ],
             [
                 'perm_mod' => 'POS',
-                'desc' => 'Delete position'
+				'role_id' => '1',
+				'perm_id' => '26'
             ],
             [
                 'perm_mod' => 'CAN',
-                'desc' => 'View candidate'
+				'role_id' => '1',
+				'perm_id' => '27'
             ],
             [
                 'perm_mod' => 'CAN',
-                'desc' => 'Add candidate'
+				'role_id' => '1',
+				'perm_id' => '28'
             ],
             [
                 'perm_mod' => 'CAN',
-                'desc' => 'Edit candidate'
+				'role_id' => '1',
+				'perm_id' => '29'
             ],
             [
                 'perm_mod' => 'CAN',
-                'desc' => 'Delete candidate'
+				'role_id' => '1',
+				'perm_id' => '30'
             ],
             [
                 'perm_mod' => 'FILES',
-                'desc' => 'View files'
+				'role_id' => '1',
+				'perm_id' => '31'
             ],
             [
                 'perm_mod' => 'FILES',
-                'desc' => 'Manage files'
+				'role_id' => '1',
+				'perm_id' => '32'
             ],
             [
                 'perm_mod' => 'FICAT',
-                'desc' => 'View file categories'
+				'role_id' => '1',
+				'perm_id' => '33'
             ],
             [
                 'perm_mod' => 'FICAT',
-                'desc' => 'Manage file categories'
+				'role_id' => '1',
+				'perm_id' => '34'
             ],
             [
                 'perm_mod' => 'DISC',
-                'desc' => 'Manage discussions'
+				'role_id' => '1',
+				'perm_id' => '35'
             ],
             [
                 'perm_mod' => 'COMM',
-                'desc' => 'Manage comments'
+				'role_id' => '1',
+				'perm_id' => '36'
             ],
             [
                 'perm_mod' => 'REPO',
-                'desc' => 'View reports'
+				'role_id' => '1',
+				'perm_id' => '37'
             ],
         ];
-		$this->db->table('permissions')->truncate();
-		$this->db->table('permissions')->insertBatch($data);
+		$this->db->table('role_permissions')->truncate();
+		$this->db->table('role_permissions')->insertBatch($data);
 	}
 }

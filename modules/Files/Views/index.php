@@ -99,7 +99,7 @@
                   <td><?= esc($file['first_name']).' '.esc($file['last_name'])?></td>
                   <td><?=esc(readableBytes($file['size']))?></td>
                   <?php foreach($perm_id['perm_id'] as $perms):?>
-                    <?php if($perms == '31'):?>
+                    <?php if($perms == '32'):?>
                       <?php if($file['uploader'] == session()->get('user_id')):?>
                         <td scope="row">
                             <button type="button" value="<?= esc($file['id'])?>" class="btn btn-danger btn-sm del" data-toggle="tooltip" data-placement="bottom" title="Delete category"><i class="fas fa-trash"></i></button>

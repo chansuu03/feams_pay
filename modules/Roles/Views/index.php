@@ -63,7 +63,7 @@
                     <th scope="row"><?= esc($ctr)?></th>
                     <td><?= esc($role['role_name'])?></td>
                     <?php foreach($perm_id as $perms):?>
-                      <?php if($perms == '6'):?>
+                      <?php if($perms == '6' && $role['id'] != '1'):?>
                         <td>
                             <button type="button" value="<?= esc($role['id'])?>" class="btn btn-danger btn-sm del" data-toggle="tooltip" data-placement="bottom" title="Delete Role"><i class="fas fa-trash"></i></button>
                         </td>

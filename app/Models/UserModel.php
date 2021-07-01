@@ -44,7 +44,7 @@ class UserModel extends Model {
   }
 
   public function viewProfile($username) {
-    $this->select('username, profile_pic, last_name, first_name, middle_name, gender, birthdate, contact_number, email, status, roles.role_name');
+    $this->select('users.id, username, profile_pic, last_name, first_name, middle_name, gender, birthdate, contact_number, email, status, roles.role_name');
     $this->where('username', $username);
     $this->join('roles', 'roles.id = users.role');
     return $this->get()->getFirstRow('array');

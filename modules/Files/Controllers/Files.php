@@ -13,7 +13,7 @@ class Files extends BaseController
     
     public function index() {
         // checking roles and permissions
-        $data['perm_id'] = check_role('30', 'FILES', $this->session->get('role'));
+        $data['perm_id'] = check_role('31', 'FILES', $this->session->get('role'));
         if(!$data['perm_id']['perm_access']) {
             $this->session->setFlashdata('sweetalertfail', true);
             return redirect()->to(base_url());

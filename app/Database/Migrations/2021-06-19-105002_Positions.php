@@ -22,6 +22,15 @@ class Positions extends Migration
 				'type'           => 'VARCHAR',
 				'constraint'     => 100,
 			],
+			'vote_count'          => [
+				'type'           => 'INT',
+				'constraint'     => 11,
+				'default'        => null,
+			],
+			'max_candidate'          => [
+				'type'           => 'INT',
+				'constraint'     => 11,
+			],
 			'created_at' => [
 				'type'           => 'DATETIME',
 			],

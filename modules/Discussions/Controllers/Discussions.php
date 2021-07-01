@@ -67,4 +67,27 @@ class Discussions extends BaseController
         $data['title'] = 'Discussions';
         return view('Modules\Discussions\Views\add2', $data);
     }
+
+    public function delete($id) {
+        // checking roles and permissions
+        // die($id);
+        $thread = $this->threadModel->where(['id' => $id])->first();
+        echo '<pre>';
+        print_r($thread);
+        $data['perm_id'] = check_role('35', 'DISC', $this->session->get('role'));
+        if($thread['creator'] != $this->session->get('user_id')) {
+            if(!$data['perm_id']['perm_access']) {
+                $this->session->setFlashdata('sweetalertfail', true);
+                return redirect()->to(base_url());
+            }
+        }
+        $data['rolePermission'] = $data['perm_id']['rolePermission'];
+
+        if($this->threadModel->where(['id' => $id])->delete()) {
+          $this->session->setFlashData('successMsg', 'Successfully deleted thread');
+        } else {
+          $this->session->setFlashData('errorMsg', 'Something went wrong!');
+        }
+        return redirect()->to(base_url('discussions'));
+    }
 }

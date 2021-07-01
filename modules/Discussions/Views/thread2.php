@@ -29,6 +29,7 @@
 <?= $this->endSection();?>
 
 <?= $this->section('content') ?>
+
 <form action="<?= base_url()?>/discussions/<?= esc($threadData['link'])?>" method="post">
     <!-- Timelime example  -->
     <div class="row">
@@ -49,13 +50,13 @@
                                         echo date_format($date, 'F d, Y H:i');
                                     ?>
                                 </span>
-                                <h3 class="timeline-header"><a href="<?= base_url()?>/admin/users/<?= esc($comment['username'])?>"><?= esc($comment['first_name'])?> <?= esc($comment['last_name'])?></a> commented</h3>
+                                <h3 class="timeline-header"><a href="<?= base_url()?>/user/<?= esc($comment['username'])?>"><?= esc($comment['first_name'])?> <?= esc($comment['last_name'])?></a> commented</h3>
                                 <div class="timeline-body">
                                     <?= $comment['comment']?>
                                 </div>
                                 <?php $access = false;?>
                                 <?php foreach($perm_id['perm_id'] as $perms):?>
-                                    <?php if($perms == '35' || $comment['user_id'] == session()->get('user_id')):?>
+                                    <?php if($perms == '36' || $comment['user_id'] == session()->get('user_id')):?>
                                         <?php if(!$access):?>
                                             <div class="timeline-footer">
                                                 <p hidden id="link" value=""><?= esc($threadData['link'])?></p>

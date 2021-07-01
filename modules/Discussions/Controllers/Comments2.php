@@ -54,7 +54,7 @@ class Comments2 extends BaseController
 
         $data['user_details'] = user_details($this->session->get('user_id'));
         $data['active'] = 'discussions';
-        $data['title'] = 'Discussions';
+        $data['title'] = $threadData['subject'];
         return view('Modules\Discussions\Views\thread2', $data);
     }
 
@@ -64,7 +64,7 @@ class Comments2 extends BaseController
         // print_r($data['comment']);
         // die();
         // checking roles and permissions
-        $data['perm_id'] = check_role('35', 'COMM', $this->session->get('role'));
+        $data['perm_id'] = check_role('36', 'COMM', $this->session->get('role'));
         if(!$data['perm_id']['perm_access']) {
             if($data['comment']['user_id'] != $this->session->get('user_id')) {
                 $this->session->setFlashdata('sweetalertfail', true);
@@ -87,7 +87,7 @@ class Comments2 extends BaseController
         ];
         if($this->commentModel->save($data)) {
             $this->session->setFlashdata('successMsg', 'Comment deleted successfully');
-            return redirect()->to(base_url('discussions'));
+            return redirect()->back();
         } else {
             $this->session->setFlashdata('failMsg', 'Failed to delete comment');
             return redirect()->to(base_url('discussions'));

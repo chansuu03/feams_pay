@@ -31,7 +31,7 @@ class Roles extends BaseController
     // }
 
     public function index() {
-        $data['perm_id'] = check_role('7', 'ROLE', $this->session->get('role'));
+        $data['perm_id'] = check_role('8', 'ROLE', $this->session->get('role'));
         if(!$data['perm_id']['perm_access']) {
             $this->session->setFlashdata('sweetalertfail', true);
             return redirect()->to(base_url());
@@ -48,7 +48,7 @@ class Roles extends BaseController
     public function add() {
         helper('text');
         $data['edit'] = false;
-        $data['perm_id'] = check_role('4', 'ROLE', $this->session->get('role'));
+        $data['perm_id'] = check_role('5', 'ROLE', $this->session->get('role'));
         if(!$data['perm_id']['perm_access']) {
             $this->session->setFlashdata('sweetalertfail', true);
             return redirect()->to(base_url());
@@ -76,7 +76,7 @@ class Roles extends BaseController
     }
 
     public function delete($id) {
-        $data['perm_id'] = check_role('6', 'ROLE', $this->session->get('role'));
+        $data['perm_id'] = check_role('7', 'ROLE', $this->session->get('role'));
         if(!$data['perm_id']['perm_access']) {
             $this->session->setFlashdata('sweetalertfail', true);
             return redirect()->to(base_url());

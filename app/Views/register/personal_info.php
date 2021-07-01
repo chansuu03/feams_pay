@@ -50,11 +50,11 @@
     </div>
 </div>
 
-<!-- address -->
+<!-- address
 <div class="form-group">
     <label class="required">Address</label>
-    <!-- <textarea name="address" class="form-control" rows="3" placeholder="Enter ..." required></textarea> -->
-</div>
+    <!-- <textarea name="address" class="form-control" rows="3" placeholder="Enter ..." required></textarea> 
+</div> -->
 
 <div class="form-row">
     <!-- E-mail address -->

@@ -72,7 +72,7 @@
                 <?php foreach($perm_id['perm_id'] as $perms):?>
                   <?php if($perms == '33'):?>
                     <td scope="row">
-                        <a class="btn btn-info btn-sm" href="<?= base_url()?>/files/categories/edit/<?= esc($category['id'])?>" role="button" data-toggle="tooltip" data-placement="bottom" title="Edit category"><i class="fa fa-edit" aria-hidden="true"></i></a>
+                        <!-- <a class="btn btn-info btn-sm" href="<?= base_url()?>/files/categories/edit/<?= esc($category['id'])?>" role="button" data-toggle="tooltip" data-placement="bottom" title="Edit category"><i class="fa fa-edit" aria-hidden="true"></i></a> -->
                         <button type="button" value="<?= esc($category['id'])?>" class="btn btn-danger btn-sm del" data-toggle="tooltip" data-placement="bottom" title="Delete category"><i class="fas fa-trash"></i></button>
                     </td>
                   <?php endif;?>

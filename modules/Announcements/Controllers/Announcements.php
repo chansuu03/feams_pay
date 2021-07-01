@@ -3,16 +3,18 @@ namespace Modules\Announcements\Controllers;
 
 use App\Controllers\BaseController;
 use Modules\Announcements\Models as Models;
+use App\Models as UserModels;
 
 class Announcements extends BaseController
 {
     public function __construct() {
         $this->announceModel = new Models\AnnouncementModel();
+        $this->userModel = new UserModels\UserModel();
     }
 
     public function index() {
         // checking roles and permissions
-        $data['perm_id'] = check_role('10', 'ANN', $this->session->get('role'));
+        $data['perm_id'] = check_role('11', 'ANN', $this->session->get('role'));
         if(!$data['perm_id']['perm_access']) {
             $this->session->setFlashdata('sweetalertfail', true);
             return redirect()->to(base_url());
@@ -31,7 +33,7 @@ class Announcements extends BaseController
 
     public function add() {
         // checking roles and permissions
-        $data['perm_id'] = check_role('10', 'ANN', $this->session->get('role'));
+        $data['perm_id'] = check_role('12', 'ANN', $this->session->get('role'));
         if(!$data['perm_id']['perm_access']) {
             $this->session->setFlashdata('sweetalertfail', true);
             return redirect()->to(base_url());
@@ -136,8 +138,21 @@ class Announcements extends BaseController
         return redirect()->to(base_url('admin/announcements'));
     }
 
+    public function info($link) {
+        // checking roles and permissions
+        $data['perm_id'] = check_role('', '', $this->session->get('role'));
+        $data['rolePermission'] = $data['perm_id']['rolePermission'];
+
+        $data['announce'] = $this->announceModel->where('link', $link)->first();
+
+        $data['user_details'] = user_details($this->session->get('user_id'));
+        $data['active'] = 'announcements';
+        $data['title'] = $data['announce']['title'];
+        return view('Modules\Announcements\Views\info', $data);
+    }
+
     private function sendMail() {
-        $mails = $this->userModel->where('email !=', $this->session->get('email'))->findColumn('email');
+        $mails = $this->userModel->where('id !=', $this->session->get('user_id'))->findColumn('email');
 
         foreach($mails as $mail) {
             $this->email->clear();
@@ -147,8 +162,8 @@ class Announcements extends BaseController
             $content = view('Modules\Announcements\Views\email', $_POST);
             $this->email->setMessage($content);
             if($this->email->send()) {
-                echo 'Email successfully sent';
-                die();
+                $this->session->setFlashData('successMsg', 'Successfully emailed members and added announcement');
+                return redirect()->to(base_url('admin/announcements'));
             }
             else {
                 $data = $this->email->printDebugger(['headers']);

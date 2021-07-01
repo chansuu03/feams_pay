@@ -10,7 +10,7 @@ class RoleSeeder extends Seeder
 	{
 		$data = [
             [
-                'role_name' => 'Administrator',
+                'role_name' => 'System Administrator',
                 'created_at' => date('Y-m-d H:i:s')
             ],
             [

@@ -12,7 +12,7 @@ class Sliders extends BaseController
 
     public function index() {
         // checking roles and permissions
-        $data['perm_id'] = check_role('14', 'SLID', $this->session->get('role'));
+        $data['perm_id'] = check_role('15', 'SLID', $this->session->get('role'));
         if(!$data['perm_id']['perm_access']) {
             $this->session->setFlashdata('sweetalertfail', true);
             return redirect()->to(base_url());
@@ -31,7 +31,7 @@ class Sliders extends BaseController
 
     public function add() {
         // checking roles and permissions
-        $data['perm_id'] = check_role('15', 'SLID', $this->session->get('role'));
+        $data['perm_id'] = check_role('16', 'SLID', $this->session->get('role'));
         if(!$data['perm_id']['perm_access']) {
             $this->session->setFlashdata('sweetalertfail', true);
             return redirect()->to(base_url());
@@ -71,7 +71,7 @@ class Sliders extends BaseController
 
     public function edit($id) {
         // checking roles and permissions
-        $data['perm_id'] = check_role('16', 'SLID', $this->session->get('role'));
+        $data['perm_id'] = check_role('17', 'SLID', $this->session->get('role'));
         if(!$data['perm_id']['perm_access']) {
             $this->session->setFlashdata('sweetalertfail', true);
             return redirect()->to(base_url());
@@ -113,7 +113,7 @@ class Sliders extends BaseController
 
     public function delete($id) {
         // checking roles and permissions
-        $data['perm_id'] = check_role('17', 'SLID', $this->session->get('role'));
+        $data['perm_id'] = check_role('18', 'SLID', $this->session->get('role'));
         if(!$data['perm_id']['perm_access']) {
             $this->session->setFlashdata('sweetalertfail', true);
             return redirect()->to(base_url());

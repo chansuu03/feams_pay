@@ -74,6 +74,53 @@
     }?>
 <?php endforeach;?>
 
+<li class="nav-item">
+    <a href="<?= base_url('discussions')?>" class="nav-link <?= $active=="discussions" ? 'active': ''?>">
+        <i class="nav-icon fas fa-user-plus"></i>
+        <p>
+            Discussions
+        </p>
+    </a>
+</li>
+
+<!-- Files -->
+<?php foreach($rolePermission as $rolePerms):?>
+    <?php $access = false;?>
+    <?php if($rolePerms['perm_mod'] == 'FILES'):?>
+        <li class="nav-item">
+            <a href="<?= base_url('files')?>" class="nav-link <?= $active=="files" ? 'active': ''?>">
+                <i class="nav-icon fas fa-file"></i>
+                <p>
+                    Files
+                </p>
+            </a>
+        </li>
+        <?php $access = true;?>
+    <?php endif;?>
+    <?php if($access){
+        break;
+    }?>
+<?php endforeach;?>
+
+<!-- File Categories -->
+<?php foreach($rolePermission as $rolePerms):?>
+    <?php $access = false;?>
+    <?php if($rolePerms['perm_mod'] == 'FICAT'):?>
+        <li class="nav-item">
+            <a href="<?= base_url('files/categories')?>" class="nav-link <?= $active=="filecat" ? 'active': ''?>">
+                <i class="nav-icon fas fa-file"></i>
+                <p>
+                    File Categories
+                </p>
+            </a>
+        </li>
+        <?php $access = true;?>
+    <?php endif;?>
+    <?php if($access){
+        break;
+    }?>
+<?php endforeach;?>
+
 <!-- Sliders -->
 <?php foreach($rolePermission as $rolePerms):?>
     <?php $access = false;?>
@@ -131,6 +178,25 @@
     }?>
 <?php endforeach;?>
 
+<!-- Candidates -->
+<?php foreach($rolePermission as $rolePerms):?>
+    <?php $access = false;?>
+    <?php if($rolePerms['perm_mod'] == 'CAN'):?>
+        <li class="nav-item">
+            <a href="<?= base_url('admin/candidates')?>" class="nav-link <?= $active=="candidates" ? 'active': ''?>">
+                <i class="nav-icon fas fa-user-plus"></i>
+                <p>
+                    Candidates
+                </p>
+            </a>
+        </li>
+        <?php $access = true;?>
+    <?php endif;?>
+    <?php if($access){
+        break;
+    }?>
+<?php endforeach;?>
+
 <li class="nav-item">
     <a href="<?= base_url('voting')?>" class="nav-link <?= $active=="voting" ? 'active': ''?>">
         <i class="nav-icon fas fa-user-plus"></i>
@@ -139,3 +205,32 @@
         </p>
     </a>
 </li>
+
+
+<!-- Candidates -->
+<?php foreach($rolePermission as $rolePerms):?>
+    <?php $access = false;?>
+    <?php if($rolePerms['perm_mod'] == 'REPO'):?>
+        <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-edit"></i>
+                <p>
+                Reports
+                <i class="fas fa-angle-left right"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="<?= base_url()?>/admin/reports/login" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Login</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <?php $access = true;?>
+    <?php endif;?>
+    <?php if($access){
+        break;
+    }?>
+<?php endforeach;?>

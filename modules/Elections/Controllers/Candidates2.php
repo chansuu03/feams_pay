@@ -5,46 +5,41 @@ use App\Controllers\BaseController;
 use Modules\Elections\Models as Models;
 use App\Models\UserModel;
 
-class Candidates extends BaseController
+class Candidates2 extends BaseController
 {
     public function __construct() {
         $this->candidateModel = new Models\CandidateModel();
         $this->electionModel = new Models\ElectionModel();
         $this->positionModel = new Models\PositionModel();
         $this->userModel = new UserModel();
-        $this->activeElec = $this->electionModel->where('status', 'a')->first();
     }
     
     public function index() {
         // checking roles and permissions
-        $data['perm_id'] = check_role('26', 'CAN', $this->session->get('role'));
+        $data['perm_id'] = check_role('27', 'CAN', $this->session->get('role'));
         if(!$data['perm_id']['perm_access']) {
             $this->session->setFlashdata('sweetalertfail', true);
             return redirect()->to(base_url());
         }
         $data['rolePermission'] = $data['perm_id']['rolePermission'];
 
-        $activeElec = intval($this->electionModel->where('status', 'a')->countAllResults(false));
+        $activeElec = intval($this->electionModel->countAllResults(false));
         if($activeElec <= 0) {
             $this->session->setFlashdata('activeElec', 'There are no current election.');
             return redirect()->to(base_url('admin/elections'));
         }
 
-        $activeElec = $this->electionModel->where('status', 'a')->first();
-        $data['candidates'] = $this->candidateModel->view($activeElec['id']);
-        // echo '<pre>';
-        // print_r($data['candidates']);
-
-        // die();
+        $data['elections'] = $this->electionModel->where(['status' => 'a'])->findAll();
+        $data['candidates'] = $this->electionModel->electionCandidates('1');
         $data['user_details'] = user_details($this->session->get('user_id'));
-        $data['active'] = 'elections';
+        $data['active'] = 'candidates';
         $data['title'] = 'Candidates';
-        return view('Modules\Elections\Views\candidates\index', $data);
+        return view('Modules\Elections\Views\candidates\index2', $data);
     }
 
     public function add() {
         // checking roles and permissions
-        $data['perm_id'] = check_role('18', 'ELEC', $this->session->get('role'));
+        $data['perm_id'] = check_role('28', 'CAN', $this->session->get('role'));
         if(!$data['perm_id']['perm_access']) {
             $this->session->setFlashdata('sweetalertfail', true);
             return redirect()->to(base_url());
@@ -56,21 +51,35 @@ class Candidates extends BaseController
             $this->session->setFlashdata('activeElec', 'There are no current election.');
             return redirect()->to(base_url('admin/elections'));
         }
-
+        
         $data['users'] = $this->userModel->findAll();
-        $data['positions'] = $this->positionModel->view($this->activeElec['id']);
+        $data['elections'] = $this->electionModel->findAll();
+        $data['positions'] = $this->positionModel->where('election_id', '1')->findAll();
         $data['edit'] = false;
         if($this->request->getMethod() == 'post') {
-            // echo '<pre>';
-            // print_r($_POST);
             // print_r($_FILES);
-            // die();
             if($this->validate('candidates')){
+                // echo '<pre>';
+                // print_r($_POST);
+                // die();
+                // get position details
+                $data['selectedPos'] = $this->positionModel->where('id', $_POST['position_id'])->first();
+                $data['isCandi'] = $this->candidateModel->where(['election_id' => $_POST['election_id'], 'user_id' => $_POST['user_id']])->first();
+                if(!empty($data['isCandi'])) {
+                    $this->session->setFlashdata('failMsg', 'User is currently a candidate');
+                    return redirect()->back()->withInput();
+                }
+                // bilangin ilang candidates meron sa pos na yun
+                $data['candiPosi'] = $this->candidateModel->where(['position_id' => $_POST['position_id']])->countAllResults(false);
+                if($data['candiPosi'] == $data['selectedPos']['max_candidate']) {
+                    $this->session->setFlashdata('failMsg', 'Position exceed max candidates');
+                    return redirect()->back()->withInput();
+                }
                 $file = $this->request->getFile('photo');
                 $candi = $_POST;
                 $candi['photo'] = $file->getRandomName();
-                $activeElec = $this->electionModel->where('status', 'a')->first();
-                $candi['election_id'] = $activeElec['id'];
+                // $activeElec = $this->electionModel->where('status', 'a')->first();
+                // $candi['election_id'] = $activeElec['id'];
                 if($this->candidateModel->insert($candi)) {
                     $file->move('uploads/candidates', $candi['photo']);
                     if ($file->hasMoved()) {
@@ -91,7 +100,24 @@ class Candidates extends BaseController
         $data['user_details'] = user_details($this->session->get('user_id'));
         $data['active'] = 'elections';
         $data['title'] = 'Candidates';
-        return view('Modules\Elections\Views\candidates\form', $data);
+        return view('Modules\Elections\Views\candidates\form2', $data);
+    }
+
+    public function other($id) {
+        $data['positions'] = $this->positionModel->where(['election_id' => $id])->findAll();
+
+        return view('Modules\Elections\Views\candidates\positions', $data);
+    }
+
+    public function tables($id) {
+        // checking roles and permissions
+        $data['perm_id'] = check_role('27', 'CAN', $this->session->get('role'));
+        $data['rolePermission'] = $data['perm_id']['rolePermission'];
+        $data['candidates'] = $this->electionModel->electionCandidates($id);
+        // echo '<pre>';
+        // print_r($data['candidates']);
+        
+        return view('Modules\Elections\Views\candidates\table', $data);
     }
 
     public function delete($id) {

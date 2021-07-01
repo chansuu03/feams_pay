@@ -12,7 +12,7 @@ class FileCategories extends BaseController
     
     public function index() {
         // checking roles and permissions
-        $data['perm_id'] = check_role('32', 'FICAT', $this->session->get('role'));
+        $data['perm_id'] = check_role('33', 'FICAT', $this->session->get('role'));
         if(!$data['perm_id']['perm_access']) {
             $this->session->setFlashdata('sweetalertfail', true);
             return redirect()->to(base_url());
@@ -22,14 +22,14 @@ class FileCategories extends BaseController
         $data['categories'] = $this->fileCategoryModel->findAll();
 
         $data['user_details'] = user_details($this->session->get('user_id'));
-        $data['active'] = 'files';
+        $data['active'] = 'filecat';
         $data['title'] = 'File Categories';
         return view('Modules\Files\Views\categories\index', $data);
     }
 
     public function add() {
         // checking roles and permissions
-        $data['perm_id'] = check_role('33', 'FICAT', $this->session->get('role'));
+        $data['perm_id'] = check_role('34', 'FICAT', $this->session->get('role'));
         if(!$data['perm_id']['perm_access']) {
             $this->session->setFlashdata('sweetalertfail', true);
             return redirect()->to(base_url());
@@ -53,14 +53,14 @@ class FileCategories extends BaseController
         }
 
         $data['user_details'] = user_details($this->session->get('user_id'));
-        $data['active'] = 'files';
+        $data['active'] = 'filecat';
         $data['title'] = 'File Category';
         return view('Modules\Files\Views\categories\form', $data);
     }
 
     public function delete($id) { 
         // checking roles and permissions
-        $data['perm_id'] = check_role('33', 'FICAT', $this->session->get('role'));
+        $data['perm_id'] = check_role('34', 'FICAT', $this->session->get('role'));
         if(!$data['perm_id']['perm_access']) {
             $this->session->setFlashdata('sweetalertfail', true);
             return redirect()->to(base_url());

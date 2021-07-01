@@ -17,7 +17,7 @@ class Permissions extends BaseController
 
     public function index() {
         // checking roles and permissions
-        $data['perm_id'] = check_role('8', 'PERM', $this->session->get('role'));
+        $data['perm_id'] = check_role('9', 'PERM', $this->session->get('role'));
         if(!$data['perm_id']['perm_access']) {
             $this->session->setFlashdata('sweetalertfail', true);
             return redirect()->to(base_url());
@@ -32,8 +32,8 @@ class Permissions extends BaseController
         return view('Modules\Permissions\Views\index', $data);
     }
 
-    public function add2($role_id) {
-        $data['perm_id'] = check_role('9', 'PERM', $this->session->get('role'));
+    public function add($role_id) {
+        $data['perm_id'] = check_role('10', 'PERM', $this->session->get('role'));
         // echo '<pre>';
         // print_r($data['perm_id']);
         // die();
@@ -78,7 +78,7 @@ class Permissions extends BaseController
         return view('Modules\Permissions\Views\form2', $data);
     }
 
-    public function add() {
+    /*public function add() {
         $data['edit'] = false;
         $data['permissions'] = $this->permissionModel->findAll();
         $data['roles'] = $this->roleModel->findAll();
@@ -112,5 +112,5 @@ class Permissions extends BaseController
         $data['active'] = 'permissions';
         $data['title'] = 'Permissions';
         return view('Modules\Permissions\Views\form', $data);
-    }
+    }*/
 }

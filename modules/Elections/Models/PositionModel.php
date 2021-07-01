@@ -12,7 +12,7 @@ class PositionModel extends Model
 
     protected $useSoftDeletes = true;
 
-    protected $allowedFields = ['name', 'election_id', 'deleted_at'];
+    protected $allowedFields = ['name', 'election_id', 'vote_count', 'max_candidate', 'deleted_at'];
 
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';

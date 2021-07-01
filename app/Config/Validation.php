@@ -51,6 +51,14 @@ class Validation
 			'label' => 'Password', 
 			'rules' => 'required|min_length[5]|max_length[30]'
 		],
+		'image' => [
+			'label' => 'Profile Picture', 
+			'rules' => 'uploaded[image]|ext_in[image,png,jpg,jpeg]',
+			'errors' => [
+				'uploaded' => 'Profile picture is required',
+				'ext_in' => 'Profile picture is not an image',
+			],
+		],
 	];
 
 	public $roles = [

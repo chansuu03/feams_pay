@@ -26,13 +26,4 @@ class CandidateModel extends Model
         $this->join('positions', 'positions.id = candidates.position_id', 'left');
         return $this->get()->getResultArray();
     }
-
-    // how to get same fk
-    public function noCandidate() {
-        $this->select('users.id, users.first_name, users.last_name');
-        $this->where(['candidates.id' => NULL, 'candidates.election_id' => $id,]);
-        $this->join('users', 'users.id = candidates.user_id', 'left');
-        $this->join('positions', 'positions.id = candidates.position_id', 'left');
-        return $this->get()->getResultArray();
-    }
 }

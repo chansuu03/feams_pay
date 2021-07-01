@@ -23,6 +23,14 @@ class User extends BaseController {
             } else {
                 $user = $this->userModel->where('username', $this->request->getVar('username'))
                     ->first();
+                if($user['status'] == 'i') {
+                    $this->session->setFlashData('failMsg', 'Account deactivated, please contact admin');
+                    return redirect()->back()->withInput(); 
+                }
+                if($user['status'] == 'v') {
+                    $this->session->setFlashData('failMsg', 'Email not verified, please verify it first');
+                    return redirect()->back()->withInput(); 
+                }
                 $this->setUserSession($user);
                 return redirect()->to(base_url());
             }
@@ -110,7 +118,7 @@ class User extends BaseController {
         if ($this->email->send()) 
             echo 'Email successfully sent';
 		else {
-            $data = $email->printDebugger(['headers']);
+            $data = $this->email->printDebugger(['headers']);
             print_r($data);
         }
     }
