@@ -48,7 +48,7 @@ class UserTable extends Migration {
                     'type'           => 'DATE'
             ],
             'contact_number'       => [
-                    'type'           => 'INT',
+                    'type'           => 'DECIMAL',
                     'constraint'     => '11'
             ],
             'email_code'       => [

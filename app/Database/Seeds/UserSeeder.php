@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
                 'email' => 'ichanpotts@gmail.com',
                 'password' => password_hash('admin', PASSWORD_DEFAULT),
                 'birthdate' => '1999-11-03',
-                'contact_number' => (int)"09195252973",
+                'contact_number' => '09195252973',
                 'gender' => 'Male',
                 'profile_pic' => 'admin.jpg',
                 'role' => 1,
