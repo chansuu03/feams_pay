@@ -8,100 +8,100 @@ class RolePermissionSeeder extends Seeder
 {
 	public function run() {
 		$data = [
-            [
-				'role_id' => '1',
+              [
+                'role_id' => '1',
                 'perm_mod' => 'USR',
-				'perm_id' => '1'
-            ],
-            [
-				'role_id' => '1',
+                'perm_id' => '1'
+              ],
+              [
+                'role_id' => '1',
                 'perm_mod' => 'USR',
-				'perm_id' => '2'
-            ],
-            [
-				'role_id' => '1',
+                'perm_id' => '2'
+              ],
+              [
+                'role_id' => '1',
                 'perm_mod' => 'USR',
-				'perm_id' => '3'
-            ],
-            [
-				'role_id' => '1',
+                'perm_id' => '3'
+              ],
+              [
+                'role_id' => '1',
                 'perm_mod' => 'USR',
-				'perm_id' => '4'
-            ],
-            [
-				'role_id' => '1',
+                'perm_id' => '4'
+              ],
+              [
+                'role_id' => '1',
                 'perm_mod' => 'ROLE',
-				'perm_id' => '5'
-            ],
-            [
-				'role_id' => '1',
+                'perm_id' => '5'
+              ],
+              [
+                'role_id' => '1',
                 'perm_mod' => 'ROLE',
-				'perm_id' => '6'
-            ],
-            [
-				'role_id' => '1',
+                'perm_id' => '6'
+              ],
+              [
+                'role_id' => '1',
                 'perm_mod' => 'ROLE',
-				'perm_id' => '7'
-            ],
-            [
-				'role_id' => '1',
+                'perm_id' => '7'
+              ],
+              [
+                'role_id' => '1',
                 'perm_mod' => 'ROLE',
-				'perm_id' => '8'
-            ],
-            [
+                'perm_id' => '8'
+              ],
+              [
                 'perm_mod' => 'PERM',
-				'role_id' => '1',
-				'perm_id' => '9'
-            ],
-            [
+                'role_id' => '1',
+                'perm_id' => '9'
+              ],
+              [
                 'perm_mod' => 'PERM',
-				'role_id' => '1',
-				'perm_id' => '10'
-            ],
-            [
+                'role_id' => '1',
+                'perm_id' => '10'
+              ],
+              [
                 'perm_mod' => 'ANN',
-				'role_id' => '1',
-				'perm_id' => '11'
-            ],
-            [
+                'role_id' => '1',
+                'perm_id' => '11'
+              ],
+              [
                 'perm_mod' => 'ANN',
-				'role_id' => '1',
-				'perm_id' => '12'
-            ],
-            [
+                'role_id' => '1',
+                'perm_id' => '12'
+              ],
+              [
                 'perm_mod' => 'ANN',
-				'role_id' => '1',
-				'perm_id' => '13'
-            ],
-            [
+                'role_id' => '1',
+                'perm_id' => '13'
+              ],
+              [
                 'perm_mod' => 'ANN',
-				'role_id' => '1',
-				'perm_id' => '14'
-            ],
-            [
+                'role_id' => '1',
+                'perm_id' => '14'
+              ],
+              [
                 'perm_mod' => 'SLID',
-				'role_id' => '1',
-				'perm_id' => '15'
-            ],
-            [
+                'role_id' => '1',
+                'perm_id' => '15'
+              ],
+              [
                 'perm_mod' => 'SLID',
-				'role_id' => '1',
-				'perm_id' => '16'
-            ],
-            [
+				        'role_id' => '1',
+				        'perm_id' => '16'
+              ],
+              [
                 'perm_mod' => 'SLID',
-				'role_id' => '1',
-				'perm_id' => '17'
-            ],
-            [
+				        'role_id' => '1',
+				        'perm_id' => '17'
+              ],
+              [
                 'perm_mod' => 'SLID',
-				'role_id' => '1',
-				'perm_id' => '18'
-            ],
-            [
+                'role_id' => '1',
+                'perm_id' => '18'
+              ],
+              [
                 'perm_mod' => 'ELEC',
-				'role_id' => '1',
-				'perm_id' => '19'
+                'role_id' => '1',
+                'perm_id' => '19'
             ],
             [
                 'perm_mod' => 'ELEC',
@@ -192,6 +192,11 @@ class RolePermissionSeeder extends Seeder
                 'perm_mod' => 'REPO',
 				'role_id' => '1',
 				'perm_id' => '37'
+            ],
+            [
+                'perm_mod' => 'USR',
+				'role_id' => '1',
+				'perm_id' => '38'
             ],
         ];
 		$this->db->table('role_permissions')->truncate();

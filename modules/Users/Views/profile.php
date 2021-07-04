@@ -2,8 +2,27 @@
 
 <?= $this->section('styles') ?>
   <!-- Select2 -->
-  <link rel="stylesheet" href="<?= base_url();?>dist/select2/css/select2.min.css">
-  <!-- <link rel="stylesheet" href="<?= base_url();?>dist/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css"> -->
+  <link rel="stylesheet" href="<?= base_url()?>/dist/adminlte/plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="<?= base_url()?>/dist/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
+  <style>
+    .required:after {
+        content:" *";
+        color: red;
+    }
+
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+  </style>
 <?= $this->endSection() ?>
 
 <?= $this->section('page_header') ?>
@@ -143,6 +162,95 @@
 </div>
 <!-- /.row -->
 
+
+<?php $status = false; $role = false;
+foreach($perm_id['perm_id'] as $perms) {
+  if(!$status) {
+    if($perms == '3') {
+      $status = true;
+      // echo '<h3>status</h3>';
+    }
+  }
+  if(!$role) {
+    if($perms == '4') {
+      $role = true;
+      // echo '<h3>role</h3>';
+    }
+  }
+}?>
+
+<?php if(session()->get('user_id') == $user['id'] || isset($edit)):?>
+<div class="card">
+  <div class="card-header">
+    Edit User Information
+  </div>
+  <div class="card-body">
+    <form action="<?= base_url()?>/user/<?= esc($user['username'])?>" method="post" enctype="multipart/form-data" id="userForm">
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="first_name">First Name</label>
+          <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter first name" value="<?= $user['first_name']?>">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="middle_name">Middle Name</label>
+          <input type="text" class="form-control" name="middle_name" value="<?= $user['middle_name']?>">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="last_name">Last Name</label>
+          <input type="text" class="form-control" name="last_name" value="<?= $user['last_name']?>">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="email">Email address</label>
+          <input type="email" class="form-control" name="email" value="<?= $user['email']?>">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="contact_number">Contact Number</label>
+          <input type="number" class="form-control" name="contact_number" value="<?= $user['contact_number']?>">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputFile">Profile Picture</label>
+        <div class="input-group">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input <?php if(!empty($errors['image'])) echo 'is-invalid';?>" id="image" name="image" required>
+                <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+            </div>
+        </div>
+        <?php if(isset($errors['image'])): ?>
+            <small id="emailHelp" class="form-text text-danger"><?= $errors['image']?></small>
+        <?php endif; ?>
+      </div>
+      <?php if($role):?>
+        <!-- Role -->
+        <div class="form-group">
+          <label for="role">Role</label>
+          <select class="form-control form-control-sm select2bs4" name="role">
+            <?php foreach($roles as $role):?>
+              <option value="<?= esc($role['id'])?>" <?= $user['role'] ==$role['id'] ? 'selected' : ''?>><?= esc($role['role_name'])?></option>
+            <?php endforeach;?>
+          </select>
+        </div>
+      <?php endif;?>
+      <?php if($status):?>
+        <!-- Role -->
+        <div class="form-group">
+          <label for="status">Status</label>
+          <select class="form-control form-control-sm select2bs4" name="status">
+            <option value="a" <?= $user['status'] == 'a' ? 'selected' : ''?>>Active</option>
+            <option value="i" <?= $user['status'] == 'i' ? 'selected' : ''?>>Inactive</option>
+            <option value="v" <?= $user['status'] == 'v' ? 'selected' : ''?>>Need email verification</option>
+          </select>
+        </div>
+      <?php endif;?>
+  </div>
+  <div class="card-footer">
+    <button class="btn btn-primary btn-sm sub" type="button">Save changes</button>
+    </form>
+  </div>
+</div>
+<?php endif;?>
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts') ?>
@@ -155,9 +263,9 @@
     //Initialize Select2 Elements
     $('.select2').select2()
     //Initialize Select2 Elements
-    // $('.select2bs4').select2({
-    //   theme: 'bootstrap4',
-    // })
+    $('.select2bs4').select2({
+      theme: 'bootstrap4',
+    })
   })
 </script>
 
@@ -189,7 +297,7 @@
       $form.submit();
     });
 
-    $('.del').click(function (e)
+    $('.sub').click(function (e)
     {
       e.preventDefault();
       var id = $(this).val();
@@ -197,18 +305,18 @@
 
       Swal.fire({
         icon: 'question',
-        title: 'Delete?',
-        text: 'Are you sure to delete user?',
+        title: 'Edit?',
+        text: 'If email is changed, it needs to verify again',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonText: 'Yes, edit it!'
       })/*swal2*/.then((result) =>
       {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed)
         {
-          window.location = 'users/delete/' + id;
+          $('#userForm').submit();
         }
         else if (result.isDenied)
         {
@@ -217,6 +325,16 @@
       })//then
     });
   });
+</script>
+
+<!-- file uploads para mapalitan agad file name once makaselect na ng file -->
+<script>
+    document.querySelector('.custom-file-input').addEventListener('change', function (e)
+    {
+    var name = document.getElementById("image").files[0].name;
+    var nextSibling = e.target.nextElementSibling
+    nextSibling.innerText = name
+    })
 </script>
 <?= $this->endSection() ?>
     

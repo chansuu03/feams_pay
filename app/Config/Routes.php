@@ -37,7 +37,8 @@ $routes->get('logout', 'User::logout');
 $routes->match(['get', 'post'], 'login', 'User::login', ["filter" => "noauth"]);
 $routes->match(['get', 'post'], 'register', 'User::register', ["filter" => "noauth"]);
 $routes->match(['get', 'post'], 'activate/(:alphanum)', 'User::activate/$1', ["filter" => "noauth"]);
-$routes->get('user/(:alphanum)', '\Modules\Users\Controllers\Users::profile/$1', ["filter" => "auth"]);
+$routes->match(['get', 'post'], 'user/(:alphanum)', '\Modules\Users\Controllers\Users::profile/$1', ["filter" => "auth"]);
+// $routes->post('user/edit/(:num)', '\Modules\Users\Controllers\Users::edit/$1', ["filter" => "auth"]);
 
 
 /*
