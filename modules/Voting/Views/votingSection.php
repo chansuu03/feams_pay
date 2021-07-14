@@ -16,7 +16,11 @@
                                     <?= esc($candidate['first_name'])?> <?= esc($candidate['last_name'])?>
                                 </label>
                             </div>
-                            <img src="<?= base_url('uploads/candidates')?>/<?= esc($candidate['photo'])?>" alt="..." class="img-thumbnail" style="height: 200px; width: 200px;">
+                            <?php if(!empty($candidate['photo'])):?>
+                                <img src="<?= base_url('uploads/candidates')?>/<?= esc($candidate['photo'])?>" alt="..." class="img-thumbnail" style="height: 200px; width: 200px;">
+                            <?php else:?>
+                                <img src="<?= base_url('uploads/profile_pic')?>/<?= esc($candidate['profile_pic'])?>" alt="..." class="img-thumbnail" style="height: 200px; width: 200px;">
+                            <?php endif;?>
                         </li>
                       <?php endif;?>
                     <?php endforeach;?>

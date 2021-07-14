@@ -62,7 +62,25 @@
                     <td scope="row"><?= esc($user['first_name'])?> <?= esc($user['last_name'])?></td>
                     <td scope="row"><?= esc($user['email'])?></td>
                     <td scope="row">
-											<?= $user['role_name']?>
+                      <?php foreach($perm_id['perm_id'] as $perms):?>
+                        <?php if($perms == '4'):?>
+                          <form action="<?= base_url()?>/role/<?= esc($user['username'])?>" method="post">
+                            <input type="hidden" id="user_<?= esc($user['id'])?>" name="user_id" value="<?= esc($user['id'])?>">
+                            <select id="role_<?= esc($user['id'])?>" class="form-control form-control-sm status" name="status_<?= esc($user['id'])?>" onchange='submitRole("<?= esc($user['username'])?>");'>
+                              <?php foreach($roles as $role):?>
+                                <option value="<?= esc($role['id'])?>"><?= esc($role['role_name'])?></option>
+                              <?php endforeach;?>
+                            </select>
+                          </form>
+                          <?php $roleView = true;?>
+                        <?php endif;?>
+                      <?php endforeach;?>
+                      <?php foreach($perm_id['perm_id'] as $perms):?>
+                        <?php if($perms != '4' && !$roleView):?>
+                          <?= esc($user['role_name'])?>
+                          <?php $roleView = true;?>
+                        <?php endif;?>
+                      <?php endforeach;?>
                     </td>
                     <td scope="row">
                       <?php
@@ -71,12 +89,26 @@
                         ?>
                     </td>
                     <td scope="row">
-											<?php
-												if($user['status'] == 'a') { echo 'Active';}
-												elseif($user['status'] == 'i') { echo 'Inactive';}
-												else { echo 'Need email verification';}
-											?>
-										</td>
+                      <form action="<?= base_url()?>/status/<?= esc($user['username'])?>" method="post" id="<?= esc($user['username'])?>" name="<?= esc($user['username'])?>">
+                        <input type="hidden" id="user_<?= esc($user['id'])?>" name="user_id" value="<?= esc($user['id'])?>">
+                        <select id="status_<?= esc($user['id'])?>" class="form-control form-control-sm status" name="status_<?= esc($user['id'])?>" onchange='submitForm("<?= esc($user['username'])?>");'>
+                          <?php if($user['status'] == 'a'):?>
+                            <option value="a" selected>Active</option>
+                            <option value="i">Inactive</option>
+                            <option value="v">Verified email</option>
+                          <?php elseif($user['status'] == 'i'):?>
+                            <option value="a">Active</option>
+                            <option value="i" selected>Inactive</option>
+                            <option value="v">Verified email</option>
+                          <?php elseif($user['status'] == 'v'):?>
+                            <option value="a">Active</option>
+                            <option value="i">Inactive</option>
+                            <option value="v" selected>Verified email</option>
+                          <?php endif;?>
+                        </select>
+                        <button type="submit" id="submit_<?= esc($user['username'])?>" class="btn btn-primary" style="display: none;">Submit</button>
+                      </form>
+                    </td>
                     <td>
                       <a class="btn btn-info btn-sm" href="<?= base_url()?>/user/<?= esc($user['username'])?>" role="button" data-toggle="tooltip" data-placement="bottom" title="View User"><i class="fa fa-bars" aria-hidden="true"></i></a>
                       <?php foreach($perm_id['perm_id'] as $perms):?>

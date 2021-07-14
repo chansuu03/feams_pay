@@ -29,6 +29,8 @@ class Candidates extends Migration
 			'photo'          => [
 				'type'           => 'VARCHAR',
 				'constraint'     => 60,
+				'null'           => true,
+				'default'        => null,
 			],
 			'platform'          => [
 				'type'           => 'TEXT',

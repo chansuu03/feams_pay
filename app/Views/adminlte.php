@@ -38,7 +38,9 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="<?= base_url();?>" class="nav-link">Home</a>
+        <?php if(session()->get('role') == '1'):?>
+          <a href="<?= base_url('admin/dashboard');?>" class="nav-link">Dashboard</a>
+        <?php endif;?>
       </li>
     </ul>
 
@@ -56,7 +58,7 @@
     <!-- Brand Logo -->
     <a href="<?= base_url();?>" class="brand-link">
       <img src="<?= base_url()?>/img/puplogo.png"
-           alt="AdminLTE Logo"
+           alt="PUP Logo"
            class="brand-image img-circle elevation-3"
            style="opacity: .8">
       <span class="brand-text font-weight-light">FEAMS</span>
@@ -70,7 +72,7 @@
           <img src="<?= base_url()?>/uploads/profile_pic/<?= esc($user_details['profile_pic'])?>" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block"><?= esc($user_details['first_name'])?> <?= esc($user_details['last_name'])?></a>
+          <a href="<?= base_url()?>/user/<?= esc($user_details['username'])?>" class="d-block"><?= esc($user_details['first_name'])?> <?= esc($user_details['last_name'])?></a>
         </div>
       </div>
 

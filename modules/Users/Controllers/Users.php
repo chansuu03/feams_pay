@@ -75,6 +75,9 @@ class Users extends BaseController
               $input['email_code'] = random_string('alnum', 5);
               $input['status'] = 'v';
             }
+            if($this->request->getVar('status') == 'v'){
+                $input['email_code'] = random_string('alnum', 5);
+            }
             if($this->userModel->save($input)) {
               if($input['status'] == 'v') {
                 $this->sendMail($input);

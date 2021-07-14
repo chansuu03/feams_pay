@@ -18,15 +18,16 @@ class Elections extends Migration
 				'type'           => 'VARCHAR',
 				'constraint'     => 50,
 			],
-			'start_date'          => [
+			'vote_start'          => [
 				'type'           => 'DATE',
 			],
-			'end_date'          => [
+			'vote_end'          => [
 				'type'           => 'DATE',
 			],
 			'status'          => [
-				'type'           => 'CHAR',
-				'constraint'     => 1,
+				'type'           => 'ENUM',
+                'constraint'     => ['Application', 'Voting', 'Finished'],
+                'default'        => 'Application',
 			],
 			'created_at' => [
 				'type'           => 'DATETIME',

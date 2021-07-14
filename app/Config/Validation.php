@@ -160,25 +160,33 @@ class Validation
 				'alpha_numeric_space' => 'Election title only accepts letters, numbers and spaces',
 			]
 		],
-		'start_date' => [
+		'vote_start' => [
 			'label' => 'Start Date', 
 			'rules' => 'required|valid_date[Y-m-d]',
 			'errors' => [
-				'required' => 'Election start is required',
-				'valid_date' => 'Election start date is not a valid date',
+				'required' => 'Vote start is required',
+				'valid_date' => 'Vote start date is not a valid date',
 			]
 		],
-		'end_date' => [
+		'vote_end' => [
 			'label' => 'End Date', 
 			'rules' => 'required|valid_date[Y-m-d]',
 			'errors' => [
-				'required' => 'Election end is required',
-				'valid_date' => 'Election end date is not a valid date',
+				'required' => 'Vote end is required',
+				'valid_date' => 'Vote end date is not a valid date',
 			]
 		],
 	];
 
 	public $positions = [
+		'election_id' => [
+			'label' => 'Election Name', 
+			'rules' => 'required|numeric',
+			'errors' => [
+				'required' => 'Election is required',
+				'numeric' => 'Error selecting an election',
+			],
+		],
 		'name' => [
 			'label' => 'Position Name', 
 			'rules' => 'required|min_length[3]|max_length[100]|alpha_numeric_space',
@@ -187,6 +195,14 @@ class Validation
 				'min_length' => 'Position name field too short',
 				'max_length' => 'Position name field exceed limit',
 				'alpha_numeric_space' => 'Position name field includes symbols',
+			],
+		],
+		'max_candidate' => [
+			'label' => 'Max candidates', 
+			'rules' => 'required|numeric',
+			'errors' => [
+				'required' => 'Max number of candidates is required',
+				'numeric' => 'Max number is not a number',
 			],
 		],
 	];

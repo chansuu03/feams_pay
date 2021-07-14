@@ -32,13 +32,53 @@ class LoginReport extends BaseController
         return view('Modules\Reports\Views\login\index', $data);
     }
 
+    public function changeTable($id) {
+        if($id == '1') {
+            $data['logins'] = $this->loginModel->withRole();
+            return view('Modules\Reports\Views\login\table', $data);
+        } elseif($id === '2') {
+            $data['logins'] = $this->loginModel->thisDay();
+            // echo '<pre>';
+            // print_r($data['logins']);
+            return view('Modules\Reports\Views\login\table', $data);
+        } elseif($id == '3') {
+            $data['logins'] = $this->loginModel->weekly();
+            return view('Modules\Reports\Views\login\table', $data);
+        } elseif($id == '4') {
+            $data['logins'] = $this->loginModel->monthly();
+            return view('Modules\Reports\Views\login\table', $data);
+        }
+    }
+
     public function generatePDF() {
+        if($this->request->getMethod() == 'post') {
+            $records = $this->request->getVar('records');
+            if($records == '1') {
+                $details = $this->loginModel->withRole();
+            } elseif($records === '2') {
+                $details = $this->loginModel->thisDay();
+            } elseif($records == '3') {
+                $details = $this->loginModel->weekly();
+            } elseif($records == '4') {
+                $details = $this->loginModel->monthly();
+            }
+        }
 		$this->pdf->AliasNbPages();
-		$details = $this->loginModel->withRole();
+		// $details = $this->loginModel->withRole();
 		
+		$date = date('F d,Y');
 		$this->pdf->AddPage('l', 'Legal');
 		$this->pdf->SetFont('Arial','B',12);
-		$this->pdf->Cell(70,10,'Login Reports');
+        if($records == '1') {
+            $this->pdf->Cell(70,10,'Daily Login Reports  ['.$date.']');
+        } elseif($records === '2') {
+            $this->pdf->Cell(70,10,'Today Login Reports  ['.$date.']');
+        } elseif($records == '3') {
+            $this->pdf->Cell(70,10,'Weekly Login Reports  ['.$date.']');
+        } elseif($records == '4') {
+            $this->pdf->Cell(70,10,'Monthly Login Reports  ['.$date.']');
+        }
+		// $this->pdf->Cell(70,10,'Login Reports  ['.$date.']');
 		$this->pdf->Ln();
 
 		$this->pdf->SetFont('Arial', 'B' ,8);
@@ -62,7 +102,7 @@ class LoginReport extends BaseController
 			$this->pdf->Cell(60,8,$datelogged,1);
 			$this->pdf->Ln();
 		}
-		$date = date('F d,Y', time());
+		$date = date('F d,Y');
         $this->response->setHeader('Content-Type', 'application/pdf');
 		$this->pdf->Output('D', 'Login Report ['.$date.'].pdf'); 
     }

@@ -20,7 +20,7 @@ class CandidateModel extends Model
     protected $deletedField  = 'deleted_at';
 
     public function view($id) {
-        $this->select('candidates.id, users. first_name, users.last_name, positions.name, candidates.position_id, candidates.photo, candidates.platform');
+        $this->select('candidates.id, users. first_name, users.last_name, positions.name, candidates.position_id, candidates.photo, candidates.platform, users.profile_pic');
         $this->where(['candidates.deleted_at' => NULL, 'candidates.election_id' => $id]);
         $this->join('users', 'users.id = candidates.user_id', 'left');
         $this->join('positions', 'positions.id = candidates.position_id', 'left');

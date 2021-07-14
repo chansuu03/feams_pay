@@ -18,8 +18,19 @@
           <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Profile <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="<?= base_url();?>/user/<?= esc($user['username'])?>">Profile <span class="sr-only">(current)</span></a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="<?= base_url();?>/files">Files</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="<?= base_url();?>/discussions">Discussions</a>
+        </li>
+        <?php if(session()->get('role') == '1'): ?>
+        <li class="nav-item">
+          <a class="nav-link" href="<?= base_url();?>/admin/dashboard">Dashboard</a>
+        </li>
+        <?php endif ?>
       </ul>
       <div class="form-inline my-2 my-lg-0">
         <?php if(session()->get('isLoggedIn') != TRUE): ?>

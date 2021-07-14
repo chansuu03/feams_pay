@@ -5,7 +5,7 @@ use App\Controllers\BaseController;
 use Modules\Elections\Models as Models;
 use App\Models\UserModel;
 
-class Candidates2 extends BaseController
+class Candidates2_copy extends BaseController
 {
     public function __construct() {
         $this->candidateModel = new Models\CandidateModel();
@@ -23,14 +23,14 @@ class Candidates2 extends BaseController
         }
         $data['rolePermission'] = $data['perm_id']['rolePermission'];
 
-        $activeElec = intval($this->electionModel->where('status', 'Application')->countAllResults(false));
+        $activeElec = intval($this->electionModel->countAllResults(false));
         if($activeElec <= 0) {
             $this->session->setFlashdata('activeElec', 'There are no current election.');
             return redirect()->to(base_url('admin/elections'));
         }
-        $data['firstActiveElec'] = $this->electionModel->where('status', 'Application')->first();
-        $data['elections'] = $this->electionModel->where(['status' => 'Application'])->findAll();
-        $data['candidates'] = $this->electionModel->electionCandidates($data['firstActiveElec']['id']);
+
+        $data['elections'] = $this->electionModel->where(['status' => 'a'])->findAll();
+        $data['candidates'] = $this->electionModel->electionCandidates('1');
         $data['user_details'] = user_details($this->session->get('user_id'));
         $data['active'] = 'candidates';
         $data['title'] = 'Candidates';
@@ -46,15 +46,15 @@ class Candidates2 extends BaseController
         }
         $data['rolePermission'] = $data['perm_id']['rolePermission'];
 
-        $activeElec = intval($this->electionModel->where('status', 'Application')->countAllResults(false));
+        $activeElec = intval($this->electionModel->where('status', 'a')->countAllResults(false));
         if($activeElec <= 0) {
             $this->session->setFlashdata('activeElec', 'There are no current election.');
             return redirect()->to(base_url('admin/elections'));
         }
+        $data['firstActiveElec'] = $this->electionModel->where('status', 'Application')->first();
         
         $data['users'] = $this->userModel->findAll();
         $data['elections'] = $this->electionModel->findAll();
-        // $data['positions'] = $this->positionModel->where('election_id', '1')->findAll();
         $data['edit'] = false;
         if($this->request->getMethod() == 'post') {
             // print_r($_FILES);
@@ -76,21 +76,20 @@ class Candidates2 extends BaseController
                     return redirect()->back()->withInput();
                 }
                 $file = $this->request->getFile('photo');
-                if (!$file->isValid()) {
-                    if($this->candidateModel->insert($_POST)) {
+                $candi = $_POST;
+                $candi['photo'] = $file->getRandomName();
+                // $activeElec = $this->electionModel->where('status', 'a')->first();
+                // $candi['election_id'] = $activeElec['id'];
+                if($this->candidateModel->insert($candi)) {
+                    $file->move('uploads/candidates', $candi['photo']);
+                    if ($file->hasMoved()) {
                         $this->session->setFlashData('successMsg', 'Adding candidate successful');
                     } else {
                         $this->session->setFlashData('failMsg', 'There is an error on adding candidate. Please try again.');
                     }
                     return redirect()->to(base_url('admin/candidates'));
                 } else {
-                    $_POST['photo'] = $file->getRandomName();
-                    if($this->candidateModel->insert($_POST)) {
-                        $this->session->setFlashData('successMsg', 'Adding candidate successful');
-                    } else {
-                        $this->session->setFlashData('failMsg', 'There is an error on adding candidate. Please try again.');
-                    }
-                    return redirect()->to(base_url('admin/candidates'));
+                    $this->session->setFlashData('failMsg', 'There is an error on adding candidate. Please try again.');
                 }
             } else {
                 $data['value'] = $_POST;
@@ -108,5 +107,25 @@ class Candidates2 extends BaseController
         $data['positions'] = $this->positionModel->where(['election_id' => $id])->findAll();
 
         return view('Modules\Elections\Views\candidates\positions', $data);
+    }
+
+    public function tables($id) {
+        // checking roles and permissions
+        $data['perm_id'] = check_role('27', 'CAN', $this->session->get('role'));
+        $data['rolePermission'] = $data['perm_id']['rolePermission'];
+        $data['candidates'] = $this->electionModel->electionCandidates($id);
+        // echo '<pre>';
+        // print_r($data['candidates']);
+        
+        return view('Modules\Elections\Views\candidates\table', $data);
+    }
+
+    public function delete($id) {
+        if($this->candidateModel->delete($id)) {
+          $this->session->setFlashData('successMsg', 'Successfully deleted candidate');
+        } else {
+          $this->session->setFlashData('failMsg', 'Something went wrong!');
+        }
+        return redirect()->to(base_url('admin/candidates'));
     }
 }

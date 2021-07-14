@@ -53,33 +53,36 @@
                 </div>
             <?php endif;?>
         </div>
-        <div class="form-group">
-            <label for="title">Start and End Date</label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="far fa-calendar-alt"></i>
-                  </span>
+        <div class="form-row">
+            <!-- Vote date -->
+            <div class="form-group col-md-12">
+                <label for="title">Vote Dates</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="far fa-calendar-alt"></i>
+                      </span>
+                    </div>
+                    <input type="text" class="form-control float-right <?=isset($errors['vote_start']) ? 'is-invalid': ''?>  <?=isset($errors['vote_end']) ? 'is-invalid': ''?>" id="votes">
+                    <?php if(isset($errors['vote_start']) && !isset($errors['vote_end'])):?>
+                      <div class="invalid-feedback">
+                          <?=esc($errors['vote_start'])?>
+                      </div>
+                    <?php endif;?>
+                    <?php if(isset($errors['vote_end']) && !isset($errors['vote_start'])):?>
+                      <div class="invalid-feedback">
+                          <?=esc($errors['vote_end'])?>
+                      </div>
+                    <?php endif;?>
+                    <?php if(isset($errors['vote_end']) && isset($errors['vote_start'])):?>
+                      <div class="invalid-feedback">
+                          Start and end date is invalid
+                      </div>
+                    <?php endif;?>
                 </div>
-                <input type="text" class="form-control float-right <?=isset($errors['start_date']) ? 'is-invalid': ''?>  <?=isset($errors['end_date']) ? 'is-invalid': ''?>" id="reservation">
-                <?php if(isset($errors['start_date']) && !isset($errors['end_date'])):?>
-                  <div class="invalid-feedback">
-                      <?=esc($errors['start_date'])?>
-                  </div>
-                <?php endif;?>
-                <?php if(isset($errors['end_date']) && !isset($errors['start_date'])):?>
-                  <div class="invalid-feedback">
-                      <?=esc($errors['end_date'])?>
-                  </div>
-                <?php endif;?>
-                <?php if(isset($errors['end_date']) && isset($errors['start_date'])):?>
-                  <div class="invalid-feedback">
-                      Start and end date is invalid
-                  </div>
-                <?php endif;?>
+                <input type="hidden" name="vote_start" id="vote_start">
+                <input type="hidden" name="vote_end" id="vote_end">
             </div>
-            <input type="hidden" name="start_date" id="start_date">
-            <input type="hidden" name="end_date" id="end_date">
         </div>
     </div>
     <div class="card-footer">
@@ -99,22 +102,24 @@
 <script src="<?= base_url();?>/dist/adminlte/plugins/daterangepicker/daterangepicker.js"></script>
 <script>
   $(function () {
-    $('#reservation').daterangepicker({
+    $('#votes').daterangepicker({
       autoUpdateInput: false,
+      minDate: new Date(),
+      maxYear: moment().year(),
       locale: {
         format: 'MMM DD,YYYY',
         cancelLabel: 'Clear'
       }
     }, function(start, end, label) {
-        document.getElementById('start_date').value = start.format('YYYY-MM-DD');
-        document.getElementById('end_date').value = end.format('YYYY-MM-DD');
+        document.getElementById('vote_start').value = start.format('YYYY-MM-DD');
+        document.getElementById('vote_end').value = end.format('YYYY-MM-DD');
     });
 
-    $('#reservation').on('apply.daterangepicker', function(ev, picker) {
+    $('#votes').on('apply.daterangepicker', function(ev, picker) {
       $(this).val(picker.startDate.format('MMM DD,YYYY') + ' - ' + picker.endDate.format('MMM DD,YYYY'));
     });
 
-    $('#reservation').on('cancel.daterangepicker', function(ev, picker) {
+    $('#votes').on('cancel.daterangepicker', function(ev, picker) {
         $(this).val('');
     });
   })

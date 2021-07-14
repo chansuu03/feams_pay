@@ -13,6 +13,34 @@ class Voting2 extends BaseController
         $this->candidateModel = new Election\CandidateModel();
         $this->voteModel = new Models\VoteModel();
         $this->voteDetailModel = new Models\VoteDetailModel();
+
+        foreach($this->electionModel->findAll() as $election) {
+            if($election['status'] == 'Application') {
+                if(strtotime($election['vote_start']) <= strtotime(date('Y-m-d'))) {
+                    $data = [
+                        'id' => $election['id'],
+                        'status' => 'Voting'
+                    ];
+                    if($this->electionModel->save($data)) {
+                        // echo $election['title'].' starts now';
+                    } else {
+                        // echo $election['title'].' has an error starting';
+                    }
+                }
+            } elseif($election['status'] == 'Voting') {
+                if(strtotime($election['vote_end']) <= strtotime(date('Y-m-d'))) {
+                    $data = [
+                        'id' => $election['id'],
+                        'status' => 'Finished'
+                    ];
+                    if($this->electionModel->save($data)) {
+                        // echo $election['title'].' end now';
+                    } else {
+                        // echo $election['title'].' has an error starting';
+                    }
+                }
+            }
+        }
     }
     
     public function index() {
@@ -20,7 +48,26 @@ class Voting2 extends BaseController
         $data['perm_id'] = check_role('', '', $this->session->get('role'));
         $data['rolePermission'] = $data['perm_id']['rolePermission'];
 
-        $data['elections'] = $this->electionModel->where('status', 'a')->findAll();
+        $activeElec = intval($this->electionModel->where('status !=', 'Application')->countAllResults(false));
+        if($activeElec <= 0) {
+            $this->session->setFlashdata('sweetalertfail', 'No finished and active election.');
+            return redirect()->to(base_url());
+        }
+
+        $data['elections'] = $this->electionModel->where('status !=', 'Application')->findAll();
+
+        $data['user_details'] = user_details($this->session->get('user_id'));
+        $data['active'] = 'voting';
+        $data['title'] = 'Voting';
+        return view('Modules\Voting\Views\index2', $data);
+    }
+
+    public function index2() {
+        // checking roles and permissions
+        $data['perm_id'] = check_role('', '', $this->session->get('role'));
+        $data['rolePermission'] = $data['perm_id']['rolePermission'];
+
+        $data['elections'] = $this->electionModel->where('status', 'Voting')->findAll();
 
         $data['positions'] = $this->positionModel->findAll();
         if($this->request->getMethod() == 'post') {
@@ -65,9 +112,31 @@ class Voting2 extends BaseController
         return view('Modules\Voting\Views\index2', $data);
     }
 
+    // kapag nakapili na ng election dito didiretso
     public function other($id) {
-        $data['election'] = $this->electionModel->where(['status' => 'a', 'id' => $id])->first();
-        $data['positions'] = $this->positionModel->where('election_id', $id)->findAll();
+        $data['election'] = $this->electionModel->where(['status' => 'Voting', 'id' => $id])->first();
+        $data['positions'] = $this->positionModel->where('election_id', $data['election']['id'])->findAll();
+        $data['candidates'] = $this->candidateModel->view($id);
+        
+        // check if voted
+        $voted = $this->voteModel->where(['election_id' => $id, 'voters_id' => $this->session->get('user_id')])->first();
+        if(!empty($voted)) {
+            echo 'You have voted for this election';
+            $data['voteDetails'] = $this->voteDetailModel->where(['votes_id' => $voted['id']])->findAll();
+            $data['votes'] = $this->voteDetailModel->candidateDetails($id,$this->session->get('user_id'));
+            // echo '<pre>';
+            // print_r($data['votes']);
+            return view('Modules\Voting\Views\results2', $data);
+        }
+        if(empty($data['election'])) {
+            echo 'Please select an election';
+        }
+        return view('Modules\Voting\Views\votingSection', $data);
+    }
+
+    public function other2($id) {
+        $data['election'] = $this->electionModel->where(['status' => 'Voting', 'id' => $id])->first();
+        $data['positions'] = $this->positionModel->where('election_id', $data['election']['id'])->findAll();
         $data['candidates'] = $this->candidateModel->view($id);
         // echo '<pre>';
         // print_r($data);

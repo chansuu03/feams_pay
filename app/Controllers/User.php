@@ -9,6 +9,7 @@ class User extends BaseController {
     }
 
     public function login() {
+        // $this->session->remove(['failMsg', 'successMsg']);
         if($this->request->getMethod() === 'post') {
             helper(['form']);
             //set rules validation form
@@ -90,16 +91,21 @@ class User extends BaseController {
                 $userData['birthdate'] = $dates;
                 $userData['email_code'] = random_string('alnum', 5);
                 $userData['profile_pic'] = $file->getRandomName();
+                $this->session->remove(['failMsg', 'successMsg']);
                 if($this->userModel->insert($userData)){
                     $file->move(ROOTPATH .'/public/uploads/profile_pic/', $userData['profile_pic']);
                     if($file->hasMoved()) {
                         $this->sendMail($userData);
+                        $this->session->set('successMsg', 'Create account sucessfully, please verify email');
+                        // $this->session->setFlashdata('successMsg', 'Create account sucessfully, please verify email');
                         return redirect()->to(base_url());
                     } else {
-                        $this->session->setFlashdata('failMsg', 'There is an error creating account');
+                        $this->session->set('failMsg', 'There is an error creating account');
+                        // $this->session->setFlashdata('failMsg', 'There is an error creating account');
                     }
                 } else {
-                    $this->session->setFlashdata('failMsg', 'There is an error creating account');
+                    $this->session->set('failMsg', 'There is an error creating account');
+                    // $this->session->setFlashdata('failMsg', 'There is an error creating account');
                 }
             } else {
                 $data['value'] = $_POST;
@@ -115,8 +121,8 @@ class User extends BaseController {
         $this->email->setSubject('Account Confirmation');
         $message = view('regiEmail', $userData);
         $this->email->setMessage($message);
-        if ($this->email->send()) 
-            echo 'Email successfully sent';
+        if ($this->email->send()) {
+        }
 		else {
             $data = $this->email->printDebugger(['headers']);
             print_r($data);
@@ -125,6 +131,12 @@ class User extends BaseController {
 
     public function activate($code) {
         $user = $this->userModel->where('email_code', $code)->first();
+        $this->session->remove(['failMsg', 'successMsg']);
+        if(empty($user)) {
+            $this->session->set('failMsg', 'Code error, please try again.');
+            // $this->session->setFlashdata('failMsg', 'Code error, please try again.');
+            return redirect()->to(base_url());
+        }
         
         $data = [
             'id' => $user['id'],
@@ -132,12 +144,12 @@ class User extends BaseController {
             'status' => 'a',
         ];
         if($this->userModel->save($data)) {
-            $this->session->setFlashdata('successMsg', 'Account successfully activated');
+            $this->session->set('successMsg', 'Account successfully activated');
+            // $this->session->setFlashdata('successMsg', 'Account successfully activated');
             return redirect()->to(base_url());
         } else {
             $this->session->setFlashdata('failMsg', 'Account not activated, please try again');
             return redirect()->to(base_url());
         }
-        die();
     }
 }

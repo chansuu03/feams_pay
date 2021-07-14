@@ -71,25 +71,17 @@
               <td><?=esc($election['title'])?></td>
               <td>
                 <?php
-                  $date = date_create(esc($election['start_date']));
+                  $date = date_create(esc($election['vote_start']));
                   echo date_format($date, 'F d, Y');
                   ?>
               </td>
               <td>
                 <?php
-                  $date = date_create(esc($election['end_date']));
+                  $date = date_create(esc($election['vote_end']));
                   echo date_format($date, 'F d, Y');
                   ?>
               </td>
-              <td>
-                <?php if($election['status'] == 'a')
-                  echo 'Active';
-                      elseif($election['status'] == 'f')
-                  echo 'Finished';
-                      else
-                  echo 'Inactive';
-                ?>
-              </td>
+              <td><?= esc($election['status'])?></td>
               <td>
                 <?php
                   $date = date_create(esc($election['created_at']));
@@ -100,9 +92,11 @@
                   <?php if($perms == '18'):?>
                     <a class="btn btn-info btn-sm" href="<?=base_url('admin/elections/' . esc($election['id'], 'url'))?>" data-toggle="tooltip" data-placement="bottom" title="Election info"> <i class="fas fa-bars"></i> </a>
                   <?php elseif($perms == '20'):?>
-                    <a class="btn btn-primary btn-sm" href="<?=base_url('admin/elections/edit/' . esc($election['id'], 'url'))?>" data-toggle="tooltip" data-placement="bottom" title="Edit election"> <i class="fas fa-edit"></i> </a>
+                    <!-- <a class="btn btn-primary btn-sm" href="<?=base_url('admin/elections/edit/' . esc($election['id'], 'url'))?>" data-toggle="tooltip" data-placement="bottom" title="Edit election"> <i class="fas fa-edit"></i> </a> -->
                   <?php elseif($perms == '21'):?>
-                    <button type="button" value="<?= esc($election['id'])?>" class="btn btn-danger btn-sm del" data-toggle="tooltip" data-placement="bottom" title="Delete election"><i class="fas fa-trash"></i></button>
+                    <?php if($election['status'] != "Finished"):?>
+                        <button type="button" value="<?= esc($election['id'])?>" class="btn btn-success btn-sm del" data-toggle="tooltip" data-placement="bottom" title="Finish election"><i class="fas fa-check-circle"></i></button>
+                    <?php endif;?>
                   <?php endif;?>
                 <?php endforeach;?>
                 <!-- <a class="btn btn-primary btn-sm" href="<?=base_url('admin/elections/edit/' . esc($election['id'], 'url'))?>"> <i class="fas fa-edit"></i> </a> -->

@@ -43,6 +43,9 @@
     <?php if($perms == '27'):?>
       <div class="card-header">
         <a class="btn btn-primary float-right" href="<?= base_url('admin/candidates/add')?>" role="button">Add Candidate</a>
+        <div class="float-left mr-2 mt-2">
+            <label>Select Election</label>
+        </div>
         <select class="form-control input-sm select2 w-25" id="election_id" name="election_id">
           <?php foreach($elections as $election):?>
             <option value="<?= esc($election['id'])?>"><?= esc($election['title'])?></option>
@@ -86,7 +89,13 @@
                   <td><?=esc($ctr)?></td>
                   <td><?=esc($candidate['first_name'])?> <?=esc($candidate['last_name'])?></td>
                   <td><?=esc($candidate['name'])?></td>
-                  <td><?=esc($candidate['photo'])?></td>
+                  <td>
+                    <?php if(!empty($candidate['photo'])):?>
+                      <a href="<?=base_url('uploads/candidates').'/'.esc($candidate['photo'])?>">View Candidate Photo</a>
+                    <?php else:?>
+                      <a href="<?=base_url('uploads/profile_pic').'/'.esc($candidate['profile_pic'])?>">View Candidate Photo</a>
+                    <?php endif;?>
+                  </td>
                   <?php foreach($perm_id['perm_id'] as $perms):?>
                       <?php if($perms == '25'):?>
                         <td>

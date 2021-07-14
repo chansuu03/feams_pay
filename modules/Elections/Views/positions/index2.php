@@ -45,6 +45,9 @@
           <a class="btn btn-primary float-right" href="<?= base_url('admin/positions/add')?>" role="button">Add Position</a>
         <?php endif;?>
       <?php endforeach;?>
+      <div class="float-left mr-2 mt-2">
+        <label>Select Election</label>
+      </div>
       <select class="form-control input-sm select2 w-25" id="election_id" name="election_id">
         <?php foreach($elections as $election):?>
           <option value="<?= esc($election['id'])?>"><?= esc($election['title'])?></option>
@@ -74,7 +77,7 @@
               </tr>
             <?php else: ?>
               <?php foreach($positions as $position): ?>
-                <?php if($position['election_id'] == '1'): ?>
+                <?php if($position['election_id'] == $firstActiveElec['id']): ?>
                 <tr>
                   <td><?=esc($ctr)?></td>
                   <td><?=esc($position['name'])?></td>

@@ -17,14 +17,28 @@
                         <?php if(!empty(session()->getFlashdata('failMsg'))):?>
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             <?= session()->getFlashdata('failMsg');?>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="resetStyle();">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <?php elseif(!empty(session()->getFlashdata('successMsg'))):?>
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                             <?= session()->getFlashdata('successMsg');?>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="resetStyle();">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <?php elseif(!empty(session()->get('failMsg'))):?>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <?= session()->get('failMsg');?>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <?php elseif(!empty(session()->get('successMsg'))):?>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <?= session()->get('successMsg');?>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -39,15 +53,15 @@
                             </div>
 
                             <input type="submit" name="submit" class="btn btn-info btn-md" value="Submit">
-                            <div class="form-group" style="padding-top: 50px; font-size: 12px;">
+                            <!--<div class="form-group" style="padding-top: 50px; font-size: 12px;">
                                 <a href="#" class="text-info">Forgot Password?</a>
                                 <!-- <label for="remember-me" class="text-info"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox"></span></label><br> -->
-                            </div>
-                            <div id="register-link" class="text-right" style="padding-top: 47px; font-size: 12px;">
+                            <!-- </div> -->
+                            <!-- <div id="register-link" class="text-right" style="padding-top: 47px; font-size: 12px;"> -->
                                 <!-- <label for="remember-me" class="text-info remember-me"><span>Remember me</span>  <span><input id="remember-me" name="remember-me" type="checkbox"></span></label><br> -->
-                                <input class="checkbox" type="checkbox" value="lsRememberMe" id="rememberMe"> <label for="rememberMe">Remember me</label>
+                                <!-- <input class="checkbox" type="checkbox" value="lsRememberMe" id="rememberMe"> <label for="rememberMe">Remember me</label> -->
                                 
-                            </div>
+                            <!-- </div> -->
                     </form>
                     <div id="register-links" class="text-center" style="padding-top: 35px; font-size: 12px; <?php if(!empty(session()->getFlashdata('failMsg')) || !empty(session()->getFlashdata('successMsg'))) echo 'margin-top: -60px;'?>">
                         <label>Don't have an account?</label> <a href="<?= base_url('register');?>" class="text-info">Register here</a>

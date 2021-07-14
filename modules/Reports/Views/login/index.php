@@ -38,36 +38,50 @@
   </div>
 <?php endif;?>
 
-<form action="<?= base_url('admin/reports/login')?>" method="post">
-  <button type="submit" class="btn btn-primary">Generate PDF</button>
-</form>
 
 <div class="card">
   <div class="card-body">
-    <table class="table table-hover" id="login_report">
-        <thead class="thead-light">
-            <tr>
-              <th scope="col" style="width: 10%">#</th>
-              <th scope="col">Name</th>
-              <th scope="col">Username</th>
-              <th scope="col">Role Name</th>
-              <th scope="col">Login Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php $ctr = 1?>
-            <?php foreach($logins as $login):?>
-              <tr>
-                <td><?= esc($ctr)?></td>
-                <td><?= esc($login['first_name'])?> <?= esc($login['last_name'])?></td>
-                <td><?= esc($login['username'])?></td>
-                <td><?= esc($login['role_name'])?></td>
-                <td><?= esc($login['login_date'])?></td>
-              </tr>
-              <?php $ctr++?>
-            <?php endforeach?>
-        </tbody>
-    </table>
+    <form action="<?= base_url('admin/reports/login')?>" method="post">
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <select class="custom-select" id="records" name="records">
+                    <option value="1" selected>Daily</option>
+                    <option value="2">This day</option>
+                    <option value="3">Weekly</option>
+                    <option value="4">Monthly</option>
+                </select>
+            </div>
+            <div class="col-md-2 offset-md-7 d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary align-self-end">Generate PDF</button>
+            </div>
+        </div>
+    </form>
+    <div id="table">
+        <table class="table table-hover" id="login_report">
+            <thead class="thead-light">
+                <tr>
+                <th scope="col" style="width: 10%">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Username</th>
+                <th scope="col">Role Name</th>
+                <th scope="col">Login Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php $ctr = 1?>
+                <?php foreach($logins as $login):?>
+                <tr>
+                    <td><?= esc($ctr)?></td>
+                    <td><?= esc($login['first_name'])?> <?= esc($login['last_name'])?></td>
+                    <td><?= esc($login['username'])?></td>
+                    <td><?= esc($login['role_name'])?></td>
+                    <td><?= esc($login['login_date'])?></td>
+                </tr>
+                <?php $ctr++?>
+                <?php endforeach?>
+            </tbody>
+        </table>
+    </div>
   </div>
 </div>
 <?= $this->endSection();?>
@@ -82,6 +96,23 @@
         "autoWidth": false,
       });
   });
+
+  // Select on change
+  $('#records').change(function(){
+    console.log(this.value);
+    $.ajax({
+      url: "<?php echo base_url('admin/reports/login/table'); ?>" + "/" + $(this).val(),
+      beforeSend: function (f) {
+        $('#table').html('Loading Table ...');
+      },
+      success: function (data) {
+        $('#table').html(data);
+      },
+      error: function(f) {
+        $('#table').html('Error occured please try again');
+      }
+    })
+  })
 </script>
 
 <?= $this->endSection() ?>

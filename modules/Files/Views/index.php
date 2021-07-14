@@ -95,7 +95,7 @@
               <?php if($file['category_id'] == $category['id']):?>
                 <tr>
                   <td><?= esc($ctr)?></td>
-                  <td><a href="<?= base_url()?>/uploads/files/<?= esc($file['name'])?>"><?= esc($file['name'])?></a></td>
+                  <td><a href="<?= base_url()?>/uploads/files/<?= esc($file['name'])?>" download><?= esc($file['name'])?></a></td>
                   <td><?= esc($file['first_name']).' '.esc($file['last_name'])?></td>
                   <td><?=esc(readableBytes($file['size']))?></td>
                   <?php foreach($perm_id['perm_id'] as $perms):?>
