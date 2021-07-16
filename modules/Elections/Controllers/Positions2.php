@@ -33,6 +33,21 @@ class Positions2 extends BaseController
         $data['title'] = 'Positions';
         return view('Modules\Elections\Views\positions\index2', $data);
     }
+    
+    public function other($elecID) { 
+        // checking roles and permissions
+        $data['perm_id'] = check_role('23', 'POS', $this->session->get('role'));
+        if(!$data['perm_id']['perm_access']) {
+            $this->session->setFlashdata('sweetalertfail', true);
+            return redirect()->to(base_url());
+        }
+        $data['rolePermission'] = $data['perm_id']['rolePermission'];
+        
+        $data['elections'] = $this->electionModel->where('status', 'Application')->findAll();
+        $data['positions'] = $this->positionModel->where(['election_id' => $elecID])->findAll();
+
+        return view('Modules\Elections\Views\positions\table', $data);
+    }
 
     public function add() {
         // checking roles and permissions

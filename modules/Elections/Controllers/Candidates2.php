@@ -37,6 +37,18 @@ class Candidates2 extends BaseController
         return view('Modules\Elections\Views\candidates\index2', $data);
     }
 
+    public function tables($id) {
+        // checking roles and permissions
+        $data['perm_id'] = check_role('27', 'CAN', $this->session->get('role'));
+        $data['rolePermission'] = $data['perm_id']['rolePermission'];
+        $data['candidates'] = $this->electionModel->electionCandidates($id);
+        // echo '<pre>';
+        // print_r($data['candidates']);
+        
+        return view('Modules\Elections\Views\candidates\table', $data);
+    }
+
+
     public function add() {
         // checking roles and permissions
         $data['perm_id'] = check_role('28', 'CAN', $this->session->get('role'));
@@ -84,7 +96,10 @@ class Candidates2 extends BaseController
                     }
                     return redirect()->to(base_url('admin/candidates'));
                 } else {
-                    $_POST['photo'] = $file->getRandomName();
+                    if ($file->isValid() && !$file->hasMoved()) {
+                        $_POST['photo'] = $file->getRandomName();
+                        $file->move('./uploads/candidates', $_POST['photo']);
+                    }
                     if($this->candidateModel->insert($_POST)) {
                         $this->session->setFlashData('successMsg', 'Adding candidate successful');
                     } else {

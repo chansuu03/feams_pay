@@ -1,4 +1,4 @@
-<form action="<?= base_url('voting')?>" method="post" id="voting">
+<form action="<?= base_url('voting/cast')?>" method="post" id="voting">
     <input type="hidden" value="<?= esc($election['id'])?>" name="election_id">
     <?php foreach($positions as $position):?>
         <div class="card">
