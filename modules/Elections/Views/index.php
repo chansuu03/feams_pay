@@ -145,12 +145,12 @@
 
       Swal.fire({
         icon: 'question',
-        title: 'Delete?',
-        text: 'Are you sure to delete election?',
+        // title: 'Delete?',
+        text: 'Are you sure to finish election?',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonText: 'Yes, finish it!'
       })/*swal2*/.then((result) =>
       {
         /* Read more about isConfirmed, isDenied below */

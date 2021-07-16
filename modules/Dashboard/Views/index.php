@@ -144,7 +144,8 @@
 				<p class="text-center">
 					<strong>File Categories</strong>
 				</p>
-                <div id="bar-chart"></div>
+                <!-- <div id="bar-chart"></div> -->
+                <div id="donut-chart"></div>
 			</div>
 		</div>
 	</div>
@@ -181,5 +182,15 @@
         config.element = 'stacked';
         config.stacked = true;
         Morris.Bar(config);
+    </script>
+    
+    <script>
+      var cat2 = JSON.parse(`<?php echo $fileCategories2; ?>`);  
+      console.log(cat2);      
+      Morris.Donut({
+        element: 'donut-chart',
+        data: cat2,
+        colors: ['#863dc5', '#e17dd8', '#330b6a', '#856c7d', '#856c7d', '#7c1c73', '#3c2451'],
+      });
     </script>
 <?= $this->endSection() ?>

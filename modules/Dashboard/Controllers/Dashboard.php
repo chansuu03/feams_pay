@@ -23,6 +23,7 @@ class Dashboard extends BaseController
 		$data['activeElections'] = $this->dashboardModel->activeElection();
 		$data['discussions'] = $this->dashboardModel->discussions();
         $data['fileCategories'] = json_encode($this->dashboardModel->fileCategories());
+        $data['fileCategories2'] = json_encode($this->dashboardModel->fileCategories2());
         // echo '<pre>';
         // print_r($data['activeElections']);
         // die();

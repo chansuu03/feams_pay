@@ -36,4 +36,10 @@ class DashboardModel extends Model
         $query = $db->query("SELECT file_categories.name, count(1) as count FROM files JOIN file_categories ON file_categories.id = files.category_id GROUP BY category_id");
         return $query->getResult();
     }
+
+    public function fileCategories2() {
+        $db      = \Config\Database::connect();
+        $query = $db->query("SELECT file_categories.name as label, count(1) as value FROM files JOIN file_categories ON file_categories.id = files.category_id GROUP BY category_id");
+        return $query->getResult();
+    }
 }
