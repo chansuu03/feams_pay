@@ -22,10 +22,18 @@ class Dashboard extends BaseController
 		$data['fileCount'] = $this->dashboardModel->allFiles();
 		$data['activeElections'] = $this->dashboardModel->activeElection();
 		$data['discussions'] = $this->dashboardModel->discussions();
-        $data['fileCategories'] = json_encode($this->dashboardModel->fileCategories());
-        $data['fileCategories2'] = json_encode($this->dashboardModel->fileCategories2());
+        // for file counts per category
+        $data['fileCat'] = $this->dashboardModel->fileCategories();
+        $data['fileCats'] = [];
+        foreach($data['fileCat'] as $file) {
+            $data['fileCats']['label'][] = $file['label'];
+            $data['fileCats']['count'][] = $file['count'];
+        }
+        $data['fileCategories'] = json_encode($data['fileCats']);
+        // overall file counts this month
+        $data['files'] = $this->dashboardModel->fileCount();
         // echo '<pre>';
-        // print_r($data['activeElections']);
+        // print_r($data['files']);
         // die();
         
         $data['user_details'] = user_details($this->session->get('user_id'));

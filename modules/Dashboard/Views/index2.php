@@ -95,43 +95,51 @@
   </div>
 </div>
 
-<div class="row">
-  <!-- File count chart -->
-  <div class="col-md-5">
-    <div class="card">
-      <div class="card-header">
-        <p class="card-title">Total File Count</p>
-        <div class="card-tools">
-          <button type="button" class="btn btn-tool" data-card-widget="collapse">
-              <i class="fas fa-minus"></i>
-          </button>
+<div class="card">
+	<div class="card-header">
+		<h5 class="card-title">Elections Report</h5>
+		<div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
-      </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-12">
-            <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-          </div>
+	</div>
+	<div class="card-body">
+		<div class="row">
+            <div class="col-md-2">
+                <p class="text-center"><strong>List of active elections</strong></p>
+                <ol>
+                    <?php foreach($activeElections['list'] as $elections):?>
+                        <li><?= esc($elections['title'])?></li>
+                    <?php endforeach;?>
+                </ol>
+            </div>
+		</div>
+	</div>
+</div>
+
+<div class="card">
+	<div class="card-header">
+		<h5 class="card-title">Files Report</h5>
+		<div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
+	</div>
+	<div class="card-body">
+		<div class="row">
+      <div class="col-md-6">
+        <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
       </div>
-    </div>
-  </div>
-  <!-- Monthly chart -->
-  <div class="col-md-7">
-    <div class="card">
-      <div class="card-header">
-        <p class="card-title">File Upload for the Year</p>
-        <div class="card-tools">
-          <button type="button" class="btn btn-tool" data-card-widget="collapse">
-              <i class="fas fa-minus"></i>
-          </button>
-        </div>
-      </div>
-      <div class="card-body">
-        <canvas id="bar-chart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-      </div>
-    </div>
-  </div>
+		</div>
+	</div>
 </div>
 <?= $this->endSection();?>
 
@@ -139,92 +147,73 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.0/morris.min.js"></script>
   <!-- ChartJS -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.4.1/dist/chart.min.js"></script>
-
-  <!-- chartJS bar chart -->
+  <script src="<?= base_url();?>/dist/adminlte/plugins/chart.js/Chart.min.js"></script>
   <script>
-    $(function(){
-      //get the bar chart canvas
-      var d = new Date();
-      const monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
-      const data = {
-        labels: monthNames,
-        datasets: [{
-          label: 'Number of file uploads for the year '+d.getFullYear(),
-          data: [<?php foreach($files as $file):?>
-            <?= $file['Jan']?>,
-            <?= $file['Feb']?>,
-            <?= $file['Mar']?>,
-            <?= $file['Apr']?>,
-            <?= $file['May']?>,
-            <?= $file['Jun']?>,
-            <?= $file['Jul']?>,
-            <?= $file['Aug']?>,
-            <?= $file['Sep']?>,
-            <?= $file['Oct']?>,
-            <?= $file['Nov']?>,
-            <?= $file['Dec']?>,
-            <?php endforeach;?>
-          ],
-          borderColor: '#2596BE',
-          tension: 0.1
-        }]
-      }
-      const config = {
-        type: 'line',
-        data: data,
+      var serries = JSON.parse(`<?php echo $fileCategories; ?>`);
+      console.log(serries);
+      var data = serries,
+          config = {
+          data: data,
+          xkey: 'name',
+          ykeys: ['count'],
+          labels: ['Files uploaded'],
+          fillOpacity: 0.6,
+          hideHover: 'auto',
+          behaveLikeLine: true,
+          resize: true,
+          horizontal: true,
+          pointFillColors:['#ffffff'],
+          pointStrokeColors: ['black'],
+          lineColors:['gray','red']
       };
-      var chart = new Chart($("#bar-chart"), {
-        type: "line",
-        data: data,
-        options: config
-      });
+      
+      //for mories bar chart
+      config.element = 'bar-chart';
+      Morris.Bar(config);
+      
+      //for stacked bar chart
+      config.element = 'stacked';
+      config.stacked = true;
+      Morris.Bar(config);
+  </script>
+  
+  <script>
+    var cat2 = JSON.parse(`<?php echo $fileCategories3; ?>`);  
+    console.log(cat2);      
+    var browsersChart = Morris.Donut({
+      element: 'donut-chart',
+      data: cat2,
+      colors: ['#863dc5', '#e17dd8', '#330b6a', '#856c7d', '#856c7d', '#7c1c73', '#3c2451'],
+      resize: true,
+    });
+
+    browsersChart.options.data.forEach(function(label, i) {
+      var legendItem = $('<span></span>').text( label['label'] + " ( " +label['value'] + " )" ).prepend('<br><span>&nbsp;</span>');
+      legendItem.find('span')
+        .css('backgroundColor', browsersChart.options.colors[i])
+        .css('width', '20px')
+        .css('display', 'inline-block')
+        .css('margin', '5px');
+      $('#legend').append(legendItem)
     });
   </script>
+
   <!-- chartJS sample donut -->
   <script>
-    var donutChart = $("#donutChart");
-    var fileCats = JSON.parse(`<?= $fileCategories; ?>`);
-    console.log(fileCats);
-    var data1 = {
-    labels: fileCats.label,
-    datasets: [
-      {
-        data: fileCats.count,
-        backgroundColor: [
-          '#1A03A3',
-          '#006BF8',
-          '#01C0F8',
-          '#DC00FE'
-        ],
-        hoverOffset: 4
-      }
-    ]
-  };
-  //options
-  var options = {
-    responsive: true,
-    title: {
-      display: true,
-      position: "top",
-      text: "Doughnut Chart",
-      fontSize: 18,
-      fontColor: "#111"
-    },
-    legend: {
-      display: true,
-      position: "top",
-      labels: {
-        fontColor: "#333",
-        fontSize: 16
-      }
+    var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
+    var donutData        = {
+      labels: [
+          'Documents', 
+          'Media',
+          'Images', 
+          'Others',
+      ],
+      datasets: [
+        {
+          data: [700,500,400,600],
+          backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef'],
+        }
+      ]
     }
-  };
-  //create Chart class object
-  var chart1 = new Chart(donutChart, {
-    type: "doughnut",
-    data: data1,
-    options: options
-  });
   </script>
 <?= $this->endSection() ?>

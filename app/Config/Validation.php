@@ -276,13 +276,29 @@ class Validation
 	];
 
   public $editUser = [
-		'image' => [
-			'label' => 'Profile Picture', 
-			'rules' => 'ext_in[image,png,jpg,jpeg]',
-			'errors' => [
-				'ext_in' => 'Profile picture is not an image',
-			],
+	'image' => [
+		'label' => 'Profile Picture', 
+		'rules' => 'ext_in[image,png,jpg,jpeg]',
+		'errors' => [
+			'ext_in' => 'Profile picture is not an image',
 		],
+	],
   ];
 
+  public $constitution = [
+    'area' => [
+        'label' => 'Area',
+        'rules' => 'required',
+        'errors' => [
+            'required' => 'Constitution area is required',
+        ],
+    ],
+    'content' => [
+        'label' => 'Content',
+        'rules' => 'required',
+        'errors' => [
+            'required' => 'Constitution content is required',
+        ],
+    ],
+  ];
 }

@@ -13,6 +13,9 @@ if(!function_exists('check_role')) {
             }
             array_push($data['perm_id'], $rolePermission['perm_id']);
         }
+        if($id === '' && $mod == '') {
+            $data['perm_access'] = true;
+        }
         return $data;
     }
 }
