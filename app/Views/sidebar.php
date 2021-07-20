@@ -83,8 +83,17 @@
     </a>
 </li>
 
+<li class="nav-item">
+    <a href="<?= base_url('file_sharing')?>" class="nav-link <?= $active=="files" ? 'active': ''?>">
+        <i class="nav-icon fas fa-user-plus"></i>
+        <p>
+            File Sharing
+        </p>
+    </a>
+</li>
+
 <!-- Files -->
-<?php foreach($rolePermission as $rolePerms):?>
+<!-- <?php foreach($rolePermission as $rolePerms):?>
     <?php $access = false;?>
     <?php if($rolePerms['perm_mod'] == 'FILES'):?>
         <li class="nav-item">
@@ -100,10 +109,10 @@
     <?php if($access){
         break;
     }?>
-<?php endforeach;?>
+<?php endforeach;?> -->
 
 <!-- File Categories -->
-<?php foreach($rolePermission as $rolePerms):?>
+<!-- <?php foreach($rolePermission as $rolePerms):?>
     <?php $access = false;?>
     <?php if($rolePerms['perm_mod'] == 'FICAT'):?>
         <li class="nav-item">
@@ -119,7 +128,7 @@
     <?php if($access){
         break;
     }?>
-<?php endforeach;?>
+<?php endforeach;?> -->
 
 <!-- Sliders -->
 <?php foreach($rolePermission as $rolePerms):?>
@@ -206,6 +215,14 @@
     </a>
 </li>
 
+<li class="nav-item">
+    <a href="<?= base_url('constitution')?>" class="nav-link <?= $active=="constitution" ? 'active': ''?>">
+        <i class="nav-icon fas fa-user-plus"></i>
+        <p>
+            Constitution
+        </p>
+    </a>
+</li>
 
 <!-- Candidates -->
 <?php foreach($rolePermission as $rolePerms):?>

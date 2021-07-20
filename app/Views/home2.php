@@ -90,17 +90,22 @@
   <div class="row">
     <div class="col announces">
       <h3 id="announceHead">Announcements</h3>
-      <hr style="border-top: 5px solid white;">    
+      <hr style="border-top: 5px solid white;">  
       <?php foreach($announces as $announce):?>
         <!-- annoucement 1 -->
         <div class="card flex-row" style="margin-bottom: 5px;">
             <div class="card-header border-0">
                 <img src="<?= base_url();?>/uploads/announcements/<?= esc($announce['image'], 'raw')?>" alt="" style="width: 300px; height: 200px;">
             </div>
-            <div class="card-block px-2">
-                <h5 style="margin-top: 3px;"><?= esc($announce['title'], 'raw')?></h5>
-                <p>Posted in: <?= esc($announce['created_at'], 'raw')?></p>
-                <?= esc($announce['description'], 'raw')?>
+            <div class="card-block mt-1">
+                <a href="<?= base_url()?>/announcements/<?= esc($announce['link'], 'raw')?>" class="mt-1 h5 text-light"><?= esc($announce['title'], 'raw')?></a>
+                <!-- <h5 style="margin-top: 3px;"><?= esc($announce['title'], 'raw')?></h5> -->
+                <p class="mt-2">Posted in: <?= esc($announce['created_at'], 'raw')?></p>
+                <div class="row">
+                    <div class="col">
+                        <?= esc($announce['description'], 'raw')?>
+                    </div>
+                </div>
             </div>
         </div>
       <?php endforeach;?>
