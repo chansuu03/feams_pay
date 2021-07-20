@@ -133,6 +133,138 @@
     </div>
   </div>
 </div>
+
+
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">
+        <p class="card-title">
+          <i class="fas fa-text-width"></i>
+          Elections held in <?= date('F')?>
+        </p>
+        <div class="card-tools">
+          <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+          </button>
+        </div>
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body" style="max-height:344px; height:344px; overflow-y: auto;">
+        <ol>
+          <li>Application</li>
+            <ol>
+              <?php foreach($activeElections['months'] as $appElecs):?>
+                <?php if($appElecs['status'] == 'Application'):?>
+                  <li><?= esc($appElecs['title'])?></li>
+                <?php endif;?>
+              <?php endforeach;?>
+            </ol>
+          <li>Voting</li>
+            <ol>
+              <?php foreach($activeElections['months'] as $voteElecs):?>
+                <?php if($voteElecs['status'] == 'Voting'):?>
+                  <li><?= esc($voteElecs['title'])?></li>
+                <?php endif;?>
+              <?php endforeach;?>
+            </ol>
+          <li>Finished</li>
+            <ol>
+              <?php foreach($activeElections['months'] as $finElecs):?>
+                <?php if($finElecs['status'] == 'Finished'):?>
+                  <li><?= esc($finElecs['title'])?></li>
+                <?php endif;?>
+              <?php endforeach;?>
+            </ol>
+        </ol>
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+  </div>
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header">
+        <p class="card-title">
+          <i class="fas fa-text-width"></i>
+          Votes for the month of <?= date('F')?>
+        </p>
+        <div class="card-tools">
+          <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <canvas id="bar_chart" style="max-height:300px; height:300px;"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <p class="card-title">
+          <i class="fas fa-text-width"></i>
+          Logins for the year of <?= date('Y')?>
+        </p>
+        <div class="card-tools">
+          <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <canvas id="logins_chart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <p class="card-title">Activity Log</p>
+        <div class="card-tools">
+          <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+          </button>
+        </div>
+      </div>
+      <div class="card-body card-comments" style="min-height: 290px; height: 290px; max-height: 290px; max-width: 100%; overflow-y: auto;">
+        <!-- /.card-comment -->
+        <div class="card-comment">
+          <!-- User image -->
+          <img class="img-circle img-sm" src="<?= base_url()?>/uploads/profile_pic/<?= $user_details['profile_pic']?>" alt="User Image">
+          <div class="comment-text">
+            <span class="username">
+              <?= $user_details['first_name']?> <?= $user_details['last_name']?>
+              <span class="text-muted float-right">8:03 PM Today</span>
+            </span><!-- /.username -->
+            Edited an announcement
+          </div>
+          <!-- /.comment-text -->
+        </div>
+        <!-- /.card-comment -->
+        <!-- /.card-comment -->
+        <div class="card-comment">
+          <!-- User image -->
+          <img class="img-circle img-sm" src="<?= base_url()?>/uploads/profile_pic/<?= $user_details['profile_pic']?>" alt="User Image">
+          <div class="comment-text">
+            <span class="username">
+              <?= $user_details['first_name']?> <?= $user_details['last_name']?>
+              <span class="text-muted float-right">8:03 PM Today</span>
+            </span><!-- /.username -->
+            Edited an announcement
+          </div>
+          <!-- /.comment-text -->
+        </div>
+        <!-- /.card-comment -->
+      </div>
+    </div>
+  </div>
+</div>
 <?= $this->endSection();?>
 
 <?= $this->section('scripts') ?>
@@ -141,10 +273,94 @@
   <!-- ChartJS -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.4.1/dist/chart.min.js"></script>
 
+  <!-- chartJS Logins -->
+  <script>
+    const monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+
+    const datas = {
+      labels: monthNames,
+      datasets: [{
+        label: 'Login Count',
+        data: [
+          <?php foreach($logins as $login):?>
+            <?= $login['Jan']?>,
+            <?= $login['Feb']?>,
+            <?= $login['Mar']?>,
+            <?= $login['Apr']?>,
+            <?= $login['May']?>,
+            <?= $login['Jun']?>,
+            <?= $login['Jul']?>,
+            <?= $login['Aug']?>,
+            <?= $login['Sep']?>,
+            <?= $login['Oct']?>,
+            <?= $login['Nov']?>,
+            <?= $login['Dec']?>,
+          <?php endforeach;?>
+        ],
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1
+      }]
+    };
+    
+    var myLineChart = new Chart($("#logins_chart"), {
+        type: 'line',
+        data: datas,
+    });
+  </script>
   <!-- chartJS bar chart -->
   <script>
+    const labels = [
+      <?php foreach($activeElections['voteCount'] as $votes):?>
+        '<?= $votes['title']?>',
+      <?php endforeach;?>
+    ];
+    const data = {
+      labels: labels,
+      datasets: [{
+        label: 'Votes',
+        data: [
+          <?php foreach($activeElections['voteCount'] as $vote):?>
+            '<?= $vote['voteCount']?>',
+          <?php endforeach;?>
+          ],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 205, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(201, 203, 207, 0.2)'
+        ],
+        borderColor: [
+          'rgb(255, 99, 132)',
+          'rgb(255, 159, 64)',
+          'rgb(255, 205, 86)',
+          'rgb(75, 192, 192)',
+          'rgb(54, 162, 235)',
+          'rgb(153, 102, 255)',
+          'rgb(201, 203, 207)'
+        ],
+        borderWidth: 1
+      }]
+    };
+    var myBarChart = new Chart($("#bar_chart"), {
+      type: 'bar',
+      data: data,
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      },
+    });
+  </script>
+  <!-- chartJS line chart -->
+  <script>
     $(function(){
-      //get the bar chart canvas
+      //get the line chart canvas
       var d = new Date();
       const monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
       const data = {

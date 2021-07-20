@@ -17,11 +17,38 @@ class DashboardModel extends Model
         return $table->where('deleted_at', null)->countAllResults(false);
     }
 
+    public function logins() {
+        $db      = \Config\Database::connect();
+        $str = "SELECT 
+        SUM(MONTH(login_date) = '1') AS 'Jan',
+        SUM(MONTH(login_date) = '2') AS 'Feb',
+        SUM(MONTH(login_date) = '3') AS 'Mar',
+        SUM(MONTH(login_date) = '4') AS 'Apr',
+        SUM(MONTH(login_date) = '5') AS 'May',
+        SUM(MONTH(login_date) = '6') AS 'Jun',
+        SUM(MONTH(login_date) = '7') AS 'Jul',
+        SUM(MONTH(login_date) = '8') AS 'Aug',
+        SUM(MONTH(login_date) = '9') AS 'Sep',
+        SUM(MONTH(login_date) = '10') AS 'Oct',
+        SUM(MONTH(login_date) = '11') AS 'Nov',
+        SUM(MONTH(login_date) = '12') AS 'Dec',
+        SUM(YEAR(login_date) = YEAR(CURDATE())) AS 'total',
+        YEAR(CURDATE()) AS currentyear FROM logins WHERE YEAR(login_date) = YEAR(CURDATE())";
+        $query = $db->query($str);
+        return $query->getResultArray();
+    }
+
     public function activeElection() {
         $db      = \Config\Database::connect();
         $table = $db->table('elections');
-        $data['count'] = $table->where(['deleted_at' => null, 'status' => 'a'])->countAllResults(false);
-        $data['list'] = $table->where(['deleted_at' => null, 'status' => 'a'])->get()->getResultArray();
+        $data['count'] = $table->where(['deleted_at' => null, 'status !=' => 'Finished'])->countAllResults(false);
+        $data['list'] = $table->where(['deleted_at' => null, 'status !=' => 'Finished'])->get()->getResultArray();
+        $monthQuery = 'SELECT * FROM `elections` WHERE MONTH(`vote_start`) = MONTH(CURRENT_DATE())';
+        $query = $db->query($monthQuery);
+        $data['months'] = $query->getResultArray();
+        $voteQuery = 'SELECT elections.title, COUNT(votes.election_id) AS voteCount FROM elections LEFT JOIN votes ON elections.id = votes.election_id GROUP BY elections.id';
+        $exeQuery = $db->query($voteQuery);
+        $data['voteCount'] = $exeQuery->getResultArray();
         return $data;
     }
 
