@@ -15,6 +15,7 @@ class Elections2 extends BaseController
         $this->voteModel = new VotingModels\VoteModel();
         $this->voteDetailModel = new VotingModels\VoteDetailModel();
         $this->pdf = new Libraries\Pdf();
+        $this->mpdf = new \Mpdf\Mpdf();
 
         $elections = $this->electionModel->findAll();
     }
@@ -146,7 +147,7 @@ class Elections2 extends BaseController
         // $data['perCandiCount'] = $this->voteDetailModel->joinVotes($id);
         $data['perCandiCount'] = $this->electionModel->voteCount($id);
         // echo '<pre>';
-        // print_r($data['perCandiCount']);
+        // print_r($voteDetails);
         // die();
         
         $data['user_details'] = user_details($this->session->get('user_id'));
@@ -203,5 +204,37 @@ class Elections2 extends BaseController
         // next yung candidates  
         $this->response->setHeader('Content-Type', 'application/pdf');
 		$this->pdf->Output('D', $elecDetails['title'].' Reports.pdf'); 
+    }
+
+    public function pdf($id) {
+        // checking roles and permissions
+        $data['perm_id'] = check_role('19', 'ELEC', $this->session->get('role'));
+        if(!$data['perm_id']['perm_access']) {
+            $this->session->setFlashdata('sweetalertfail', true);
+            return redirect()->to(base_url());
+        }
+
+        $data['elecDetails'] = $this->electionModel->where(['id' => $id, 'status !=' => 'Application'])->first();
+        if(empty($data['elecDetails'])) {
+            $this->session->setFlashdata('sweetalertfail', true);
+            return redirect()->to(base_url());
+        }
+        $data['positions'] = $this->positionModel->where(['election_id' => $id])->findAll();
+        $data['candidates'] = $this->candidateModel->view($id);
+        $data['voteCounts'] = $this->electionModel->voteCount($data['elecDetails']['id']);
+        $data['voteDetails'] = $this->voteDetailModel->findAll();
+        // echo '<pre>';
+        // print_r($data['positions']);
+        // print_r($data['voteDetails']);
+        // die();
+        $html = view('Modules\Elections\Views\pdf', $data);
+        // $this->mpdf->SetHeader($elecDetails['title'].' Results|'.date('M d,Y').'|Page: {PAGENO}');
+        $this->mpdf->SetHTMLHeader('
+            <p style="border-bottom: 1px solid; width: 100%;">'.$data['elecDetails']['title'].' Results</p>
+        ');
+        $this->mpdf->SetFooter($data['elecDetails']['title']);
+        $this->mpdf->WriteHTML($html);
+        $this->response->setHeader('Content-Type', 'application/pdf');
+        $this->mpdf->Output($data['elecDetails']['title'].' Results.pdf','I');
     }
 }

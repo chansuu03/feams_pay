@@ -45,7 +45,7 @@ class ElectionModel extends Model {
 
     public function voteCount($id) {
         $db      = \Config\Database::connect();
-        $query = $db->query('SELECT users.first_name, users.last_name, positions.name, vote_details.candidate_id, count(1) as count FROM vote_details JOIN positions ON positions.id = vote_details.position_id JOIN users ON users.id = vote_details.candidate_id WHERE election_id = '. $id .' GROUP BY position_id');
+        $query = $db->query('SELECT users.first_name, users.last_name, positions.id, positions.name, vote_details.candidate_id, count(1) as count FROM vote_details JOIN positions ON positions.id = vote_details.position_id JOIN candidates ON candidates.id = vote_details.candidate_id JOIN users ON users.id = candidates.user_id WHERE candidates.election_id = '. $id .' GROUP BY vote_details.position_id');
         return $query->getResult('array');
     }
 }

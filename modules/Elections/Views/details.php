@@ -70,11 +70,13 @@
 
     </div>
   </div>
-  <div class="card-footer">
-    <a class="btn btn-primary float-right" href="<?= base_url()?>/admin/elections/<?= esc($election['id'])?>/pdf" role="button" style="margin-right: 5px;">
-      <i class="fas fa-download"></i> Generate PDF
-    </a>
-  </div>
+  <?php if($election['status'] == 'Finished'):?>
+    <div class="card-footer">
+      <a class="btn btn-primary float-right" href="<?= base_url()?>/admin/elections/<?= esc($election['id'])?>/pdf" role="button" style="margin-right: 5px;">
+        <i class="fas fa-download"></i> Generate PDF
+      </a>
+    </div>
+  <?php endif;?>
 </div>
 
 <?= $this->endSection();?>
