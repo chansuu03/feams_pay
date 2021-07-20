@@ -94,13 +94,13 @@
                 <td>
                   <!-- download -->
                   <a class="btn btn-success btn-sm" href="<?= base_url()?>/uploads/files/<?= esc($file['category'])?>/<?= esc($file['file_name'])?>" role="button"  data-toggle="tooltip" data-placement="bottom" title="Download"><i class="fas fa-download"></i></a>
-                  <?php if($delete):?>
+                  <?php if($delete || $file['uploader'] == session()->get('user_id')):?>
                     <button type="button" value="<?= esc($file['id'])?>" class="btn btn-danger btn-sm del" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash"></i></button>
                   <?php endif;?>
                 </td>
               </tr>
             <?php endif;?>
-            <?php if($file['visibility'] === 'admin' && $accessAdmin):?>
+            <?php if(($file['visibility'] === 'admin' && $accessAdmin) || ($file['visibility'] === 'admin' && $file['uploader'] == session()->get('user_id'))):?>
               <tr>
                 <td><?= esc($ctr)?></td>
                 <td><?= esc($file['file_name'])?></td>
@@ -112,7 +112,7 @@
                 <td>
                   <!-- download -->
                   <a class="btn btn-success btn-sm" href="<?= base_url()?>/uploads/files/<?= esc($file['category'])?>/<?= esc($file['file_name'])?>" role="button"  data-toggle="tooltip" data-placement="bottom" title="Download"><i class="fas fa-download"></i></a>
-                  <?php if($delete):?>
+                  <?php if($delete || $file['uploader'] == session()->get('user_id')):?>
                     <button type="button" value="<?= esc($file['id'])?>" class="btn btn-danger btn-sm del" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash"></i></button>
                   <?php endif;?>
                 </td>
@@ -163,13 +163,13 @@
                 <td>
                   <!-- download -->
                   <a class="btn btn-success btn-sm" href="<?= base_url()?>/uploads/files/<?= esc($file['category'])?>/<?= esc($file['file_name'])?>" role="button"  data-toggle="tooltip" data-placement="bottom" title="Download"><i class="fas fa-download"></i></a>
-                  <?php if($delete):?>
+                  <?php if($delete || $file['uploader'] == session()->get('user_id')):?>
                     <button type="button" value="<?= esc($file['id'])?>" class="btn btn-danger btn-sm del" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash"></i></button>
                   <?php endif;?>
                 </td>
               </tr>
             <?php endif;?>
-            <?php if($file['visibility'] === 'admin' && $accessAdmin):?>
+            <?php if(($file['visibility'] === 'admin' && $accessAdmin) || ($file['visibility'] === 'admin' && $file['uploader'] == session()->get('user_id'))):?>
               <tr>
                 <td><?= esc($ctr)?></td>
                 <td><?= esc($file['file_name'])?></td>
@@ -181,7 +181,7 @@
                 <td>
                   <!-- download -->
                   <a class="btn btn-success btn-sm" href="<?= base_url()?>/uploads/files/<?= esc($file['category'])?>/<?= esc($file['file_name'])?>" role="button"  data-toggle="tooltip" data-placement="bottom" title="Download"><i class="fas fa-download"></i></a>
-                  <?php if($delete):?>
+                  <?php if($delete || $file['uploader'] == session()->get('user_id')):?>
                     <button type="button" value="<?= esc($file['id'])?>" class="btn btn-danger btn-sm del" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash"></i></button>
                   <?php endif;?>
                 </td>
@@ -232,13 +232,13 @@
                 <td>
                   <!-- download -->
                   <a class="btn btn-success btn-sm" href="<?= base_url()?>/uploads/files/<?= esc($file['category'])?>/<?= esc($file['file_name'])?>" role="button"  data-toggle="tooltip" data-placement="bottom" title="Download"><i class="fas fa-download"></i></a>
-                  <?php if($delete):?>
+                  <?php if($delete || $file['uploader'] == session()->get('user_id')):?>
                     <button type="button" value="<?= esc($file['id'])?>" class="btn btn-danger btn-sm del" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash"></i></button>
                   <?php endif;?>
                 </td>
               </tr>
             <?php endif;?>
-            <?php if($file['visibility'] === 'admin' && $accessAdmin):?>
+            <?php if(($file['visibility'] === 'admin' && $accessAdmin) || ($file['visibility'] === 'admin' && $file['uploader'] == session()->get('user_id'))):?>
               <tr>
                 <td><?= esc($ctr)?></td>
                 <td><?= esc($file['file_name'])?></td>
@@ -250,7 +250,7 @@
                 <td>
                   <!-- download -->
                   <a class="btn btn-success btn-sm" href="<?= base_url()?>/uploads/files/<?= esc($file['category'])?>/<?= esc($file['file_name'])?>" role="button"  data-toggle="tooltip" data-placement="bottom" title="Download"><i class="fas fa-download"></i></a>
-                  <?php if($delete):?>
+                  <?php if($delete || $file['uploader'] == session()->get('user_id')):?>
                     <button type="button" value="<?= esc($file['id'])?>" class="btn btn-danger btn-sm del" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash"></i></button>
                   <?php endif;?>
                 </td>
@@ -301,13 +301,13 @@
                 <td>
                   <!-- download -->
                   <a class="btn btn-success btn-sm" href="<?= base_url()?>/uploads/files/<?= esc($file['category'])?>/<?= esc($file['file_name'])?>" role="button"  data-toggle="tooltip" data-placement="bottom" title="Download"><i class="fas fa-download"></i></a>
-                  <?php if($delete):?>
+                  <?php if($delete || $file['uploader'] == session()->get('user_id')):?>
                     <button type="button" value="<?= esc($file['id'])?>" class="btn btn-danger btn-sm del" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash"></i></button>
                   <?php endif;?>
                 </td>
               </tr>
             <?php endif;?>
-            <?php if($file['visibility'] === 'admin' && $accessAdmin):?>
+            <?php if(($file['visibility'] === 'admin' && $accessAdmin) || ($file['visibility'] === 'admin' && $file['uploader'] == session()->get('user_id'))):?>
               <tr>
                 <td><?= esc($ctr)?></td>
                 <td><?= esc($file['file_name'])?></td>
@@ -319,7 +319,7 @@
                 <td>
                   <!-- download -->
                   <a class="btn btn-success btn-sm" href="<?= base_url()?>/uploads/files/<?= esc($file['category'])?>/<?= esc($file['file_name'])?>" role="button"  data-toggle="tooltip" data-placement="bottom" title="Download"><i class="fas fa-download"></i></a>
-                  <?php if($delete):?>
+                  <?php if($delete || $file['uploader'] == session()->get('user_id')):?>
                     <button type="button" value="<?= esc($file['id'])?>" class="btn btn-danger btn-sm del" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash"></i></button>
                   <?php endif;?>
                 </td>
