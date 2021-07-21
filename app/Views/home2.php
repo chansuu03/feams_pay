@@ -85,36 +85,42 @@
   </a>
 </div>
 
-
-<div class="container-fluid" style="margin-top: 15px;">
+<div class="container-fluid mt-3 mb-3">
   <div class="row">
-    <div class="col announces">
-      <h3 id="announceHead">Announcements</h3>
-      <hr style="border-top: 5px solid white;">  
+    <div class="col-md-9">
+      <h1 class="display-4 text-center" style="color: white;">Announcements</h1>
+      <hr style="border: 3px solid white;">
       <?php foreach($announces as $announce):?>
-        <!-- annoucement 1 -->
-        <div class="card flex-row" style="margin-bottom: 5px;">
-            <div class="card-header border-0">
-                <img src="<?= base_url();?>/uploads/announcements/<?= esc($announce['image'], 'raw')?>" alt="" style="width: 300px; height: 200px;">
-            </div>
-            <div class="card-block mt-1">
-                <a href="<?= base_url()?>/announcements/<?= esc($announce['link'], 'raw')?>" class="mt-1 h5 text-light"><?= esc($announce['title'], 'raw')?></a>
-                <!-- <h5 style="margin-top: 3px;"><?= esc($announce['title'], 'raw')?></h5> -->
-                <p class="mt-2">Posted in: <?= esc($announce['created_at'], 'raw')?></p>
-                <div class="row">
-                    <div class="col">
-                        <?= esc($announce['description'], 'raw')?>
-                    </div>
+        <div class="card mt-2">
+          <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                  <img src="<?= base_url();?>/uploads/announcements/<?= esc($announce['image'], 'raw')?>" class="img-thumbnail">
+                </div>
+                <div class="col-md-9">
+                  <a href="<?= base_url()?>/announcements/<?= esc($announce['link'], 'raw')?>" class="mt-1 h4 text-light text-left"><?= esc($announce['title'], 'raw')?></a>
+                  <p class="mt-1">Posted in: <?= date('F d,Y', strtotime($announce['created_at']))?></p>
+                  <div class="row">
+                      <div class="col-12" style="min-height: 100%;">
+                        <?php
+                          $start = strpos(esc($announce['description'], 'raw'), '<p>');
+                          $end = strpos(esc($announce['description'], 'raw'), '</p>', $start);
+                          $paragraph = substr(esc($announce['description'], 'raw'), $start, $end-$start+4);
+                        ?>
+                        <?= esc($paragraph, 'raw')?>
+                      </div>
+                  </div>
                 </div>
             </div>
+          </div>
         </div>
       <?php endforeach;?>
     </div>
-    <div class="col-4">
-        <!-- embed video here -->
+    <div class="col-md-3">
     </div>
   </div>
 </div>
+
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts') ?>
