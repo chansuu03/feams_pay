@@ -3,11 +3,13 @@ namespace Modules\Sliders\Controllers;
 
 use App\Controllers\BaseController;
 use Modules\Sliders\Models as Models;
+use App\Models as AppModels;
 
 class Sliders extends BaseController
 {
     public function __construct() {
         $this->sliderModel = new Models\SliderModel();
+        $this->activityLogModel = new AppModels\ActivityLogModel();
     }
 
     public function index() {
@@ -49,6 +51,9 @@ class Sliders extends BaseController
                 if($this->sliderModel->insert($slider)) {
                     $file->move('uploads/sliders', $slider['image']);
                     if ($file->hasMoved()) {
+                        $activityLog['user'] = $this->session->get('user_id');
+                        $activityLog['description'] = 'Added a new slider';
+                        $this->activityLogModel->save($activityLog);
                         $this->session->setFlashData('successMsg', 'Adding slider successful');
                     } else {
                         $this->session->setFlashData('failMsg', 'There is an error on adding slider. Please try again.');
@@ -91,6 +96,9 @@ class Sliders extends BaseController
                 if($this->sliderModel->update($data['id'], $slider)) {
                     $file->move('uploads/sliders', $slider['image']);
                     if ($file->hasMoved()) {
+                        $activityLog['user'] = $this->session->get('user_id');
+                        $activityLog['description'] = 'Edited an slider';
+                        $this->activityLogModel->save($activityLog);
                         $this->session->setFlashData('successMsg', 'Editing slider successful.');
                     } else {
                         $this->session->setFlashData('failMsg', 'There is an error on editing slider. Please try again.');
@@ -121,6 +129,9 @@ class Sliders extends BaseController
         $data['rolePermission'] = $data['perm_id']['rolePermission'];
 
         if($this->sliderModel->where('id', $id)->delete()) {
+          $activityLog['user'] = $this->session->get('user_id');
+          $activityLog['description'] = 'Deleted an slider';
+          $this->activityLogModel->save($activityLog);
           $this->session->setFlashData('successMsg', 'Successfully deleted announcement');
         } else {
           $this->session->setFlashData('errorMsg', 'Something went wrong!');

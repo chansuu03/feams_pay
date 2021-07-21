@@ -34,6 +34,9 @@ class Dashboard extends BaseController
         $data['files'] = $this->dashboardModel->fileCount();
         // logins count
         $data['logins'] = $this->dashboardModel->logins();
+        // activity logs
+        $data['activities'] = $this->dashboardModel->getActivity();
+
 
         // echo date('t').'<br>';
         $ctr = 0;
@@ -58,7 +61,7 @@ class Dashboard extends BaseController
         //     }
         // }
         // echo '<pre>';
-        // print_r($data['logins']);
+        // print_r($data['activities']);
         // die();
         
         $data['user_details'] = user_details($this->session->get('user_id'));

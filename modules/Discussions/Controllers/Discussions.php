@@ -5,7 +5,8 @@ use CodeIgniter\Controller;
 use App\Controllers\BaseController;
 use Modules\Discussions\Models as Models;
 use Modules\Roles\Models as Roles;
-use App\Models\UserModel;
+// use App\Models\UserModel;
+use App\Models as AppModels;
 
 class Discussions extends BaseController
 {
@@ -13,7 +14,8 @@ class Discussions extends BaseController
         $this->session = session();
         $this->threadModel = new Models\ThreadModel();
         $this->roleModel = new Roles\RoleModel();
-        $this->userModel = new UserModel();
+        $this->userModel = new AppModels\UserModel();
+        $this->activityLogModel = new AppModels\ActivityLogModel();
     }
     
 	public function index() {
@@ -54,6 +56,9 @@ class Discussions extends BaseController
             $post['link'] = str_replace(' ', '_', $_POST['subject']);
             $post['link'] = strtolower($post['link']);
             if($this->threadModel->insert($post)) {
+                $activityLog['user'] = $this->session->get('user_id');
+                $activityLog['description'] = 'Added an discussion thread';
+                $this->activityLogModel->save($activityLog);
                 $this->session->setFlashdata('successMsg', 'Thread added successfully');
             } else {
                 $this->session->setFlashdata('failMsg', 'Failed to add thread');
@@ -84,6 +89,9 @@ class Discussions extends BaseController
         $data['rolePermission'] = $data['perm_id']['rolePermission'];
 
         if($this->threadModel->where(['id' => $id])->delete()) {
+            $activityLog['user'] = $this->session->get('user_id');
+            $activityLog['description'] = 'Deleted an discussion thread';
+            $this->activityLogModel->save($activityLog);
           $this->session->setFlashData('successMsg', 'Successfully deleted thread');
         } else {
           $this->session->setFlashData('errorMsg', 'Something went wrong!');

@@ -377,7 +377,7 @@
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed)
         {
-          window.location = 'files/delete/' + id;
+          window.location = 'file_sharing/delete/' + id;
         }
         else if (result.isDenied)
         {

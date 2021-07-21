@@ -5,6 +5,7 @@ use App\Controllers\BaseController;
 use Modules\Permissions\Models as Models;
 use Modules\Roles\Models as RoleModels;
 use Modules\Roles\Controllers as RoleControl;
+use App\Models as AppModels;
 
 class Permissions extends BaseController
 {
@@ -13,6 +14,7 @@ class Permissions extends BaseController
         $this->permissionModel = new Models\PermissionModel();
         $this->roleModel = new RoleModels\RoleModel();
         $this->roleController = new RoleControl\Roles();
+        $this->activityLogModel = new AppModels\ActivityLogModel();
     }
 
     public function index() {
@@ -59,6 +61,9 @@ class Permissions extends BaseController
                         'perm_mod' => $permissions['perm_mod'],
                     ];
                     if($this->rolePermissionModel->insert($value)) {
+                        $activityLog['user'] = $this->session->get('user_id');
+                        $activityLog['description'] = 'Edited permissions for role '.$data['selectedRole']['role_name'];
+                        $this->activityLogModel->save($activityLog);
                     } else {
                         $this->session->setFlashData('failMsg', 'There is an error on adding role. Please try again.');
                         return redirect()->back()->withInput();

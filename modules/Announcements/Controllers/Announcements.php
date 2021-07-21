@@ -10,6 +10,7 @@ class Announcements extends BaseController
     public function __construct() {
         $this->announceModel = new Models\AnnouncementModel();
         $this->userModel = new UserModels\UserModel();
+        $this->activityLogModel = new UserModels\ActivityLogModel();
     }
 
     public function index() {
@@ -50,6 +51,9 @@ class Announcements extends BaseController
                 $ann['link'] = random_string('alnum', 5);
                 $ann['uploader'] = $this->session->get('user_id');
                 if($this->announceModel->insert($ann)) {
+                    $activityLog['user'] = $this->session->get('user_id');
+                    $activityLog['description'] = 'Added a new announcement';
+                    $this->activityLogModel->save($activityLog);
                     $file->move('uploads/announcements', $ann['image']);
                     if ($file->hasMoved()) {
                         if(isset($_POST['sendMail']) == 'yes') {
@@ -79,7 +83,7 @@ class Announcements extends BaseController
 
     public function edit($link) {
         // checking roles and permissions
-        $data['perm_id'] = check_role('10', 'ANN', $this->session->get('role'));
+        $data['perm_id'] = check_role('13', 'ANN', $this->session->get('role'));
         if(!$data['perm_id']['perm_access']) {
             $this->session->setFlashdata('sweetalertfail', true);
             return redirect()->to(base_url());
@@ -101,6 +105,9 @@ class Announcements extends BaseController
                 if($this->announceModel->update($data['id'], $ann)) {
                     $file->move('uploads/announcements', $ann['image']);
                     if ($file->hasMoved()) {
+                        $activityLog['user'] = $this->session->get('user_id');
+                        $activityLog['description'] = 'Edited an announcement';
+                        $this->activityLogModel->save($activityLog);
                         $this->session->setFlashData('successMsg', 'Editing annoucement successful.');
                     } else {
                         $this->session->setFlashData('failMsg', 'There is an error on editing announcement. Please try again.');
@@ -131,6 +138,9 @@ class Announcements extends BaseController
         $data['rolePermission'] = $data['perm_id']['rolePermission'];
 
         if($this->announceModel->where('link', $link)->delete()) {
+            $activityLog['user'] = $this->session->get('user_id');
+            $activityLog['description'] = 'Deleted an announcement';
+            $this->activityLogModel->save($activityLog);
           $this->session->setFlashData('successMsg', 'Successfully deleted announcement');
         } else {
           $this->session->setFlashData('errorMsg', 'Something went wrong!');

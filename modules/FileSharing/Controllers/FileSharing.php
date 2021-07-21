@@ -3,11 +3,13 @@ namespace Modules\FileSharing\Controllers;
 
 use App\Controllers\BaseController;
 use Modules\FileSharing\Models as Models;
+use App\Models as AppModels;
 
 class FileSharing extends BaseController
 {
     public function __construct() {
         $this->fileSharingModel = new Models\FileSharingModel();
+        $this->activityLogModel = new AppModels\ActivityLogModel();
     }
     
     public function index() {
@@ -70,6 +72,9 @@ class FileSharing extends BaseController
                 $file->move('uploads/files/'.$userData['category'], $userData['file_name']);
                 if ($file->hasMoved()) {
                     if($this->fileSharingModel->save($userData)) {
+                        $activityLog['user'] = $this->session->get('user_id');
+                        $activityLog['description'] = 'Uploaded a new file.';
+                        $this->activityLogModel->save($activityLog);
                         $this->session->setFlashData('successMsg', 'Adding file successful');
                     } else {
                         $this->session->setFlashData('failMsg', 'There is an error on adding file. Please try again.');
@@ -97,4 +102,6 @@ class FileSharing extends BaseController
         $data['title'] = 'File';
         return view('Modules\FileSharing\Views\form', $data);
     }
+
+    // delete function pls
 }

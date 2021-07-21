@@ -152,7 +152,7 @@
       </div>
       <!-- /.card-header -->
       <div class="card-body" style="max-height:344px; height:344px; overflow-y: auto;">
-        <ol>
+        <ul>
           <li>Application</li>
             <ol>
               <?php foreach($activeElections['months'] as $appElecs):?>
@@ -177,7 +177,7 @@
                 <?php endif;?>
               <?php endforeach;?>
             </ol>
-        </ol>
+        </ul>
       </div>
       <!-- /.card-body -->
     </div>
@@ -233,34 +233,24 @@
         </div>
       </div>
       <div class="card-body card-comments" style="min-height: 290px; height: 290px; max-height: 290px; max-width: 100%; overflow-y: auto;">
-        <!-- /.card-comment -->
-        <div class="card-comment">
-          <!-- User image -->
-          <img class="img-circle img-sm" src="<?= base_url()?>/uploads/profile_pic/<?= $user_details['profile_pic']?>" alt="User Image">
-          <div class="comment-text">
-            <span class="username">
-              <?= $user_details['first_name']?> <?= $user_details['last_name']?>
-              <span class="text-muted float-right">8:03 PM Today</span>
-            </span><!-- /.username -->
-            Edited an announcement
+        <?php foreach($activities as $acts):?>
+          <!-- /.card-comment -->
+          <div class="card-comment">
+            <!-- User image -->
+            <a href="<?= base_url('user')?>/<?= esc($acts['username'])?>">
+              <img class="img-circle img-sm" src="<?= base_url()?>/uploads/profile_pic/<?= $acts['profile_pic']?>" alt="User Image">
+            </a>
+            <div class="comment-text">
+              <span class="username">
+                <a href="<?= base_url('user')?>/<?= esc($acts['username'])?>" style="color: #545454;"><?= $acts['first_name']?> <?= $acts['last_name']?></a>
+                <span class="text-muted float-right"><?= date('M d, Y g:ia', strtotime($acts['created_at']))?></span>
+              </span><!-- /.username -->
+              <?= esc($acts['description'])?>
+            </div>
+            <!-- /.comment-text -->
           </div>
-          <!-- /.comment-text -->
-        </div>
-        <!-- /.card-comment -->
-        <!-- /.card-comment -->
-        <div class="card-comment">
-          <!-- User image -->
-          <img class="img-circle img-sm" src="<?= base_url()?>/uploads/profile_pic/<?= $user_details['profile_pic']?>" alt="User Image">
-          <div class="comment-text">
-            <span class="username">
-              <?= $user_details['first_name']?> <?= $user_details['last_name']?>
-              <span class="text-muted float-right">8:03 PM Today</span>
-            </span><!-- /.username -->
-            Edited an announcement
-          </div>
-          <!-- /.comment-text -->
-        </div>
-        <!-- /.card-comment -->
+          <!-- /.card-comment -->
+        <?php endforeach;?>
       </div>
     </div>
   </div>

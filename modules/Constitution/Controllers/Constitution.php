@@ -4,14 +4,14 @@ namespace Modules\Constitution\Controllers;
 use CodeIgniter\Controller;
 use App\Controllers\BaseController;
 use Modules\Constitution\Models as Models;
-use App\Libraries as Libraries;
+use App\Models as AppModels;
 
 class Constitution extends BaseController
 {
 	function __construct() {
         $this->constiModel = new Models\ConstitutionModel();
-        $this->pdf = new Libraries\Pdf();
         $this->mpdf = new \Mpdf\Mpdf();
+        $this->activityLogModel = new AppModels\ActivityLogModel();
 	}
 	
 	public function index() {
@@ -45,6 +45,9 @@ class Constitution extends BaseController
         if($this->request->getMethod() === 'post') {
           if($this->validate('constitution')){
             if($this->constiModel->insert($_POST)){
+              $activityLog['user'] = $this->session->get('user_id');
+              $activityLog['description'] = 'Added a new constitution area';
+              $this->activityLogModel->save($activityLog);
               $this->session->setFlashData('successMsg', 'Sucessfully added a constitution');
             } else {
               $this->session->setFlashData('failMsg', 'Something went wrong!');
@@ -76,6 +79,9 @@ class Constitution extends BaseController
         if($this->request->getMethod() === 'post') {
           if($this->validate('constitution')){
             if($this->constiModel->update($id, $_POST)){
+              $activityLog['user'] = $this->session->get('user_id');
+              $activityLog['description'] = 'Edited an constitution';
+              $this->activityLogModel->save($activityLog);
               $this->session->setFlashData('successMsg', 'Sucessfully edited a constitution');
             } else {
               $this->session->setFlashData('failMsg', 'Something went wrong!');
@@ -106,6 +112,9 @@ class Constitution extends BaseController
     public function delete($id) {
         $data = $this->constiModel->where(['id' => $id])->first();
         if($this->constiModel->delete($id)){
+          $activityLog['user'] = $this->session->get('user_id');
+          $activityLog['description'] = 'Deleted an constitution';
+          $this->activityLogModel->save($activityLog);
           $this->session->setFlashData('successMsg', 'Sucessfully deleted a constitution');
         } else {
           $this->session->setFlashData('failMsg', 'Something went wrong!');

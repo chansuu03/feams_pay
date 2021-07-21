@@ -5,12 +5,14 @@ use App\Controllers\BaseController;
 use App\Controllers\Roles as Control;
 use Modules\Roles\Models as Models;
 use Modules\Permissions\Models as Perms;
+use App\Models as AppModels;
 
 class Roles extends BaseController
 {
     public function __construct() {
         $this->roleModel = new Models\RoleModel();
         $this->rolePermissionModel = new Perms\RolePermissionModel();
+        $this->activityLogModel = new AppModels\ActivityLogModel();
     }
 
     // titignan if si user is pwede ma access yung module
@@ -57,6 +59,9 @@ class Roles extends BaseController
         if($this->request->getMethod() == 'post') {
             if($this->validate('roles')){
                 if($this->roleModel->insert($_POST)) {
+                    $activityLog['user'] = $this->session->get('user_id');
+                    $activityLog['description'] = 'Added a new role';
+                    $this->activityLogModel->save($activityLog);
                     $this->session->setFlashData('successMsg', 'Adding role successful');
                     return redirect()->to(base_url('admin/roles'));
                 } else {
@@ -83,6 +88,9 @@ class Roles extends BaseController
         }
         $data['rolePermission'] = $data['perm_id']['rolePermission'];
         if($this->roleModel->where('id', $id)->delete()) {
+            $activityLog['user'] = $this->session->get('user_id');
+            $activityLog['description'] = 'Deleted a role';
+            $this->activityLogModel->save($activityLog);
           $this->session->setFlashData('successMsg', 'Successfully deleted role');
         } else {
           $this->session->setFlashData('errorMsg', 'Something went wrong!');

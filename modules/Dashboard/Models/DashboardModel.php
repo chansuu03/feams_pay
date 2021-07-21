@@ -84,4 +84,12 @@ class DashboardModel extends Model
         $query = $db->query($str);
         return $query->getResultArray();
     }
+
+    public function getActivity() {
+        $db      = \Config\Database::connect();
+        $builder = $db->table('activity_log');
+        $builder->select('users.first_name, users.last_name, users.username, users.profile_pic, activity_log.*');
+        $builder->join('users', 'users.id = activity_log.user', 'left');
+        return $builder->get()->getResultArray();
+    }
 }

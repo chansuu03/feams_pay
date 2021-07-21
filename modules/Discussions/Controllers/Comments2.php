@@ -4,15 +4,16 @@ namespace Modules\Discussions\Controllers;
 use CodeIgniter\Controller;
 use App\Controllers\BaseController;
 use Modules\Discussions\Models as Models;
-use App\Models\UserModel;
+use App\Models as AppModels;
 
 class Comments2 extends BaseController
 {
     function __construct() {
         $this->session = session();
         $this->threadModel = new Models\ThreadModel();
-        $this->userModel = new UserModel();
+        $this->userModel = new AppModels\UserModel();
         $this->commentModel = new Models\CommentModel();
+        $this->activityLogModel = new AppModels\ActivityLogModel();
     }
 
     public function index($thread) { 
@@ -38,6 +39,9 @@ class Comments2 extends BaseController
             
             if($this->validate('comment')) {
                 if($this->commentModel->save($comment)) {
+                    $activityLog['user'] = $this->session->get('user_id');
+                    $activityLog['description'] = 'Added comment on discussion '. $threadData['subject'];
+                    $this->activityLogModel->save($activityLog);
                     return redirect()->back();
                 }
                 else {
@@ -86,6 +90,9 @@ class Comments2 extends BaseController
             'deleted_at' => date('Y-m-d H:i:s'),
         ];
         if($this->commentModel->save($data)) {
+            $activityLog['user'] = $this->session->get('user_id');
+            $activityLog['description'] = 'Deleted a comment.';
+            $this->activityLogModel->save($activityLog);
             $this->session->setFlashdata('successMsg', 'Comment deleted successfully');
             return redirect()->back();
         } else {
