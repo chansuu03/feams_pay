@@ -41,6 +41,11 @@ class FileSharing extends Migration
                 'constraint'     => ['for all', 'admin'],
 				'comment'        => 'visibility of the file',
 			],
+			'downloads' => [
+				'type'           => 'INT',
+                'constraint'     => 11,
+				'comment'        => 'Number of downloads',
+			],
 			'uploaded_at' => [
 				'type'           => 'DATETIME',
 			],
