@@ -3,12 +3,14 @@ namespace Modules\Elections\Controllers;
 
 use App\Controllers\BaseController;
 use Modules\Elections\Models as Models;
+use App\Models as AppModels;
 
 class Positions2 extends BaseController
 {
     public function __construct() {
         $this->electionModel = new Models\ElectionModel();
         $this->positionModel = new Models\PositionModel();
+        $this->activityLogModel = new AppModels\ActivityLogModel();
     }
 
     public function index() {
@@ -62,7 +64,14 @@ class Positions2 extends BaseController
         $data['elections'] = $this->electionModel->where(['status' => 'Application'])->findAll();
         if($this->request->getMethod() == 'post') {
             if($this->validate('positions')){
+                // echo '<pre>';
+                // print_r($_POST);
+                // die();
                 if($this->positionModel->save($_POST)) {
+                    $data['chosen_election'] = $this->electionModel->where(['status' => 'Application', 'id' => $_POST['election_id']])->first();
+                    $activityLog['user'] = $this->session->get('user_id');
+                    $activityLog['description'] = 'Added a position for the election: ' . $data['chosen_election']['title'];
+                    $this->activityLogModel->save($activityLog);
                     $this->session->setFlashdata('successMsg', 'Successfully added an position');
                     return redirect()->to(base_url('admin/positions'));
                 } else {
@@ -78,5 +87,19 @@ class Positions2 extends BaseController
         $data['active'] = 'positions';
         $data['title'] = 'Positions';
         return view('Modules\Elections\Views\positions\form2', $data);
+    }
+    
+    public function delete($id) {
+        $positionData = $this->positionModel->where('id', $id)->first();
+        $electionData = $this->electionModel->where(['status' => 'Application', 'id' => $positionData['election_id']])->first();
+        if($this->positionModel->delete($id)) {
+          $activityLog['user'] = $this->session->get('user_id');
+          $activityLog['description'] = 'Deleted a position for the election: '. $electionData['title'];
+          $this->activityLogModel->save($activityLog);
+          $this->session->setFlashData('successMsg', 'Successfully deleted position');
+        } else {
+          $this->session->setFlashData('failMsg', 'Something went wrong!');
+        }
+        return redirect()->to(base_url('admin/positions'));
     }
 }

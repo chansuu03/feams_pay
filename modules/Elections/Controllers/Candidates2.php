@@ -3,7 +3,7 @@ namespace Modules\Elections\Controllers;
 
 use App\Controllers\BaseController;
 use Modules\Elections\Models as Models;
-use App\Models\UserModel;
+use App\Models as AppModels;
 
 class Candidates2 extends BaseController
 {
@@ -11,7 +11,8 @@ class Candidates2 extends BaseController
         $this->candidateModel = new Models\CandidateModel();
         $this->electionModel = new Models\ElectionModel();
         $this->positionModel = new Models\PositionModel();
-        $this->userModel = new UserModel();
+        $this->userModel = new AppModels\UserModel();
+        $this->activityLogModel = new AppModels\ActivityLogModel();
     }
     
     public function index() {
@@ -90,6 +91,9 @@ class Candidates2 extends BaseController
                 $file = $this->request->getFile('photo');
                 if (!$file->isValid()) {
                     if($this->candidateModel->insert($_POST)) {
+                        $activityLog['user'] = $this->session->get('user_id');
+                        $activityLog['description'] = 'Added a new candidate';
+                        $this->activityLogModel->save($activityLog);
                         $this->session->setFlashData('successMsg', 'Adding candidate successful');
                     } else {
                         $this->session->setFlashData('failMsg', 'There is an error on adding candidate. Please try again.');
@@ -123,5 +127,17 @@ class Candidates2 extends BaseController
         $data['positions'] = $this->positionModel->where(['election_id' => $id])->findAll();
 
         return view('Modules\Elections\Views\candidates\positions', $data);
+    }
+
+    public function delete($id) {
+        if($this->candidateModel->delete($id)) {
+            $activityLog['user'] = $this->session->get('user_id');
+            $activityLog['description'] = 'Deleted a candidate.';
+            $this->activityLogModel->save($activityLog);
+          $this->session->setFlashData('successMsg', 'Successfully deleted candidate');
+        } else {
+          $this->session->setFlashData('failMsg', 'Something went wrong!');
+        }
+        return redirect()->to(base_url('admin/candidates'));
     }
 }

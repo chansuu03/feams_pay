@@ -50,36 +50,36 @@
       <?php foreach($positions as $position):?>
         <?php $posTotalVotes = 0;?>
         <tr>
-            <td colspan="2"><?= esc($position['name'])?></td>
+            <td style="text-align: center;" colspan="2"><?= esc($position['name'])?></td>
         </tr>
         <?php foreach($candidates as $candidate):?>
         <tr>
             <?php $voteCount = 0;?>
-            <td style="text-align: center;"><?= esc($candidate['first_name'])?> <?= esc($candidate['last_name'])?></td>
+            <td><?= esc($candidate['first_name'])?> <?= esc($candidate['last_name'])?></td>
             <?php foreach($voteDetails as $voteDetail){
               if(($candidate['id'] && $position['id']) == ($voteDetail['candidate_id'] &&$voteDetail['position_id'])) {
                 $voteCount++;
                 $posTotalVotes++;
               }
             }?>
-            <td><?= esc($voteCount)?></td>
+            <td style="text-align: center;"><?= esc($voteCount)?></td>
         </tr>
         <?php endforeach;?>
         <tr>
           <?php $voteCount = 0;?>
-          <td style="text-align: center;">Abstain</td>
+          <td>Abstain</td>
           <?php foreach($voteDetails as $voteDetail){
             if($voteDetail['candidate_id'] == '0' && $voteDetail['position_id'] == $position['id']) {
               $voteCount++;
               $posTotalVotes++;
             }
           }?>
-          <td><?= esc($voteCount)?></td>
+          <td style="text-align: center;"><?= esc($voteCount)?></td>
         </tr>
         <tr><td><br></td></tr> 
         <tr>
-            <td style="text-align: center;">Total Votes</td>
-            <td><?= $posTotalVotes;?></td>
+            <td>Total Votes</td>
+            <td style="text-align: center;"><?= $posTotalVotes;?></td>
         </tr>
       <?php endforeach;?>
     </table>

@@ -115,12 +115,19 @@
           </div>
         </div>
       <?php endforeach;?>
+      <a class="btn btn-primary mt-3 float-right" href="<?= base_url('admin/announcements')?>" role="button">See More</a>
     </div>
     <div class="col-md-3">
     </div>
   </div>
 </div>
 
+<nav class="navbar navbar-expand-lg navbar-custom">
+  <a class="navbar-brand" href="#">FEAMS</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+</nav>
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts') ?>

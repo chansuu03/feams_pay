@@ -59,7 +59,8 @@ class Users extends BaseController
         
         $data['user_details'] = user_details($this->session->get('user_id'));
         $data['user'] = $this->userModel->viewProfile($username);
-        $data['files'] = $this->userModel->getFileUploads($data['user']['id']);
+        $data['files2'] = $this->userModel->getFileUploads($data['user']['id']);
+        $data['files'] = $this->userModel->getFileSharingUploads($data['user']['id']);
         $data['roles'] = $this->roleModel->findAll();
         if(!empty($data['perm_id']['perm_id']['36'])) {
           $data['edit'] = true;

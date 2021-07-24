@@ -36,33 +36,8 @@ class Dashboard extends BaseController
         $data['logins'] = $this->dashboardModel->logins();
         // activity logs
         $data['activities'] = $this->dashboardModel->getActivity();
-
-
-        // echo date('t').'<br>';
-        $ctr = 0;
-        // for($i = 1; $i <= date('t'); $i++) {
-        //     echo $i.' ';
-        //     if($data['logins'][$ctr]['login_day'] == $i) {
-        //         echo $data['logins'][$ctr]['count'].'<br>';
-        //         $ctr++;
-        //     } else {
-        //         echo '0 <br>';
-        //         $ctr++;
-        //     }
-        // }
-        // for($i = 1; $i <= date('t'); $i++) {
-        //     echo $i.' ';
-        //     foreach($data['logins'] as $login) {
-        //         if((int)$login['login_day'] == $i) {
-        //             echo $login['count'].'<br>';
-        //         } else {
-        //             echo '0 <br>';
-        //         }
-        //     }
-        // }
-        // echo '<pre>';
-        // print_r($data['activities']);
-        // die();
+        // announcement count
+        $data['announcements'] = $this->dashboardModel->announcements();
         
         $data['user_details'] = user_details($this->session->get('user_id'));
         $data['active'] = 'dashboard';

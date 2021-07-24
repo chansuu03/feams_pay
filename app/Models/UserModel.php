@@ -56,4 +56,11 @@ class UserModel extends Model {
     $this->join('files', 'users.id = files.uploader', 'left');
     return $this->get()->getResultArray();
   }
+
+  public function getFileSharingUploads($id) {
+    $this->select('users.id, file_sharing.*, file_sharing.file_name as name');
+    $this->where(['file_sharing.uploader' => $id, 'file_sharing.deleted_at ' => NULL]);
+    $this->join('file_sharing', 'users.id = file_sharing.uploader', 'left');
+    return $this->get()->getResultArray();
+  }
 }

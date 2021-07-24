@@ -92,4 +92,14 @@ class DashboardModel extends Model
         $builder->join('users', 'users.id = activity_log.user', 'left');
         return $builder->get()->getResultArray();
     }
+
+    public function announcements() {
+        $db      = \Config\Database::connect();
+        $query = 'SELECT    COUNT(*) as count, MONTH(`created_at`)
+        FROM      announcements  
+        WHERE     YEAR(`created_at`) = YEAR(CURRENT_DATE())
+        GROUP BY  MONTH(`created_at`)';
+        $query = $db->query($str);
+        return $builder->get()->getResultArray();
+    }
 }

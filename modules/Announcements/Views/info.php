@@ -35,14 +35,14 @@
 <?php endif;?>
 
 <div class="container">
-    <div class="row">
+    <div class="row justify-content-center">
         <div class="col-md-6">
             <img src="<?= base_url()?>/uploads/announcements/<?= esc($announce['image'])?>" class="rounded img-fluid" alt="Announcement image">
         </div>
     </div>
     <br>
-    <div class="row text-justify">
-        <div class="col-md-12">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-justify">
             <?= esc($announce['description'], 'raw')?>
         </div>
     </div>

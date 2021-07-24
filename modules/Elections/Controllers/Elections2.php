@@ -5,6 +5,7 @@ use App\Controllers\BaseController;
 use Modules\Elections\Models as Models;
 use Modules\Voting\Models as VotingModels;
 use App\Libraries as Libraries;
+use App\Models as AppModels;
 
 class Elections2 extends BaseController
 {
@@ -16,6 +17,7 @@ class Elections2 extends BaseController
         $this->voteDetailModel = new VotingModels\VoteDetailModel();
         $this->pdf = new Libraries\Pdf();
         $this->mpdf = new \Mpdf\Mpdf();
+        $this->activityLogModel = new AppModels\ActivityLogModel();
 
         $elections = $this->electionModel->findAll();
     }
@@ -53,6 +55,9 @@ class Elections2 extends BaseController
                 // print_r($_POST);
                 // die();
                 if($this->electionModel->save($_POST)) {
+                    $activityLog['user'] = $this->session->get('user_id');
+                    $activityLog['description'] = 'Added a new election';
+                    $this->activityLogModel->save($activityLog);
                     $this->session->setFlashdata('successMsg', 'Successfully started an election');
                     return redirect()->to(base_url('admin/elections'));
                 } else {
@@ -117,6 +122,9 @@ class Elections2 extends BaseController
             'status' => 'Finished',
         ];
         if($this->electionModel->save($data)) {
+            $activityLog['user'] = $this->session->get('user_id');
+            $activityLog['description'] = 'Finished an election';
+            $this->activityLogModel->save($activityLog);
             $this->session->setFlashdata('successMsg', 'Successfully finished an election');
             return redirect()->to(base_url('admin/elections'));
         } else {

@@ -4,6 +4,7 @@ namespace Modules\Voting\Controllers;
 use App\Controllers\BaseController;
 use Modules\Voting\Models as Models;
 use Modules\Elections\Models as Election;
+use App\Models as AppModels;
 
 class Voting2 extends BaseController
 {
@@ -13,6 +14,7 @@ class Voting2 extends BaseController
         $this->candidateModel = new Election\CandidateModel();
         $this->voteModel = new Models\VoteModel();
         $this->voteDetailModel = new Models\VoteDetailModel();
+        $this->activityLogModel = new AppModels\ActivityLogModel();
 
         foreach($this->electionModel->findAll() as $election) {
             if($election['status'] == 'Application') {
@@ -123,7 +125,11 @@ class Voting2 extends BaseController
             if($this->voteModel->save($voter)) {
                 $voterData = $this->voteModel->where(['election_id' => $voter['election_id'], 'voters_id' => $this->session->get('user_id')])->first();
                 $data['electionPosition'] = $this->positionModel->where('election_id', $voter['election_id'])->findAll();
+                $election = $this->electionModel->where(['election_id' => $voter['election_id'], 'status' => 'Voting'])->first();
                 // pagtapos mag save ng voter detail, isasave na votes
+                $activityLog['user'] = $this->session->get('user_id');
+                $activityLog['description'] = 'Voted for the election: '.$election['title'];
+                $this->activityLogModel->save($activityLog);
                 foreach($data['electionPosition'] as $position) {
                     if($this->request->getVar($position['id']) != 0) {
                         $voteData = [
