@@ -134,8 +134,6 @@
   </div>
 </div>
 
-
-
 <div class="row">
   <div class="col-md-4">
     <div class="card">
@@ -255,6 +253,28 @@
     </div>
   </div>
 </div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <p class="card-title">
+          <i class="fas fa-text-width"></i>
+          Announcements for the year of <?= date('Y')?>
+        </p>
+        <div class="card-tools">
+          <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <canvas id="announcement_chart" style="max-height:300px; height:300px;"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
 <?= $this->endSection();?>
 
 <?= $this->section('scripts') ?>
@@ -263,11 +283,45 @@
   <!-- ChartJS -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.4.1/dist/chart.min.js"></script>
 
-  <!-- chartJS Logins -->
+  <!-- chartJS announcements -->
   <script>
     const monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
     const datas = {
+      labels: monthNames,
+      datasets: [{
+        label: 'Announcements posted',
+        data: [
+          <?php foreach($announcements as $ann):?>
+            <?= $ann['Jan']?>,
+            <?= $ann['Feb']?>,
+            <?= $ann['Mar']?>,
+            <?= $ann['Apr']?>,
+            <?= $ann['May']?>,
+            <?= $ann['Jun']?>,
+            <?= $ann['Jul']?>,
+            <?= $ann['Aug']?>,
+            <?= $ann['Sep']?>,
+            <?= $ann['Oct']?>,
+            <?= $ann['Nov']?>,
+            <?= $ann['Dec']?>,
+          <?php endforeach;?>
+        ],
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1
+      }]
+    };
+    
+    var myLineChart = new Chart($("#announcement_chart"), {
+        type: 'line',
+        data: datas,
+    });
+  </script>
+  <!-- chartJS Logins -->
+  <script>
+
+    const loginDatas = {
       labels: monthNames,
       datasets: [{
         label: 'Login Count',
@@ -295,7 +349,7 @@
     
     var myLineChart = new Chart($("#logins_chart"), {
         type: 'line',
-        data: datas,
+        data: loginDatas,
     });
   </script>
   <!-- chartJS bar chart -->

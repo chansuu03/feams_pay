@@ -95,11 +95,22 @@ class DashboardModel extends Model
 
     public function announcements() {
         $db      = \Config\Database::connect();
-        $query = 'SELECT    COUNT(*) as count, MONTH(`created_at`)
-        FROM      announcements  
-        WHERE     YEAR(`created_at`) = YEAR(CURRENT_DATE())
-        GROUP BY  MONTH(`created_at`)';
+        $str = "SELECT 
+        SUM(MONTH(created_at) = '1') AS 'Jan',
+        SUM(MONTH(created_at) = '2') AS 'Feb',
+        SUM(MONTH(created_at) = '3') AS 'Mar',
+        SUM(MONTH(created_at) = '4') AS 'Apr',
+        SUM(MONTH(created_at) = '5') AS 'May',
+        SUM(MONTH(created_at) = '6') AS 'Jun',
+        SUM(MONTH(created_at) = '7') AS 'Jul',
+        SUM(MONTH(created_at) = '8') AS 'Aug',
+        SUM(MONTH(created_at) = '9') AS 'Sep',
+        SUM(MONTH(created_at) = '10') AS 'Oct',
+        SUM(MONTH(created_at) = '11') AS 'Nov',
+        SUM(MONTH(created_at) = '12') AS 'Dec',
+        SUM(YEAR(created_at) = YEAR(CURDATE())) AS 'total',
+        YEAR(CURDATE()) AS currentyear FROM announcements WHERE YEAR(created_at) = YEAR(CURDATE()) AND deleted_at is NULL";
         $query = $db->query($str);
-        return $builder->get()->getResultArray();
+        return $query->getResultArray();
     }
 }

@@ -38,6 +38,9 @@ class Dashboard extends BaseController
         $data['activities'] = $this->dashboardModel->getActivity();
         // announcement count
         $data['announcements'] = $this->dashboardModel->announcements();
+        // echo '<pre>';
+        // print_r($data['announcements']);
+        // die();
         
         $data['user_details'] = user_details($this->session->get('user_id'));
         $data['active'] = 'dashboard';
