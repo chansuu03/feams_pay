@@ -64,6 +64,7 @@ class Comments2 extends BaseController
 
     public function delete($link, $id) {
         $data['comment'] = $this->commentModel->where(['id' => $id])->first();
+        $threadData = $this->threadModel->where('link', $link)->first();
         // echo '<pre>';
         // print_r($data['comment']);
         // die();
@@ -75,11 +76,13 @@ class Comments2 extends BaseController
                 return redirect()->to(base_url());
             } else {
                 $this->deleteModel($link, $id);
-                return redirect()->to(base_url('discussions'));
+                return redirect()->to(base_url('discussions/'.$threadData['link']));
+                // return redirect()->to(base_url('discussions'));
             }
         }
         $this->deleteModel($link, $id);
-        return redirect()->to(base_url('discussions'));
+        return redirect()->to(base_url('discussions/'.$threadData['link']));
+        // return redirect()->to(base_url('discussions'));
         $data['rolePermission'] = $data['perm_id']['rolePermission'];
     }
 
@@ -89,12 +92,14 @@ class Comments2 extends BaseController
             'deleted_by' => $this->session->get('user_id'),
             'deleted_at' => date('Y-m-d H:i:s'),
         ];
+        $threadData = $this->threadModel->where('link', $link)->first();
         if($this->commentModel->save($data)) {
             $activityLog['user'] = $this->session->get('user_id');
-            $activityLog['description'] = 'Deleted a comment.';
+            $activityLog['description'] = 'Deleted a comment on '. $threadData['subject'];
             $this->activityLogModel->save($activityLog);
             $this->session->setFlashdata('successMsg', 'Comment deleted successfully');
-            return redirect()->back();
+            return redirect()->to(base_url('discussions/'.$threadData['link']));
+            // return redirect()->back();
         } else {
             $this->session->setFlashdata('failMsg', 'Failed to delete comment');
             return redirect()->to(base_url('discussions'));
