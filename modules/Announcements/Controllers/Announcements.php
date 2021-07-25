@@ -16,20 +16,49 @@ class Announcements extends BaseController
     public function index() {
         // checking roles and permissions
         $data['perm_id'] = check_role('11', 'ANN', $this->session->get('role'));
-        if(!$data['perm_id']['perm_access']) {
-            $this->session->setFlashdata('sweetalertfail', true);
-            return redirect()->to(base_url());
-        }
+        // if(!$data['perm_id']['perm_access']) {
+        //     $this->session->setFlashdata('sweetalertfail', true);
+        //     return redirect()->to(base_url());
+        // }
         $data['rolePermission'] = $data['perm_id']['rolePermission'];
 
         $data['announcements'] = $this->announceModel->viewUploader();
         // echo '<pre>';
-        // print_r($data['announcements']);
+        // print_r($data['perm_id']);
         // die();
         $data['user_details'] = user_details($this->session->get('user_id'));
         $data['active'] = 'announcements';
         $data['title'] = 'Announcements';
-        return view('Modules\Announcements\Views\index', $data);
+        
+        $adminAccess = false;
+        foreach($data['perm_id']['perm_id'] as $perms) {
+            if($perms == '11') {
+                $adminAccess = true;
+            }
+        }
+        if($adminAccess) {
+            return view('Modules\Announcements\Views\index', $data);
+        } else {
+            // return view('Modules\Announcements\Views\member', $data);
+            return redirect()->to(base_url('announcements'));
+        }
+    }
+
+    public function forMembers() {
+        // checking roles and permissions
+        $data['perm_id'] = check_role('', '', $this->session->get('role'));
+        // if(!$data['perm_id']['perm_access']) {
+        //     $this->session->setFlashdata('sweetalertfail', true);
+        //     return redirect()->to(base_url());
+        // }
+        $data['rolePermission'] = $data['perm_id']['rolePermission'];
+
+        $data['announcements'] = $this->announceModel->viewUploader();
+
+        $data['user_details'] = user_details($this->session->get('user_id'));
+        $data['active'] = 'announcements';
+        $data['title'] = 'Announcements';
+        return view('Modules\Announcements\Views\member', $data);
     }
 
     public function add() {
@@ -44,6 +73,9 @@ class Announcements extends BaseController
         helper('text');
         $data['edit'] = false;
         if($this->request->getMethod() == 'post') {
+            if($_POST['description'] == "<p><br></p>"){
+                $_POST['description'] = "";
+            }
             if($this->validate('announcements')){
                 $file = $this->request->getFile('image');
                 $ann = $_POST;

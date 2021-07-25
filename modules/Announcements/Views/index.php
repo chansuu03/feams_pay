@@ -35,7 +35,7 @@
 
 <div class="card">
   <?php foreach($perm_id['perm_id'] as $perms):?>
-    <?php if($perms == '11'):?>
+    <?php if($perms == '12'):?>
       <div class="card-header">
         <div class="float-right">
             <a class="btn btn-primary btn-sm" href="<?= base_url('admin/announcements/add')?>" role="button">Add Announcement</a>
