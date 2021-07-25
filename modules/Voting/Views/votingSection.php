@@ -10,7 +10,28 @@
                     <?php foreach($candidates as $candidate):?>
                       <?php if($candidate['position_id'] == $position['id']):?>
                         <li class="list-group-item">
-                            <div class="form-check">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="<?= esc($position['id'])?>" value="<?= esc($candidate['id'])?>">
+                                        <label class="form-check-label" for="exampleRadios1">
+                                            <?= esc($candidate['first_name'])?> <?= esc($candidate['last_name'])?>
+                                        </label>
+                                    </div>
+                                    <?php if(!empty($candidate['photo'])):?>
+                                        <img src="<?= base_url('uploads/candidates')?>/<?= esc($candidate['photo'])?>" alt="..." class="img-thumbnail" style="height: 200px; width: 200px;">
+                                    <?php else:?>
+                                        <img src="<?= base_url('uploads/profile_pic')?>/<?= esc($candidate['profile_pic'])?>" alt="..." class="img-thumbnail" style="height: 200px; width: 200px;">
+                                    <?php endif;?>
+                                </div>
+                                <div class="col-md-6">
+                                  <dl class="row">
+                                    <dt class="col-md-3">Platform</dt>
+                                      <dd class="col-md-9"><?= esc($candidate['platform'], 'raw')?></dd>
+                                  </dl>
+                                </div>
+                            </div>
+                            <!-- <div class="form-check">
                                 <input class="form-check-input" type="radio" name="<?= esc($position['id'])?>" value="<?= esc($candidate['id'])?>">
                                 <label class="form-check-label" for="exampleRadios1">
                                     <?= esc($candidate['first_name'])?> <?= esc($candidate['last_name'])?>
@@ -20,7 +41,7 @@
                                 <img src="<?= base_url('uploads/candidates')?>/<?= esc($candidate['photo'])?>" alt="..." class="img-thumbnail" style="height: 200px; width: 200px;">
                             <?php else:?>
                                 <img src="<?= base_url('uploads/profile_pic')?>/<?= esc($candidate['profile_pic'])?>" alt="..." class="img-thumbnail" style="height: 200px; width: 200px;">
-                            <?php endif;?>
+                            <?php endif;?> -->
                         </li>
                       <?php endif;?>
                     <?php endforeach;?>
