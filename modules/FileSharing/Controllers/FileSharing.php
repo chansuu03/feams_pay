@@ -10,6 +10,16 @@ class FileSharing extends BaseController
     public function __construct() {
         $this->fileSharingModel = new Models\FileSharingModel();
         $this->activityLogModel = new AppModels\ActivityLogModel();
+        $this->mpdf = new \Mpdf\Mpdf();
+
+        $data = $this->fileSharingModel->getYearOld();
+        foreach($data as $file) {
+            if($this->fileSharingModel->delete($file['id'])) {
+                if(file_exists('uploads/files/'.$file['category'].'/'.$file['file_name'])) {
+                unlink('uploads/files/'.$file['category'].'/'.$file['file_name']);
+                }
+            }
+        }
     }
     
     public function index() {
@@ -52,7 +62,7 @@ class FileSharing extends BaseController
                 }
                 $docs = ['docx', 'txt', 'pdf', 'xlsx', 'pptx', 'csv', 'ppt', 'xml'];
                 $media = ['mp3', 'wav', 'm4a', 'mid', 'wma', '3gp', 'avi', 'flv', 'm4v', 'mov', 'mp4', 'mpg'];
-                $images = ['bmp', 'gif', 'jpg', 'jpeg', 'png', 'psd', 'tiff', 'svg'];
+                $images = ['bmp', 'gif', 'jpg', 'jpeg', 'png', 'psd', 'tiff', 'svg', 'PNG', 'JPEG', 'JPG'];
                 if (in_array($userData['extension'], $docs)) {
                     $userData['category'] = 'Documents';
                 } elseif (in_array($userData['extension'], $media)) {
@@ -104,4 +114,59 @@ class FileSharing extends BaseController
     }
 
     // delete function pls
+    public function delete($id) {
+        $data = $this->fileSharingModel->where('id', $id)->first();
+        // echo '<pre>';
+        // print_r($data);
+        // die();
+        if($this->fileSharingModel->delete($id)) {
+            if(file_exists('uploads/files/'.$data['category'].'/'.$data['file_name'])) {
+              unlink('uploads/files/'.$data['category'].'/'.$data['file_name']);
+            }
+            $activityLog['user'] = $this->session->get('user_id');
+            $activityLog['description'] = 'Deleted a file.';
+            $this->activityLogModel->save($activityLog);
+            $this->session->setFlashData('successMsg', 'Successfully deleted File');
+        } else {
+            $this->session->setFlashData('failMsg', 'Something went wrong!');
+        }
+        return redirect()->to(base_url('file_sharing'));
+    }
+
+    public function download($id) {
+        $data = $this->fileSharingModel->where('id', $id)->first();
+        $edited = [];
+        if($data['downloads'] == NULL) {
+            $edited = [
+                'id' => $id,
+                'downloads' => 1,
+            ];
+        } else {
+            $edited = [
+                'id' => $id,
+                'downloads' => (int)$data['downloads'] + 1,
+            ];
+        }
+        if($this->fileSharingModel->save($edited)) {
+            return redirect()->to(base_url('uploads/files/'.$data['category'].'/'.$data['file_name']));
+        } else {
+            return redirect()->to(base_url('file_sharing'));
+        }
+    }
+
+    public function generatePDF() {
+        $data['files'] = $this->fileSharingModel->getDownloads();
+        // echo '<pre>';
+        // print_r($data['files']);
+        // die();
+        $html = view('Modules\FileSharing\Views\pdf', $data);
+        // $this->mpdf->SetHeader($elecDetails['title'].' Results|'.date('M d,Y').'|Page: {PAGENO}');
+        $this->mpdf->SetHTMLHeader('
+            <p style="border-bottom: 1px solid; width: 100%;">Monthly File Reports FEAMS</p>
+        ');
+        $this->mpdf->SetFooter('File Downloads for the month of '. date('F'));
+        $this->mpdf->WriteHTML($html);
+        $this->response->setHeader('Content-Type', 'application/pdf');
+        $this->mpdf->Output('Monthly File Reports.pdf','I');
+    }
 }
