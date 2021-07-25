@@ -76,7 +76,7 @@
 
 <li class="nav-item">
     <a href="<?= base_url('discussions')?>" class="nav-link <?= $active=="discussions" ? 'active': ''?>">
-        <i class="nav-icon fas fa-user-plus"></i>
+        <i class="nav-icon fas fa-comments"></i>
         <p>
             Discussions
         </p>
@@ -85,7 +85,7 @@
 
 <li class="nav-item">
     <a href="<?= base_url('file_sharing')?>" class="nav-link <?= $active=="files" ? 'active': ''?>">
-        <i class="nav-icon fas fa-user-plus"></i>
+        <i class="nav-icon fas fa-file-upload"></i>
         <p>
             File Sharing
         </p>
@@ -174,7 +174,7 @@
     <?php if($rolePerms['perm_mod'] == 'POS'):?>
         <li class="nav-item">
             <a href="<?= base_url('admin/positions')?>" class="nav-link <?= $active=="positions" ? 'active': ''?>">
-                <i class="nav-icon fas fa-user-plus"></i>
+                <i class="nav-icon fas fa-users"></i>
                 <p>
                     Positions
                 </p>
@@ -193,7 +193,7 @@
     <?php if($rolePerms['perm_mod'] == 'CAN'):?>
         <li class="nav-item">
             <a href="<?= base_url('admin/candidates')?>" class="nav-link <?= $active=="candidates" ? 'active': ''?>">
-                <i class="nav-icon fas fa-user-plus"></i>
+                <i class="nav-icon fas fa-user-tie"></i>
                 <p>
                     Candidates
                 </p>
@@ -208,7 +208,7 @@
 
 <li class="nav-item">
     <a href="<?= base_url('voting')?>" class="nav-link <?= $active=="voting" ? 'active': ''?>">
-        <i class="nav-icon fas fa-user-plus"></i>
+        <i class="nav-icon fas fa-vote-yea"></i>
         <p>
             Voting
         </p>
@@ -217,7 +217,7 @@
 
 <li class="nav-item">
     <a href="<?= base_url('constitution')?>" class="nav-link <?= $active=="constitution" ? 'active': ''?>">
-        <i class="nav-icon fas fa-user-plus"></i>
+        <i class="nav-icon fas fa-scroll"></i>
         <p>
             Constitution
         </p>
