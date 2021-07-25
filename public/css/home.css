@@ -55,7 +55,7 @@ div#navbarSupportedContent.collapse.navbar-collapse
 .announces #announceHead
 {
   font-family: 'Simplifica', Arial, sans-serif;
-  color: white;
+  /* color: white; */
   /* text-transform: uppercase; */
   font-size: 50px;
   margin-left: 325px;
@@ -63,13 +63,14 @@ div#navbarSupportedContent.collapse.navbar-collapse
 
 .card
 {
-  background-color: #5A757F;
-  color: white;
+  /* background-color: #5A757F; */
+  /* background-color: #ebe9fa; */
   border-style: solid;
-  border-color: white;
+  border-color: #424242;
   border-width: 2px;
 }
 body
 {
-  background-color: #5A757F;
+  /* background-color: #ebe9fa; */
+  /* background-color: #5A757F; */
 }
