@@ -17,6 +17,7 @@ class Comments2 extends BaseController
     }
 
     public function index($thread) { 
+        helper('text');
         // checking roles and permissions
         $data['perm_id'] = check_role('', '', $this->session->get('role'));
         $data['rolePermission'] = $data['perm_id']['rolePermission'];
@@ -31,8 +32,10 @@ class Comments2 extends BaseController
             return redirect()->to(base_url());
         }
 
+        $censoredWords = ['gago', 'tangina', 'bobo', 'tang ina', 'fuck', 'dick'];
         if($this->request->getMethod() == 'post') {
             $comment = $_POST;
+            $comment['comment'] = word_censor($_POST['comment'], $censoredWords, $replacement = '****');
             $comment['user_id'] = $this->session->get('user_id');
             $comment['thread_id'] = $threadData['id'];
             $comment['comment_date'] = date('Y-m-d H:i:s');
