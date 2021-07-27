@@ -161,18 +161,18 @@ class Validation
 		],
 		'vote_start' => [
 			'label' => 'Start Date', 
-			'rules' => 'required|valid_date[Y-m-d]',
+			'rules' => 'required|regex_match[/^([0-9]{4})([\-])([0-9]{2})([\-])([0-9]{2})[\ ]'.'([0-9]{2})[\:]([0-9]{2})[\:]([0-9]{2})$/]',
 			'errors' => [
 				'required' => 'Vote start is required',
-				'valid_date' => 'Vote start date is not a valid date',
+				'regex_match' => 'Vote start date is not a valid date',
 			]
 		],
 		'vote_end' => [
 			'label' => 'End Date', 
-			'rules' => 'required|valid_date[Y-m-d]',
+			'rules' => 'required|regex_match[/^([0-9]{4})([\-])([0-9]{2})([\-])([0-9]{2})[\ ]'.'([0-9]{2})[\:]([0-9]{2})[\:]([0-9]{2})$/]',
 			'errors' => [
 				'required' => 'Vote end is required',
-				'valid_date' => 'Vote end date is not a valid date',
+				'regex_match' => 'Vote end date is not a valid date',
 			]
 		],
 	];
