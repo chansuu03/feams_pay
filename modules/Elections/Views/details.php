@@ -27,7 +27,7 @@
   </div>
   <div class="card-body">
     <p class="card-text">
-      Vote dates: <?= esc(date('F d,Y',strtotime($election['vote_start'])))?> - <?= esc(date('F d,Y',strtotime($election['vote_end'])))?>
+      Vote dates: <?= esc(date('F d,Y g:iA',strtotime($election['vote_start'])))?> - <?= esc(date('F d,Y g:iA',strtotime($election['vote_end'])))?>
     </p>
 
     <div class="row">

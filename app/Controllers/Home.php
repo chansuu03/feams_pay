@@ -16,7 +16,7 @@ class Home extends BaseController
 
         foreach($this->electionModel->findAll() as $election) {
             if($election['status'] == 'Application') {
-                if(strtotime($election['vote_start']) <= strtotime(date('Y-m-d'))) {
+                if(strtotime($election['vote_start']) <= strtotime(date('Y-m-d H:i:s'))) {
                     $data = [
                         'id' => $election['id'],
                         'status' => 'Voting'

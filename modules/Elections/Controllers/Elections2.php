@@ -50,10 +50,10 @@ class Elections2 extends BaseController
 
         $data['edit'] = false;
         if($this->request->getMethod() == 'post') {
+            // echo '<pre>';
+            // print_r($_POST);
+            // die();
             if($this->validate('elections')){
-                // echo '<pre>';
-                // print_r($_POST);
-                // die();
                 if($this->electionModel->save($_POST)) {
                     $activityLog['user'] = $this->session->get('user_id');
                     $activityLog['description'] = 'Added a new election';
@@ -72,7 +72,8 @@ class Elections2 extends BaseController
         $data['user_details'] = user_details($this->session->get('user_id'));
         $data['active'] = 'elections';
         $data['title'] = 'Add Elections';
-        return view('Modules\Elections\Views\form', $data);
+        // return view('Modules\Elections\Views\form', $data);
+        return view('Modules\Elections\Views\formTime', $data);
     }
 
     public function add2() {
@@ -233,6 +234,7 @@ class Elections2 extends BaseController
         $data['voteDetails'] = $this->voteDetailModel->findAll();
         // echo '<pre>';
         // print_r($data['positions']);
+        // print_r($data['candidates']);
         // print_r($data['voteDetails']);
         // die();
         $html = view('Modules\Elections\Views\pdf', $data);

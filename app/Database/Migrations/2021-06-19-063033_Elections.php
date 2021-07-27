@@ -19,10 +19,10 @@ class Elections extends Migration
 				'constraint'     => 50,
 			],
 			'vote_start'          => [
-				'type'           => 'DATE',
+				'type'           => 'DATETIME',
 			],
 			'vote_end'          => [
-				'type'           => 'DATE',
+				'type'           => 'DATETIME',
 			],
 			'status'          => [
 				'type'           => 'ENUM',
