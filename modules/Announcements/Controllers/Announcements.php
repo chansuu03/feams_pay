@@ -11,6 +11,7 @@ class Announcements extends BaseController
         $this->announceModel = new Models\AnnouncementModel();
         $this->userModel = new UserModels\UserModel();
         $this->activityLogModel = new UserModels\ActivityLogModel();
+        $this->mpdf = new \Mpdf\Mpdf();
     }
 
     public function index() {
@@ -213,5 +214,21 @@ class Announcements extends BaseController
                 die();
             }
         }
+    }
+
+    public function generatePDF() {
+        // checking roles and permissions
+        $data['perm_id'] = check_role('37', 'REPO', $this->session->get('role'));
+        if(!$data['perm_id']['perm_access']) {
+            $this->session->setFlashdata('sweetalertfail', true);
+            return redirect()->to(base_url());
+        }
+
+        $data['announcements'] = $this->announceModel->findAll();
+        $html = view('Modules\Announcements\Views\pdf', $data);
+        $this->mpdf->SetFooter('Monthly Announcement Reports');
+        $this->mpdf->WriteHTML($html);
+        $this->response->setHeader('Content-Type', 'application/pdf');
+        $this->mpdf->Output('Monthly Announcement Reports.pdf','I');
     }
 }

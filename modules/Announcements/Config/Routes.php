@@ -5,6 +5,7 @@ $routes->group('admin/announcements', ['namespace' => 'Modules\Announcements\Con
   $routes->match(['get', 'post'], 'add', 'Announcements::add', ["filter" => "auth"]);
   $routes->match(['get', 'post'], 'edit/(:alphanum)', 'Announcements::edit/$1');
   $routes->get('delete/(:alphanum)', 'Announcements::delete/$1');
+  $routes->get('pdf', 'Announcements::generatePDF');
 });
 
 $routes->get('announcements/(:alphanum)', '\Modules\Announcements\Controllers\Announcements::info/$1', ["filter" => "auth"]);
