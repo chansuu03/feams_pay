@@ -4,37 +4,24 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Positions extends Migration
+class ElectoralPosition extends Migration
 {
-	private $table = 'positions';
+	private $table = 'electoral_positions';
 	public function up() {
-		$this->forge->addField([
+        $this->forge->addField([
 			'id'          => [
 				'type'           => 'INT',
 				'constraint'     => 11,
 				'auto_increment' => true,
 			],
-			'election_id'          => [
+			'position_name'          => [
+				'type'           => 'VARCHAR',
+				'constraint'     => 150,
+			],
+			'max_candidate'          => [
 				'type'           => 'INT',
 				'constraint'     => 11,
 			],
-			'elec_position_id'          => [
-				'type'           => 'INT',
-				'constraint'     => 11,
-			],
-			// 'name'          => [
-			// 	'type'           => 'VARCHAR',
-			// 	'constraint'     => 100,
-			// ],
-			// 'vote_count'          => [
-			// 	'type'           => 'INT',
-			// 	'constraint'     => 11,
-			// 	'default'        => null,
-			// ],
-			// 'max_candidate'          => [
-			// 	'type'           => 'INT',
-			// 	'constraint'     => 11,
-			// ],
 			'created_at' => [
 				'type'           => 'DATETIME',
 			],
@@ -54,6 +41,6 @@ class Positions extends Migration
 	}
 
 	public function down() {
-		$this->forge->dropTable('positions');
+		$this->forge->dropTable('electoral_positions');
 	}
 }

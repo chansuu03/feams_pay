@@ -300,4 +300,26 @@ class Validation
         ],
     ],
   ];
+
+  public $electoral_position = [
+    'position_name' => [
+        'label' => 'Position Name',
+        'rules' => 'required|max_length[100]|alpha_numeric_space',
+        'errors' => [
+            'required' => 'Position name is required',
+            'max_length' => 'Position name exceed maximum length',
+            'alpha_numeric_space' => 'Position name includes symbols',
+        ],
+    ],
+  ];
+
+  public $positions2 = [
+    'election_id' => [
+        'rules' => 'required|integer',
+        'errors' => [
+            'required' => 'Election is required',
+            'integer' => 'Error in selecting election',
+        ],
+    ],
+  ];
 }

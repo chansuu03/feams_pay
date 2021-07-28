@@ -17,6 +17,7 @@ class Elections2 extends BaseController
         $this->voteDetailModel = new VotingModels\VoteDetailModel();
         $this->pdf = new Libraries\Pdf();
         $this->mpdf = new \Mpdf\Mpdf();
+        $this->electoralPositionModel = new Models\ElectoralPositionModel();
         $this->activityLogModel = new AppModels\ActivityLogModel();
 
         $elections = $this->electionModel->findAll();
@@ -85,21 +86,15 @@ class Elections2 extends BaseController
         }
         $data['rolePermission'] = $data['perm_id']['rolePermission'];
 
-        // $activeElec = intval($this->electionModel->where('status', 'a')->countAllResults(false));
-        // if($activeElec >= 1) {
-        //     $this->session->setFlashdata('activeElec', 'An election is still ongoing, please wait for it to finish before adding.');
-        //     return redirect()->to(base_url('admin/elections'));
-        // }
-
+        $data['elecPositions'] = $this->electoralPositionModel->findAll();
+        $data['positions'] = $this->positionModel->findAll();
         $data['edit'] = false;
         if($this->request->getMethod() == 'post') {
-            // echo '<pre>';
-            // print_r($_POST);
-            // die();
             if($this->validate('elections')){
-                $post = $_POST;
-                $post['status'] = 'a';
-                if($this->electionModel->save($post)) {
+                if($this->electionModel->save($_POST)) {
+                    $activityLog['user'] = $this->session->get('user_id');
+                    $activityLog['description'] = 'Added a new election';
+                    $this->activityLogModel->save($activityLog);
                     $this->session->setFlashdata('successMsg', 'Successfully started an election');
                     return redirect()->to(base_url('admin/elections'));
                 } else {
@@ -114,7 +109,8 @@ class Elections2 extends BaseController
         $data['user_details'] = user_details($this->session->get('user_id'));
         $data['active'] = 'elections';
         $data['title'] = 'Add Elections';
-        return view('Modules\Elections\Views\form', $data);
+        // return view('Modules\Elections\Views\form', $data);
+        return view('Modules\Elections\Views\formTime2', $data);
     }
 
     public function deactivate($elecID) {
@@ -228,10 +224,12 @@ class Elections2 extends BaseController
             $this->session->setFlashdata('sweetalertfail', true);
             return redirect()->to(base_url());
         }
-        $data['positions'] = $this->positionModel->where(['election_id' => $id])->findAll();
-        $data['candidates'] = $this->candidateModel->view($id);
+        // $data['positions'] = $this->positionModel->where(['election_id' => $id])->findAll();
+        $data['positions'] = $this->electoralPositionModel->positionNameOnCandidate($id);
+        $data['candidates'] = $this->candidateModel->view2($id);
         $data['voteCounts'] = $this->electionModel->voteCount($data['elecDetails']['id']);
         $data['voteDetails'] = $this->voteDetailModel->findAll();
+        $data['electionVotes'] = intval($this->voteModel->where('election_id', $id)->findAll());
         // echo '<pre>';
         // print_r($data['positions']);
         // print_r($data['candidates']);

@@ -1,6 +1,7 @@
 <!-- User Management -->
-<li class="nav-item has-treeview">
-  <a href="#" class="nav-link">
+<?php $usr = ['users', 'roles', 'permissions']?>
+<li class="nav-item has-treeview <?= in_array($active, $usr) ? 'menu-open' : ''?>">
+  <a href="#" class="nav-link <?= in_array($active, $usr) ? 'active' : ''?>">
     <i class="nav-icon fas fa-users"></i>
     <p>
       User Management
@@ -65,9 +66,10 @@
   </ul>
 </li>
 
+<?php $cnt = ['announcements', 'sliders']?>
 <!-- Content Management -->
-<li class="nav-item has-treeview">
-  <a href="#" class="nav-link">
+<li class="nav-item has-treeview <?= in_array($active, $cnt) ? 'menu-open' : ''?>">
+  <a href="#" class="nav-link <?= in_array($active, $cnt) ? 'active' : ''?>">
     <i class="nav-icon fas fa-info-circle"></i>
     <p>
       Content Management
@@ -114,9 +116,10 @@
   </ul>
 </li>
 
+<?php $els = ['elections', 'positions', 'elec_positions', 'candidates', 'voting']?>
 <!-- Election Management -->
-<li class="nav-item has-treeview">
-  <a href="#" class="nav-link">
+<li class="nav-item has-treeview <?= in_array($active, $els) ? 'menu-open' : ''?>">
+  <a href="#" class="nav-link <?= in_array($active, $els) ? 'active' : ''?>">
     <i class="nav-icon fas fas fa-vote-yea"></i>
     <p>
       Election Management
@@ -160,12 +163,30 @@
             break;
         }?>
     <?php endforeach;?>
+    <!-- Electoral Positions -->
+    <?php foreach($rolePermission as $rolePerms):?>
+        <?php $access = false;?>
+        <?php if($rolePerms['perm_mod'] == 'POS'):?>
+            <li class="nav-item">
+                <a href="<?= base_url('admin/electoral-positions')?>" class="nav-link <?= $active=="elec_positions" ? 'active': ''?>">
+                    <i class="nav-icon fas fa-users"></i>
+                    <p>
+                        Electoral Positions
+                    </p>
+                </a>
+            </li>
+            <?php $access = true;?>
+        <?php endif;?>
+        <?php if($access){
+            break;
+        }?>
+    <?php endforeach;?>
     <!-- Candidates -->
     <?php foreach($rolePermission as $rolePerms):?>
         <?php $access = false;?>
         <?php if($rolePerms['perm_mod'] == 'CAN'):?>
             <li class="nav-item">
-                <a href="<?= base_url('admin/candidates')?>" class="nav-link <?= $active=="candidates" ? 'active': ''?>">
+                <a href="<?= base_url('admin/candidates2')?>" class="nav-link <?= $active=="candidates" ? 'active': ''?>">
                     <i class="nav-icon fas fa-user-tie"></i>
                     <p>
                         Candidates

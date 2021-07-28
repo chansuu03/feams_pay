@@ -53,17 +53,19 @@
             <td style="text-align: center;" colspan="2"><?= esc($position['name'])?></td>
         </tr>
         <?php foreach($candidates as $candidate):?>
-        <tr>
-            <?php $voteCount = 0;?>
-            <td><?= esc($candidate['first_name'])?> <?= esc($candidate['last_name'])?></td>
-            <?php foreach($voteDetails as $voteDetail){
-              if(($candidate['id'] && $position['id']) == ($voteDetail['candidate_id'] &&$voteDetail['position_id'])) {
-                $voteCount++;
-                $posTotalVotes++;
-              }
-            }?>
-            <td style="text-align: center;"><?= esc($voteCount)?></td>
-        </tr>
+            <?php if($candidate['position_id'] == $position['id']):?>
+            <tr>
+                <?php $voteCount = 0;?>
+                <td><?= esc($candidate['first_name'])?> <?= esc($candidate['last_name'])?></td>
+                <?php foreach($voteDetails as $voteDetail){
+                if(($candidate['id'] && $position['id']) == ($voteDetail['candidate_id'] &&$voteDetail['position_id'])) {
+                    $voteCount++;
+                    $posTotalVotes++;
+                }
+                }?>
+                <td style="text-align: center;"><?= esc($voteCount)?></td>
+            </tr>
+            <?php endif;?>
         <?php endforeach;?>
         <tr>
           <?php $voteCount = 0;?>
@@ -83,5 +85,6 @@
         </tr>
       <?php endforeach;?>
     </table>
+    <p>Total votes for the election: <?= esc($electionVotes)?></p>
   </body>
 </html>
