@@ -145,24 +145,6 @@
             break;
         }?>
     <?php endforeach;?>
-    <!-- Positions -->
-    <?php foreach($rolePermission as $rolePerms):?>
-        <?php $access = false;?>
-        <?php if($rolePerms['perm_mod'] == 'POS'):?>
-            <li class="nav-item">
-                <a href="<?= base_url('admin/positions')?>" class="nav-link <?= $active=="positions" ? 'active': ''?>">
-                    <i class="nav-icon fas fa-users"></i>
-                    <p>
-                        Positions
-                    </p>
-                </a>
-            </li>
-            <?php $access = true;?>
-        <?php endif;?>
-        <?php if($access){
-            break;
-        }?>
-    <?php endforeach;?>
     <!-- Electoral Positions -->
     <?php foreach($rolePermission as $rolePerms):?>
         <?php $access = false;?>
@@ -172,6 +154,24 @@
                     <i class="nav-icon fas fa-users"></i>
                     <p>
                         Electoral Positions
+                    </p>
+                </a>
+            </li>
+            <?php $access = true;?>
+        <?php endif;?>
+        <?php if($access){
+            break;
+        }?>
+    <?php endforeach;?>
+    <!-- Positions -->
+    <?php foreach($rolePermission as $rolePerms):?>
+        <?php $access = false;?>
+        <?php if($rolePerms['perm_mod'] == 'POS'):?>
+            <li class="nav-item">
+                <a href="<?= base_url('admin/positions')?>" class="nav-link <?= $active=="positions" ? 'active': ''?>">
+                    <i class="nav-icon fas fa-users"></i>
+                    <p>
+                        Assign Positions
                     </p>
                 </a>
             </li>
