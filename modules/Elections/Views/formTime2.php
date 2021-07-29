@@ -42,13 +42,13 @@
   </div>
 <?php endif;?>
 
-<form action="<?= base_url('admin/elections')?>/<?= $edit ? 'edit/'.esc($link): 'add'?>" method="post" enctype="multipart/form-data">
+<form action="<?= base_url('admin/elections')?>/<?= $edit ? 'edit/'.esc($id): 'add'?>" method="post" enctype="multipart/form-data">
 
 <div class="card card-light">
     <div class="card-body">
         <div class="form-group">
             <label for="title">Election Title</label>
-            <input type="text" class="form-control <?=isset($errors['title']) ? 'is-invalid': ''?>" id="title" placeholder="Election Title" name="title">
+            <input type="text" class="form-control <?=isset($errors['title']) ? 'is-invalid': ''?>" id="title" placeholder="Election Title" name="title" value="<?=isset($value['title']) ? esc($value['title']): ''?>">
             <?php if(isset($errors['title'])):?>
                 <div class="invalid-feedback">
                     <?=esc($errors['title'])?>
@@ -129,8 +129,8 @@ $(function() {
       cancelLabel: 'Clear'
     }
   }, function(start, end, label) {
-    document.getElementById('vote_start').value = start.format('YYYY-MM-DD hh:mm:ss');
-    document.getElementById('vote_end').value = end.format('YYYY-MM-DD hh:mm:ss');
+    document.getElementById('vote_start').value = start.format('YYYY-MM-DD HH:mm:ss');
+    document.getElementById('vote_end').value = end.format('YYYY-MM-DD HH:mm:ss');
   });
   
   $('#voteTime').on('apply.daterangepicker', function(ev, picker) {

@@ -23,6 +23,23 @@
 
 <?= $this->section('content') ?>
 
+<?php if(!empty(session()->getFlashdata('failMsg'))):?>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <?= session()->getFlashdata('failMsg');?>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<?php endif;?>
+<?php if(!empty(session()->getFlashdata('successMsg'))):?>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <?= session()->getFlashdata('successMsg');?>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<?php endif;?>
+
 <form action="<?= base_url('file_sharing')?>/<?= $edit ? 'edit/'.esc($link): 'add'?>" method="post" enctype="multipart/form-data">
 
 <div class="card card-light">

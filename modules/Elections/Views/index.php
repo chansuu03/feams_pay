@@ -91,8 +91,8 @@
                 <?php foreach($perm_id['perm_id'] as $perms):?>
                   <?php if($perms == '18'):?>
                     <a class="btn btn-info btn-sm" href="<?=base_url('admin/elections/' . esc($election['id'], 'url'))?>" data-toggle="tooltip" data-placement="bottom" title="Election info"> <i class="fas fa-bars"></i> </a>
-                  <?php elseif($perms == '20'):?>
-                    <!-- <a class="btn btn-primary btn-sm" href="<?=base_url('admin/elections/edit/' . esc($election['id'], 'url'))?>" data-toggle="tooltip" data-placement="bottom" title="Edit election"> <i class="fas fa-edit"></i> </a> -->
+                  <?php elseif($perms == '20' && $election['status'] == 'Application'):?>
+                    <a class="btn btn-warning btn-sm" href="<?=base_url('admin/elections/edit/' . esc($election['id'], 'url'))?>" data-toggle="tooltip" data-placement="bottom" title="Edit election"> <i class="fas fa-edit"></i> </a>
                   <?php elseif($perms == '21'):?>
                     <?php if($election['status'] != "Finished"):?>
                         <button type="button" value="<?= esc($election['id'])?>" class="btn btn-success btn-sm del" data-toggle="tooltip" data-placement="bottom" title="Finish election"><i class="fas fa-check-circle"></i></button>

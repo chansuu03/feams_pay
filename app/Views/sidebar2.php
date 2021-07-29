@@ -78,23 +78,14 @@
   </a>
   <ul class="nav nav-treeview" style="margin-left: 15px;">
     <!-- Announcements -->
-    <?php foreach($rolePermission as $rolePerms):?>
-        <?php $access = false;?>
-        <?php if($rolePerms['perm_mod'] == 'ANN'):?>
-            <li class="nav-item">
-                <a href="<?= base_url('admin/announcements')?>" class="nav-link <?= $active=="announcements" ? 'active': ''?>">
-                    <i class="nav-icon fas fa-bullhorn"></i>
-                    <p>
-                        Announcements
-                    </p>
-                </a>
-            </li>
-            <?php $access = true;?>
-        <?php endif;?>
-        <?php if($access){
-            break;
-        }?>
-    <?php endforeach;?>
+    <li class="nav-item">
+        <a href="<?= base_url('admin/announcements')?>" class="nav-link <?= $active=="announcements" ? 'active': ''?>">
+            <i class="nav-icon fas fa-bullhorn"></i>
+            <p>
+                Announcements
+            </p>
+        </a>
+    </li>
     <!-- Sliders -->
     <?php foreach($rolePermission as $rolePerms):?>
         <?php $access = false;?>

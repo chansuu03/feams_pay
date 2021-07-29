@@ -21,6 +21,33 @@ class Elections2 extends BaseController
         $this->activityLogModel = new AppModels\ActivityLogModel();
 
         $elections = $this->electionModel->findAll();
+        foreach($this->electionModel->findAll() as $election) {
+            if($election['status'] == 'Application') {
+                if(strtotime($election['vote_start']) <= strtotime(date('Y-m-d H:i:s'))) {
+                    $data = [
+                        'id' => $election['id'],
+                        'status' => 'Voting'
+                    ];
+                    if($this->electionModel->save($data)) {
+                        // echo $election['title'].' starts now';
+                    } else {
+                        // echo $election['title'].' has an error starting';
+                    }
+                }
+            } elseif($election['status'] == 'Voting') {
+                if(strtotime($election['vote_end']) <= strtotime(date('Y-m-d'))) {
+                    $data = [
+                        'id' => $election['id'],
+                        'status' => 'Finished'
+                    ];
+                    if($this->electionModel->save($data)) {
+                        // echo $election['title'].' end now';
+                    } else {
+                        // echo $election['title'].' has an error starting';
+                    }
+                }
+            }
+        }
     }
     
     public function index() {
@@ -244,5 +271,53 @@ class Elections2 extends BaseController
         $this->mpdf->WriteHTML($html);
         $this->response->setHeader('Content-Type', 'application/pdf');
         $this->mpdf->Output($data['elecDetails']['title'].' Results.pdf','I');
+    }
+
+    public function edit($id) {
+        // return redirect()->to(current_url()); 
+        // checking roles and permissions
+        $data['perm_id'] = check_role('20', 'ELEC', $this->session->get('role'));
+        if(!$data['perm_id']['perm_access']) {
+            $this->session->setFlashdata('sweetalertfail', true);
+            return redirect()->to(base_url());
+        }
+        $data['rolePermission'] = $data['perm_id']['rolePermission'];
+
+        $data['id'] = $id;
+        $data['value'] = $this->electionModel->where('id', $id)->first();
+        $data['elecPositions'] = $this->electoralPositionModel->findAll();
+        $data['positions'] = $this->positionModel->findAll();
+        $data['edit'] = true;
+        if($this->request->getMethod() == 'post') {
+            if($this->validate('elections')){
+                $_POST['id'] = $id;
+                // echo '<pre>';
+                // print_r($_POST);
+                // die();
+                if(strtotime($_POST['vote_start']) <= strtotime("now")) {
+                    $_POST['status'] = 'Voting';
+                } elseif(strtotime($_POST['vote_end']) <= strtotime("now")) {
+                    $_POST['status'] = 'Finished';
+                }
+                if($this->electionModel->save($_POST)) {
+                    $activityLog['user'] = $this->session->get('user_id');
+                    $activityLog['description'] = 'Added a new election';
+                    $this->activityLogModel->save($activityLog);
+                    $this->session->setFlashdata('successMsg', 'Successfully edited an election');
+                    return redirect()->to(base_url('admin/elections'));
+                } else {
+                    $this->session->setFlashdata('failMsg', 'Failed to start an election');
+                }
+            } else {
+                $data['value'] = $_POST;
+                $data['errors'] = $this->validation->getErrors();
+            }
+        }
+
+        $data['user_details'] = user_details($this->session->get('user_id'));
+        $data['active'] = 'elections';
+        $data['title'] = 'Edit Elections';
+        // return view('Modules\Elections\Views\form', $data);
+        return view('Modules\Elections\Views\formTime2', $data);
     }
 }
