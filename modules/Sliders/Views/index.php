@@ -63,7 +63,7 @@
                   <td><?= esc($slider['first_name'])?> <?= esc($slider['last_name'])?></td>
                   <td><?= esc($slider['description'], 'raw')?></td>
                   <td>
-                    <a class="btn btn-info btn-sm" href="#" role="button">Link</a>
+                    <!-- <a class="btn btn-info btn-sm" href="#" role="button">Link</a> -->
                     <?php foreach($perm_id['perm_id'] as $perms):?>
                       <?php if($perms == '12'):?>
                         <a class="btn btn-primary btn-sm" href="<?=base_url('admin/sliders/edit/' . esc($slider['id'], 'url'))?>" data-toggle="tooltip" data-placement="bottom" title="Edit Slider"> <i class="fas fa-edit"></i> </a>

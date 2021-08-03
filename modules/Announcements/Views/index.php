@@ -61,10 +61,10 @@
                   <td><?= esc($ann['title'])?></td>
                   <td><?= esc($ann['first_name'])?> <?= esc($ann['last_name'])?></td>
                   <td>
-                    <a class="btn btn-info btn-sm" href="<?= base_url()?>/announcements/<?= esc($ann['link'])?>" role="button">Link</a>
+                    <a class="btn btn-info btn-sm" href="<?= base_url()?>/announcements/<?= esc($ann['link'])?>" role="button"><i class="fas fa-bars"></i></a>
                     <?php foreach($perm_id['perm_id'] as $perms):?>
                       <?php if($perms == '12'):?>
-                        <a class="btn btn-primary btn-sm" href="<?=base_url('admin/announcements/edit/' . esc($ann['link'], 'url'))?>" data-toggle="tooltip" data-placement="bottom" title="Edit Announcement"> <i class="fas fa-edit"></i> </a>
+                        <a class="btn btn-warning btn-sm" href="<?=base_url('admin/announcements/edit/' . esc($ann['link'], 'url'))?>" data-toggle="tooltip" data-placement="bottom" title="Edit Announcement"> <i class="fas fa-edit"></i> </a>
                       <?php elseif($perms == '13'):?>
                         <button type="button" value="<?= esc($ann['link'])?>" class="btn btn-danger btn-sm del" data-toggle="tooltip" data-placement="bottom" title="Delete Announcement"><i class="fas fa-trash"></i></button>
                       <?php endif;?>

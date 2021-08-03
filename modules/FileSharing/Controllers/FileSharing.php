@@ -98,7 +98,9 @@ class FileSharing extends BaseController
                     $this->session->setFlashData('failMsg', 'There is an error on adding file. Please try again.');
                 }
             } else {
-                $this->session->setFlashData('failMsg', 'File name taken, please choose another file name.');
+                if($file_taken) {
+                    $this->session->setFlashData('failMsg', 'File name taken, please choose another file name.');
+                }
                 $data['value'] = $_POST;
                 $data['errors'] = $this->validation->getErrors();
             }
