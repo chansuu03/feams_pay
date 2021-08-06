@@ -5,6 +5,7 @@ use App\Models as userModels;
 use Modules\Announcements\Models as announceModels;
 use Modules\Sliders\Models as sliderModels;
 use Modules\Elections\Models as Election;
+use Modules\Discussions\Models as Discussion;
 
 class Home extends BaseController
 {
@@ -13,6 +14,7 @@ class Home extends BaseController
         $this->announceModel = new announceModels\AnnouncementModel();
         $this->sliderModel = new sliderModels\SliderModel();
         $this->electionModel = new Election\ElectionModel();
+        $this->threadModel = new Discussion\ThreadModel();
 
         foreach($this->electionModel->findAll() as $election) {
             if($election['status'] == 'Application') {
@@ -47,6 +49,13 @@ class Home extends BaseController
 		$data['user'] = $this->userModel->forProfile($this->session->get('user_id'));
 		$data['announces'] = $this->announceModel->findAll();
 		$data['sliders'] = $this->sliderModel->findAll();
-		return view('home2', $data);
+		$data['allDiscussion'] = $this->threadModel->viewAllHomepage();
+		$data['roleDiscussion'] = $this->threadModel->viewRoleHomepage($this->session->get('role'));
+        // echo '<pre>';
+        // print_r($data['allDiscussion']);
+        // die();
+
+        $data['user_details'] = user_details($this->session->get('user_id'));
+		return view('home3', $data);
 	}
 }

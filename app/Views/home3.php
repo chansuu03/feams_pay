@@ -1,7 +1,7 @@
 <?= $this->extend('temp') ?>
 
 <?= $this->section('styles') ?>
-    <link rel="stylesheet" href="<?= base_url();?>/css/home.css">
+    <link rel="stylesheet" href="<?= base_url();?>/css/home3.css">
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -21,7 +21,7 @@
           <a class="nav-link" href="<?= base_url();?>/user/<?= esc($user['username'])?>">Profile <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="<?= base_url();?>/files">Files</a>
+          <a class="nav-link" href="<?= base_url();?>/file_sharing">Files</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="<?= base_url();?>/discussions">Discussions</a>
@@ -87,9 +87,9 @@
 
 <div class="container-fluid mt-3 mb-3">
   <div class="row">
-    <div class="col-md-9">
-      <h1 class="display-4 text-center" style="color: white;">Announcements</h1>
-      <hr style="border: 3px solid white;">
+    <div class="col-md-8">
+      <p class="text-center font-weight-light" style="font-size: 2.8em">Announcements</p>
+      <hr style="border: 3px solid; color: #424242;">
       <?php foreach($announces as $announce):?>
         <div class="card mt-2">
           <div class="card-body">
@@ -98,16 +98,11 @@
                   <img src="<?= base_url();?>/uploads/announcements/<?= esc($announce['image'], 'raw')?>" class="img-thumbnail">
                 </div>
                 <div class="col-md-9">
-                  <a href="<?= base_url()?>/announcements/<?= esc($announce['link'], 'raw')?>" class="mt-1 h4 text-light text-left"><?= esc($announce['title'], 'raw')?></a>
+                  <a href="<?= base_url()?>/announcements/<?= esc($announce['link'], 'raw')?>" class="mt-1 h4 text-dark text-left"><?= esc($announce['title'], 'raw')?></a>
                   <p class="mt-1">Posted in: <?= date('F d,Y', strtotime($announce['created_at']))?></p>
                   <div class="row">
-                      <div class="col-12" style="min-height: 100%;">
-                        <?php
-                          $start = strpos(esc($announce['description'], 'raw'), '<p>');
-                          $end = strpos(esc($announce['description'], 'raw'), '</p>', $start);
-                          $paragraph = substr(esc($announce['description'], 'raw'), $start, $end-$start+4);
-                        ?>
-                        <?= esc($paragraph, 'raw')?>
+                      <div class="col-12" style="height: 100px; overflow: auto; overflow-y: hidden; overflow-x: hidden;">
+                        <?= esc($announce['description'], 'raw')?>
                       </div>
                   </div>
                 </div>
@@ -117,7 +112,55 @@
       <?php endforeach;?>
       <a class="btn btn-primary mt-3 float-right" href="<?= base_url('admin/announcements')?>" role="button">See More</a>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
+      <p class="text-center font-weight-light" style="font-size: 2.8em">Discussions</p>
+      <hr style="border: 3px solid; color: #424242;">
+      <div class="contents">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Shared</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"><?= esc($user_details['role_name'])?></a>
+          </li>
+        </ul>
+        <!-- all discussions -->
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab" style="height: 500px; overflow: auto">
+            <ul class="list-group">
+              <?php foreach($allDiscussion as $all):?>
+                <li class="list-group-item">
+                  <div class="d-flex flex-row mb-1">
+                    <div><a href="<?= base_url()?>/discussions/<?= esc($all['link'])?>"><?= esc($all['subject'])?></a></div>
+                  </div>
+                  <div class="d-flex flex-row justify-content-between">
+                    <div><?= esc($all['first_name'])?> <?= esc($all['last_name'])?></div>
+                    <div><?= date('F d,Y', strtotime($all['created_at']))?></div>
+                  </div>
+                </li>
+              <?php endforeach?>
+            </ul>
+            <a class="btn btn-primary mt-2 float-right" href="<?= base_url('discussions')?>" role="button">See More</a>
+          </div>
+          <!-- Per role discussion -->
+          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab" style="height: 500px; overflow: auto">
+            <ul class="list-group">
+              <?php foreach($roleDiscussion as $role):?>
+                <li class="list-group-item">
+                  <div class="d-flex flex-row mb-1">
+                    <div><a href="<?= base_url()?>/discussions/<?= esc($role['link'])?>"><?= esc($role['subject'])?></a></div>
+                  </div>
+                  <div class="d-flex flex-row justify-content-between">
+                    <div><?= esc($role['first_name'])?> <?= esc($role['last_name'])?></div>
+                    <div><?= date('F d,Y', strtotime($role['created_at']))?></div>
+                  </div>
+                </li>
+              <?php endforeach?>
+            </ul>
+            <a class="btn btn-primary mt-2 float-right" href="<?= base_url('discussions')?>" role="button">See More</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
