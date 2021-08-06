@@ -31,8 +31,9 @@ class UserModel extends Model {
   protected $deletedField  = 'deleted_at';
 
   public function forProfile($user_id) {
-    $this->select('username, profile_pic, last_name, first_name, middle_name, gender, birthdate, contact_number, email');
-    $this->where('id', $user_id);
+    $this->select('username, profile_pic, last_name, first_name, middle_name, gender, birthdate, contact_number, email, roles.role_name');
+    $this->where('users.id', $user_id);
+    $this->join('roles', 'roles.id = users.role');
     return $this->get()->getFirstRow('array');
   }
 
