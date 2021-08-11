@@ -37,13 +37,25 @@
   </div>
 <?php endif;?>
 
+<?php $manage = false;?>
+<?php foreach($perm_id['perm_id'] as $perms):?>
+  <?php if($perms == '35'):?>
+    <?php $manage = true;?>
+  <?php endif;?>
+<?php endforeach;?>
+
 <div class="container">
   <div class="row">
     <div class="col-md-8">
       <!-- for all discussion -->
       <div class="card" id="all">
         <div class="card-header">
-          Discussions
+          <div class="d-flex justify-content-between">
+            <span class="<?= $manage ? 'mt-1' : ''?>">Discussions</span>
+            <?php if($manage):?>
+              <a class="btn btn-primary btn-sm float right" href="<?= base_url('discussions/manage')?>" role="button">Manage Discussions</a>
+            <?php endif;?>
+          </div>
         </div>
         <div class="card-body">
           <div class="text-right mb-3">
