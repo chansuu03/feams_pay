@@ -54,17 +54,21 @@
         </tr>
         <?php foreach($candidates as $candidate):?>
             <?php if($candidate['position_id'] == $position['id']):?>
-            <tr>
+              <tr>
                 <?php $voteCount = 0;?>
-                <td><?= esc($candidate['first_name'])?> <?= esc($candidate['last_name'])?></td>
+                <td><?= esc($candidate['first_name'])?> <?= esc($candidate['last_name'])?></td>>
                 <?php foreach($voteDetails as $voteDetail){
-                if(($candidate['id'] && $position['id']) == ($voteDetail['candidate_id'] &&$voteDetail['position_id'])) {
-                    $voteCount++;
-                    $posTotalVotes++;
-                }
+                  if($candidate['id'] == $voteDetail['candidate_id']) {
+                    if($position['id'] == $voteDetail['position_id']) {
+                      $voteCount++;
+                      $posTotalVotes++;
+                    }
+                  }
+                // if(($candidate['id'] && $position['id']) == ($voteDetail['candidate_id'] && $voteDetail['position_id'])) {
+                // }
                 }?>
                 <td style="text-align: center;"><?= esc($voteCount)?></td>
-            </tr>
+              </tr>
             <?php endif;?>
         <?php endforeach;?>
         <tr>

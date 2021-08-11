@@ -256,9 +256,9 @@ class Elections2 extends BaseController
         $data['candidates'] = $this->candidateModel->view2($id);
         $data['voteCounts'] = $this->electionModel->voteCount($data['elecDetails']['id']);
         $data['voteDetails'] = $this->voteDetailModel->findAll();
-        $data['electionVotes'] = intval($this->voteModel->where('election_id', $id)->findAll());
+        $data['electionVotes'] = count($this->voteModel->where('election_id', $id)->findAll());
         // echo '<pre>';
-        // print_r($data['positions']);
+        // print_r($data['electionVotes']);
         // print_r($data['candidates']);
         // print_r($data['voteDetails']);
         // die();
