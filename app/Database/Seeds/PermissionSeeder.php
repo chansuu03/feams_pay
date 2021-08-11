@@ -160,6 +160,10 @@ class PermissionSeeder extends Seeder
                 'perm_mod' => 'USR',
                 'desc' => 'Edit Users'
             ],
+            [
+                'perm_mod' => 'CONT',
+                'desc' => 'Manage contributions'
+            ],
         ];
 		$this->db->table('permissions')->truncate();
 		$this->db->table('permissions')->insertBatch($data);
