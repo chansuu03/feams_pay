@@ -242,6 +242,12 @@ class RolePermissionSeeder extends Seeder
 				'perm_id' => '39',
                 'created_at' => date('Y-m-d H:i:s')
             ],
+            [
+                'perm_mod' => 'PAY',
+				'role_id' => '1',
+				'perm_id' => '40',
+                'created_at' => date('Y-m-d H:i:s')
+            ],
         ];
 		$this->db->table('role_permissions')->truncate();
 		$this->db->table('role_permissions')->insertBatch($data);

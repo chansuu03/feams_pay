@@ -339,4 +339,59 @@ class Validation
         ],
     ],
   ];
+
+  public $payments = [
+    'user_id' => [
+        'rules' => 'required|numeric',
+        'errors' => [
+            'required' => 'Name is required',
+            'numeric' => 'Error in selecting user',
+        ],
+    ],
+    'contri_id' => [
+        'rules' => 'required|numeric',
+        'errors' => [
+            'required' => 'Cost is required',
+            'numeric' => 'Error in selecting payments',
+        ],
+    ],
+    'amount' => [
+        'rules' => 'required|numeric',
+        'errors' => [
+            'required' => 'Cost is required',
+            'numeric' => 'Amount should be in numerical form',
+        ],
+    ],
+    'photo' => [
+        'rules' => 'uploaded[photo]|ext_in[photo,png,jpg,jpeg]',
+        'errors' => [
+            'uploaded' => 'Photo is required',
+            'ext_in' => 'Photo is not an image',
+        ],
+    ],
+  ];
+
+  public $payments_member = [
+    'contri_id' => [
+        'rules' => 'required|numeric',
+        'errors' => [
+            'required' => 'Cost is required',
+            'numeric' => 'Error in selecting payments',
+        ],
+    ],
+    'amount' => [
+        'rules' => 'required|numeric',
+        'errors' => [
+            'required' => 'Cost is required',
+            'numeric' => 'Amount should be in numerical form',
+        ],
+    ],
+    'photo' => [
+        'rules' => 'uploaded[photo]|ext_in[photo,png,jpg,jpeg]',
+        'errors' => [
+            'uploaded' => 'Photo is required',
+            'ext_in' => 'Photo is not an image',
+        ],
+    ],
+  ];
 }
