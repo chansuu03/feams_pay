@@ -79,5 +79,16 @@
         nextSibling.innerText = name
         })
     </script>
+    
+    <!-- file uploads para mapalitan agad file name once makaselect na ng file -->
+    <script>
+        $('#proof').on('change',function(){
+            //get the file name
+            var fileName = $(this).val();
+            var newFileName = fileName.replace('C:\\fakepath\\', " ");
+            //replace the "Choose a file" label
+            $(this).next('.custom-file-label').html(newFileName);
+        })
+    </script>
   </body>
 </html>

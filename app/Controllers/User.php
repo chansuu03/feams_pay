@@ -80,8 +80,13 @@ class User extends BaseController {
         helper(['form', 'url', 'text']);
 
         if($this->request->getMethod() == 'post') {
+            // echo '<pre>';
+            // print_r($_POST);
+            // print_r($_FILES);
+            // die();
             if($this->validate('users')){
                 $file = $this->request->getFile('image');
+                $proof = $this->request->getFile('proof');
                 $date=  date_create($_POST['birthdate']);
                 $dates = date_format($date,"Y-m-d");
                 $userData = $_POST;
@@ -91,9 +96,11 @@ class User extends BaseController {
                 $userData['birthdate'] = $dates;
                 $userData['email_code'] = random_string('alnum', 5);
                 $userData['profile_pic'] = $file->getRandomName();
+                $userData['proof'] = $proof->getRandomName();
                 $this->session->remove(['failMsg', 'successMsg']);
                 if($this->userModel->insert($userData)){
                     $file->move(ROOTPATH .'/public/uploads/profile_pic/', $userData['profile_pic']);
+                    $proof->move(ROOTPATH .'/public/uploads/proof/', $userData['proof']);
                     if($file->hasMoved()) {
                         $this->sendMail($userData);
                         $this->session->set('successMsg', 'Create account sucessfully, please verify email');
@@ -141,7 +148,7 @@ class User extends BaseController {
         $data = [
             'id' => $user['id'],
             'email_code' => null,
-            'status' => 'a',
+            'status' => 'i',
         ];
         if($this->userModel->save($data)) {
             $this->session->set('successMsg', 'Account successfully activated');

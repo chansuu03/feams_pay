@@ -22,6 +22,7 @@ class UserModel extends Model {
       'contact_number',
       'email',
       'status',
+      'proof',
       'email_code',
       'created_at'];
 
@@ -38,7 +39,7 @@ class UserModel extends Model {
   }
 
   public function viewing() {
-    $this->select('users.id,username, profile_pic, last_name, first_name, middle_name, gender, birthdate, contact_number, email, roles.role_name, status');
+    $this->select('users.id,username, profile_pic, last_name, first_name, middle_name, gender, birthdate, contact_number, email, proof, roles.role_name, status');
     $this->where('users.deleted_at', NULL);
     $this->join('roles', 'roles.id = users.role');
     return $this->get()->getResultArray();

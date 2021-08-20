@@ -201,6 +201,62 @@
   </ul>
 </li>
 
+<?php $isAdmin = false;?>
+<!-- Payment Management -->
+<?php foreach($rolePermission as $rolePerms):?>
+    <?php $access = false;?>
+    <?php if($rolePerms['perm_mod'] == 'CONT'):?>
+      <?php $pays = ['contributions', 'payments']?>
+      <!-- Content Management -->
+      <li class="nav-item has-treeview <?= in_array($active, $pays) ? 'menu-open' : ''?>">
+        <a href="#" class="nav-link <?= in_array($active, $pays) ? 'active' : ''?>">
+          <i class="nav-icon fas fa-money-check"></i>
+          <p>
+            Payment Management
+            <i class="fas fa-angle-left right"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview" style="margin-left: 15px;">
+          <!-- Contributions -->
+          <li class="nav-item">
+              <a href="<?= base_url('admin/contributions')?>" class="nav-link <?= $active=="contributions" ? 'active': ''?>">
+                  <i class="nav-icon fas fa-hand-holding-usd"></i>
+                  <p>
+                      Contributions
+                  </p>
+              </a>
+          </li>
+          <!-- Payments -->
+          <li class="nav-item">
+              <a href="<?= base_url('payments')?>" class="nav-link <?= $active=="payments" ? 'active': ''?>">
+                  <i class="nav-icon fas fa-money-bill-alt"></i>
+                  <p>
+                      Payments
+                  </p>
+              </a>
+          </li>
+        </ul>
+      </li>
+      <?php $access = true;?>
+      <?php $isAdmin = true;?>
+    <?php endif;?>
+    <?php if($access){
+        break;
+    }?>
+<?php endforeach;?>
+
+<?php if(!$isAdmin):?>
+  <!-- Payments -->
+  <li class="nav-item">
+      <a href="<?= base_url('payments')?>" class="nav-link <?= $active=="payments" ? 'active': ''?>">
+          <i class="nav-icon fas fa-money-bill-alt"></i>
+          <p>
+              Payments
+          </p>
+      </a>
+  </li>
+<?php endif;?>
+
 <li class="nav-item">
     <a href="<?= base_url('constitution')?>" class="nav-link <?= $active=="constitution" ? 'active': ''?>">
         <i class="nav-icon fas fa-scroll"></i>
@@ -226,3 +282,4 @@
         </p>
     </a>
 </li>
+

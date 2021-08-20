@@ -111,3 +111,16 @@
         <small id="emailHelp" class="form-text text-danger"><?= $errors['image']?></small>
     <?php endif; ?>
 </div>
+
+<div class="form-group">
+    <label for="membership">Proof of Membership</label>
+    <div class="input-group">
+        <div class="custom-file">
+            <input type="file" class="custom-file-input <?php if(!empty($errors['proof'])) echo 'is-invalid';?>" id="proof" name="proof" required>
+            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+        </div>
+    </div>
+    <?php if(isset($errors['proof'])): ?>
+        <small id="emailHelp" class="form-text text-danger"><?= $errors['proof']?></small>
+    <?php endif; ?>
+</div>

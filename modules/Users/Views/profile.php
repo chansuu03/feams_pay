@@ -123,7 +123,7 @@
                 Files uploaded
             </div><!-- /.card-header -->
             <div class="card-body">
-                <table class="table ">
+                <table class="table">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -162,6 +162,50 @@
 </div>
 <!-- /.row -->
 
+<!-- Payments -->
+  <div class="card">
+      <div class="card-header">
+        Contribution details
+      </div><!-- /.card-header -->
+      <div class="card-body">
+        <table class="table" id="table_pay">
+          <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Contribution</th>
+                <th scope="col">Cost</th>
+                <th scope="col">Paid</th>
+                <th scope="col">Balance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php $ctr = 1?>
+            <?php foreach($contribs as $contri):?>
+              <tr>
+                <td><?= esc($ctr)?></td>
+                <td><?= esc($contri['name'])?></td>
+                <td><?= esc($contri['cost'])?></td>
+                <td>
+                  <?php $amt = 0;
+                    foreach($payments as $pay) {
+                      if($pay['contri_id'] == $contri['id']) {
+                        $amt += $pay['amount'];
+                      }
+                    }
+                    echo esc($amt);
+                    ?>
+                </td>
+                <td>
+                  <?php $total = $contri['cost'] - $amt; echo esc($total)?>
+                </td>
+              </tr>
+              <?php $ctr++;?>
+            <?php endforeach?>
+          </tbody>
+        </table>
+      </div><!-- /.card-body -->
+  </div>
+<!-- End Payments -->
 
 <?php $status = false; $role = false;
 foreach($perm_id['perm_id'] as $perms) {
@@ -277,7 +321,7 @@ foreach($perm_id['perm_id'] as $perms) {
   
   // DataTables
   $(function () {
-    $('#users').DataTable({
+    $('#table_pay').DataTable({
       "responsive": true,
       "autoWidth": false,
       });

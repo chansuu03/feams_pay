@@ -5,12 +5,16 @@ use App\Controllers\BaseController;
 use App\Models as Models;
 use Modules\Files\Models as FileModels;
 use Modules\Roles\Models as RoleModels;
+use Modules\Payments\Models as PayModels;
+use Modules\Contributions\Models as ContribModels;
 
 class Users extends BaseController
 {
     public function __construct() {
         $this->userModel = new Models\UserModel();
         $this->fileModel = new FileModels\FileModel();
+        $this->payModel = new PayModels\PaymentsModel();
+        $this->contriModel = new ContribModels\ContributionModel();
         $this->roleModel = new RoleModels\RoleModel();
         helper('text');
     }
@@ -61,6 +65,8 @@ class Users extends BaseController
         $data['user'] = $this->userModel->viewProfile($username);
         $data['files2'] = $this->userModel->getFileUploads($data['user']['id']);
         $data['files'] = $this->userModel->getFileSharingUploads($data['user']['id']);
+        $data['contribs'] = $this->contriModel->findAll();
+        $data['payments'] = $this->payModel->where(['user_id' => $data['user']['id'], 'is_approved' => '1'])->findAll();
         $data['roles'] = $this->roleModel->findAll();
         if(!empty($data['perm_id']['perm_id']['36'])) {
           $data['edit'] = true;

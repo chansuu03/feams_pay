@@ -48,7 +48,7 @@
               <th scope="col" style="width: 20%;">Name</th>
               <th scope="col">Email</th>
               <th scope="col" style="width: 15%;">Role</th>
-              <th scope="col">Birthdate</th>
+              <th scope="col">Membership</th>
               <th scope="col">Status</th>
               <th scope="col" style="width: 10%;">Action</th>
             </tr>
@@ -65,10 +65,7 @@
 											<?= $user['role_name']?>
                     </td>
                     <td scope="row">
-                      <?php
-                        $date = date_create(esc($user['birthdate']));
-                        echo esc(date_format($date, 'F d, Y'));
-                        ?>
+                      <a href="<?= base_url()?>/uploads/proofs/<?= esc($user['proof'])?>">View Membership</a>
                     </td>
                     <td scope="row">
 											<?php

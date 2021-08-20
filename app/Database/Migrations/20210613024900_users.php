@@ -44,6 +44,10 @@ class UserTable extends Migration {
                     'type'           => 'VARCHAR',
                     'constraint'     => '100',
             ],
+            'proof'     => [
+                    'type'           => 'VARCHAR',
+                    'constraint'     => '100',
+            ],
             'birthdate'       => [
                     'type'           => 'DATE'
             ],
