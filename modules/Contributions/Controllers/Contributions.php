@@ -10,6 +10,9 @@ class Contributions extends BaseController
     public function __construct() {
         $this->contribModel = new Models\ContributionModel();
         $this->activityLogModel = new AppModels\ActivityLogModel();
+        $this->userModel = new AppModels\UserModel();
+        $this->payModel = new \Modules\Payments\Models\PaymentsModel();
+        $this->mpdf = new \Mpdf\Mpdf();
     }
 
     public function index() {
@@ -125,5 +128,36 @@ class Contributions extends BaseController
           $this->session->setFlashData('errorMsg', 'Something went wrong!');
         }
         return redirect()->to(base_url('admin/payments'));
+    }
+
+    public function print($id) {
+        // checking roles and permissions
+        $data['perm_id'] = check_role('39', 'CONT', $this->session->get('role'));
+        if(!$data['perm_id']['perm_access']) {
+            $this->session->setFlashdata('sweetalertfail', true);
+            return redirect()->to(base_url());
+        }
+
+        $cont = $this->contribModel->where('id', $id)->first();
+        $payments = $this->payModel->where('contri_id', $id)->findAll();
+        $users = $this->userModel->findAll();
+        foreach($users as $user) {
+            if($user['status'] == 'a') {
+                $cost = 0;
+                foreach($payments as $pay) {
+                    if($pay['user_id'] == $user['id'] && $pay['is_approved'] == '1') {
+                        $cost += $pay['amount'];
+                    }
+                }
+                if($cost === 0) {   
+                    echo 'not paid: '.$user['first_name'].' '.$user['last_name'].'<br>';
+                } elseif($cost < $cont['cost']) {
+                    $total = $cont['cost'] - $cost;
+                    echo 'lack of payment('.$total.'): '.$user['first_name'].' '.$user['last_name'].'<br>';
+                } elseif($cost == $cont['cost']) {
+                    echo 'complete payment: '.$user['first_name'].' '.$user['last_name'].'<br>';
+                }
+            }
+        }
     }
 }

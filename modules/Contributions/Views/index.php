@@ -60,8 +60,8 @@
             <td><?= esc($contri['cost'])?></td>
             <td><?= esc($contri['first_name'])?> <?= esc($contri['last_name'])?></td>
             <td>
-              <a class="btn btn-warning btn-sm" href="#" role="button"><i class="fas fa-edit"></i></a>
-              <button type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+              <a class="btn btn-info btn-sm" href="<?= base_url()?>/admin/contributions/print/<?= $contri['id']?>" role="button" data-toggle="tooltip" data-placement="bottom" title="Print contribution"><i class="fas fa-print"></i></a>
+              <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="bottom" title="Delete contribution"><i class="fas fa-trash"></i></button>
             </td>
           </tr>
         <?php endforeach;?>

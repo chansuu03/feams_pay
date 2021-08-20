@@ -36,7 +36,7 @@
         </div>
         <div class="form-group"> <!-- Cost -->
             <label for="cost">Cost</label>
-            <input type="text" class="form-control <?=isset($errors['cost']) ? 'is-invalid': ''?>" id="cost" name="cost" placeholder="Enter cost" value="<?=isset($value['cost']) ? esc($value['cost']): ''?>">
+            <input type="text" class="form-control <?=isset($errors['cost']) ? 'is-invalid': ''?>" id="cost" name="cost" placeholder="Enter cost" value="<?=isset($value['cost']) ? esc($value['cost']): ''?>" onkeypress="return isNumberKey(event)">
             <?php if(isset($errors['cost'])):?>
                 <div class="invalid-feedback">
                     <?=esc($errors['cost'])?>
@@ -53,5 +53,15 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts');?>
+<script>
+  function isNumberKey(evt)
+  {
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode != 46 && charCode > 31 
+      && (charCode < 48 || charCode > 57))
+       return false;
 
+    return true;
+  }
+</script>
 <?= $this->endSection() ?>
