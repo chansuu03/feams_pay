@@ -12,7 +12,7 @@ class Contributions extends BaseController
         $this->activityLogModel = new AppModels\ActivityLogModel();
         $this->userModel = new AppModels\UserModel();
         $this->payModel = new \Modules\Payments\Models\PaymentsModel();
-        $this->mpdf = new \Mpdf\Mpdf();
+        $this->mpdf = new \Mpdf\Mpdf(['orientation' => 'L']);
     }
 
     public function index() {
@@ -138,23 +138,41 @@ class Contributions extends BaseController
             return redirect()->to(base_url());
         }
 
-        $cont = $this->contribModel->where('id', $id)->first();
-        $payments = $this->payModel->where('contri_id', $id)->findAll();
-        $users = $this->userModel->findAll();
-        foreach($users as $user) {
+        $data['cont'] = $this->contribModel->where('id', $id)->first();
+        $data['payments'] = $this->payModel->where('contri_id', $id)->findAll();
+        $data['users'] = $this->userModel->findAll();
+        // pdf generation
+        $view = view('Modules\Contributions\Views\pdf', $data);
+        $this->mpdf->SetHTMLHeader('
+        <div style="text-align: right; font-weight: bold;">
+            '.$data['cont']['name'].' Contribution Report
+        </div>');
+        $this->mpdf->SetHTMLFooter('
+        <table width="100%">
+            <tr>
+                <td width="33%"></td>
+                <td width="33%" align="center">Page: {PAGENO}/{nbpg}</td>
+                <td width="33%" style="text-align: right;"><b>Date generated:</b> {DATE j-m-Y}</td>
+            </tr>
+        </table>');
+        $this->mpdf->WriteHTML($view);
+        $this->response->setHeader('Content-Type', 'application/pdf');
+        $this->mpdf->Output($data['cont']['name'].' Contribution Report.pdf','I');
+        
+        foreach($data['users'] as $user) {
             if($user['status'] == 'a') {
                 $cost = 0;
-                foreach($payments as $pay) {
+                foreach($data['payments'] as $pay) {
                     if($pay['user_id'] == $user['id'] && $pay['is_approved'] == '1') {
                         $cost += $pay['amount'];
                     }
                 }
                 if($cost === 0) {   
                     echo 'not paid: '.$user['first_name'].' '.$user['last_name'].'<br>';
-                } elseif($cost < $cont['cost']) {
-                    $total = $cont['cost'] - $cost;
+                } elseif($cost < $data['cont']['cost']) {
+                    $total = $data['cont']['cost'] - $cost;
                     echo 'lack of payment('.$total.'): '.$user['first_name'].' '.$user['last_name'].'<br>';
-                } elseif($cost == $cont['cost']) {
+                } elseif($cost == $data['cont']['cost']) {
                     echo 'complete payment: '.$user['first_name'].' '.$user['last_name'].'<br>';
                 }
             }
